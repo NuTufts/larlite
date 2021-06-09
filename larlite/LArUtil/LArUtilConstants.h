@@ -2,7 +2,7 @@
 #ifndef LARUTILCONSTANTS_H
 #define LARUTILCONSTANTS_H
 
-#include "Base/GeoConstants.h"
+#include "larlite/Base/GeoConstants.h"
 
 namespace larutil{
 

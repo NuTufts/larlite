@@ -15,8 +15,8 @@
 #define LARLITE_LARUTILCONFIG_H
 
 #include <iostream>
-#include "Base/GeoConstants.h"
-#include "Base/larlite_base.h"
+#include "larlite/Base/GeoConstants.h"
+#include "larlite/Base/larlite_base.h"
 #include "TString.h"
 namespace larutil {
   /**

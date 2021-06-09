@@ -20,8 +20,7 @@
 #include <climits>
 #include <limits>
 
-#include "LArUtil/PxUtils.h"
-
+#include "PxUtils.h"
 #include "DetectorProperties.h"
 #include "LArProperties.h"
 

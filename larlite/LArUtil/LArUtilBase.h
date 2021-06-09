@@ -17,11 +17,11 @@
 #include <map>
 #include <sstream>
 #include <TChain.h>
-#include <Base/Base-TypeDef.h>
-#include "Base/DataFormatConstants.h"
-#include "Base/FrameworkConstants.h"
-#include "Base/GeoTypes.h"
-#include "Base/larlite_base.h"
+#include "larlite/Base/Base-TypeDef.h"
+#include "larlite/Base/DataFormatConstants.h"
+#include "larlite/Base/FrameworkConstants.h"
+#include "larlite/Base/GeoTypes.h"
+#include "larlite/Base/larlite_base.h"
 #include "LArUtilException.h"
 #include "LArUtilConstants.h"
 #include "LArUtilConfig.h"
