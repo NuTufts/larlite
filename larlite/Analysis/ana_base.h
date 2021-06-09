@@ -15,8 +15,8 @@
 #ifndef LARLITE_ANA_BASE_H
 #define LARLITE_ANA_BASE_H
 
-#include "Base/larlite_base.h"
-#include "DataFormat/storage_manager.h"
+#include "larlite/Base/larlite_base.h"
+#include "larlite/DataFormat/storage_manager.h"
 //#include "DataFormat/DataFormat-TypeDef.h"
 
 namespace larlite {
