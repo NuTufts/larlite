@@ -143,6 +143,6 @@ fi
 echo
 echo "Finish configuration. To build, type:"
 echo "> cd \$LARLITE_BASEDIR/build"
-echo "> cmake ../"
+echo "> cmake -DUSE_PYTHON2:bool=ON ../ or > cmake -DUSE_PYTHON3:bool=ON ../"
 echo "> make install"
 echo
