@@ -18,7 +18,7 @@
 #include "Analysis/ana_base.h"
 #include "FhiclLite/PSet.h"
 
-#include "LEEPreCutAlgo.h"
+#include "algosrc/LEEPreCutAlgo.h"
 
 namespace larlite {
   /**
@@ -29,8 +29,10 @@ namespace larlite {
   
   public:
 
+    typedef enum { kBNB=0, kMC, kEXTBNB, kOVERLAY } FileType_t;
+
     /// Default constructor
-    LEEPreCut() : _tree(nullptr) { _name="LEEPreCut"; _fout=0;}
+    LEEPreCut() : _tree(nullptr) { _name="LEEPreCut"; _fout=0; }
 
     /// Default destructor
     virtual ~LEEPreCut(){}
@@ -52,8 +54,19 @@ namespace larlite {
     */
     virtual bool finalize();
 
+    /** Apply precuts */
+    bool apply( const larlite::event_ophit& ophit_v );
+
+    /** Set default parameters */
+    void setDefaults( larlite::LEEPreCut::FileType_t ft=kBNB );
+
   protected:
     TTree* _tree;
+
+  public:
+    void bindOutputVariablesToTree( TTree* ttree );
+    
+  protected:
 
     leeprecuts::LEEPreCutAlgo m_algo;
     std::string fOpHitProducer;
@@ -61,9 +74,13 @@ namespace larlite {
     int fWinStartTick;
     int fWinEndTick;
     int fVetoStartTick;
-    int fVetoEndTick;    
-    float fPEThreshold;    
+    int fVetoEndTick;
+
+    float fPEThreshold;
+    float fVetoPEThresh;
+    float fMaxVetoPE;    
     float fPMTMaxFrac;
+    bool  fUseVetoWin;    
     int _run;
     int _subrun;
     int _event;
@@ -72,6 +89,18 @@ namespace larlite {
     float _beamPE;
     float _vetoPE;
     float _maxfrac;
+    int   _beamFirstBin;
+    int   _vetoFirstBin;
+
+  public:
+    
+    int   passes()    { return _passed; };
+    float vetoPE()  { return _vetoPE; };
+    float beamPE()  { return _beamPE; };
+    float maxFrac() { return _maxfrac; }
+    int   beamFirstTick() { return _beamFirstBin; };    
+    int   vetoFirstTick() { return _vetoFirstBin; };
+    
 
   };
 }

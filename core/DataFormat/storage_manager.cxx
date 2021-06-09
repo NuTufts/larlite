@@ -46,6 +46,13 @@
 #include "chstatus.h"
 #include "mceventweight.h"
 #include "swtrigger.h"
+#include "larflow3dhit.h"
+#include "larflowcluster.h"
+#include "pixelmask.h"
+#include "crthit.h"
+#include "crttrack.h"
+#include "daqheadertimeuboone.h"
+
 namespace larlite {
 
   storage_manager* storage_manager::me=0;
@@ -632,7 +639,7 @@ namespace larlite {
       }
       
       if(_mode==kREAD) break;
-
+      
     case kWRITE:
       sprintf(_buf,"Opening a file in kWRITE mode: %s",_out_fname.c_str());
       print(msg::kNORMAL,__FUNCTION__,_buf);
@@ -1073,6 +1080,9 @@ namespace larlite {
     case data::kRawDigit:
       _ptr_data_array[type][name]=new event_rawdigit(name);
       break;
+    case data::kDAQHeaderTimeUBooNE:
+      _ptr_data_array[type][name]=new event_daqheadertimeuboone(name);
+      break;
     case data::kSimChannel:
       _ptr_data_array[type][name]=new event_simch(name);
       break;
@@ -1108,6 +1118,12 @@ namespace larlite {
       break;
     case data::kHit:
       _ptr_data_array[type][name]=new event_hit(name);
+      break;
+    case data::kCRTHit:
+      _ptr_data_array[type][name]=new event_crthit(name);
+      break;
+    case data::kCRTTrack:
+      _ptr_data_array[type][name]=new event_crttrack(name);
       break;
     case data::kCluster:
       _ptr_data_array[type][name]=new event_cluster(name);
@@ -1195,6 +1211,15 @@ namespace larlite {
       break;
     case data::kSWTrigger:
       _ptr_data_array[type][name]=new swtrigger(name);
+      break;
+    case data::kLArFlow3DHit:
+      _ptr_data_array[type][name]=new event_larflow3dhit(name);
+      break;
+    case data::kLArFlowCluster:
+      _ptr_data_array[type][name]=new event_larflowcluster(name);
+      break;
+    case data::kPixelMask:
+      _ptr_data_array[type][name]=new event_pixelmask(name);
       break;
     default:
       print(msg::kERROR,__FUNCTION__,Form("Event-data identifier not supported: %d",(int)type));
@@ -1343,7 +1368,7 @@ namespace larlite {
 	  
 	  if(!_out_ch[i].size()) continue;
 
-	  if(_use_write_bool && !_write_data_array[i].size()) continue;
+	  //if(_use_write_bool && !_write_data_array[i].size()) continue;
 
 	  for(auto& name_ptr : _out_ch[i]) {
 
@@ -1401,7 +1426,7 @@ namespace larlite {
 	  
 	  if(!_out_subrundata_ch[i].size()) continue;
 
-	  if(_use_write_bool && !_write_subrundata_array[i].size()) continue;
+	  //if(_use_write_bool && !_write_subrundata_array[i].size()) continue;
 
 	  for(auto& name_ptr : _out_subrundata_ch[i]) {
 
@@ -1495,6 +1520,79 @@ namespace larlite {
     
     return status;
   }
+
+  bool storage_manager::go_to( const unsigned int run_id, const unsigned int subrun_id, const unsigned int event_id ) {
+    // we cannot assume that the above indices are in order in a given tree (or chain)
+    // this makes smart random access routines impossible
+    // instead, we search sequentially through the index tree. however, we are usually coordinating between two files
+    // whose (rse) numbers are in the same order -- though one file might have entries missing.
+    // for that use, this isn't a disaster, as we start the sequential search from the last index and loop
+    //  back only once in the beginning to search
+    // for the coordination between truly randomly ordered files, the only thing we can do is compile an index map
+    //  as we go along, then using that to search after its been completely populated.
+    // also, we assume we have only one instance of r,s,e per file here.    
+    // we can do that in the future, maybe fill vector< struct index_t { run, subrun, event, instance, entry } >, sort it, then
+    //  freeze it after we've filled _nevents. Then we can use binary search. (not bothering to implement now)
+
+    bool status=true;
+    
+    if(_mode==kWRITE) {
+      Message::send(msg::kERROR,__FUNCTION__,
+		    "Cannot do look up with run_id, subrun_id, event_id in kWRITE mode.");
+      status=false;
+    }else if(!_nevents) {
+      Message::send(msg::kWARNING,__FUNCTION__,"Input file empty!");
+      status=false;
+    }
+
+    if ( run_id==data::kINVALID_UINT || subrun_id==data::kINVALID_UINT || event_id==data::kINVALID_UINT ) {
+      Message::send(msg::kERROR,__FUNCTION__,
+		    "Invalid run_id, subrun_id, event_id given.");
+      status = false;
+    }
+    
+    if (!status)
+      return status;
+    
+    size_t current_index = _index;    
+    size_t search_index  = current_index;
+    if ( _index==data::kINVALID_UINT )
+      search_index = 0;
+    if ( search_index>=1 ) search_index--;
+    
+    ULong_t bytes = 1;
+    bool found = false;
+    bool end_reached = false;
+    while ( (current_index!=search_index || !end_reached)  && !found ) {
+      bytes = _in_id_ch->GetEntry( search_index );
+      if ( bytes==0 ) {
+	// end of file, go to beginning
+	search_index = 0;
+        end_reached = true;
+      }
+      else {
+	if ( _run_id==run_id && _subrun_id==subrun_id && _event_id==event_id ) {
+	  // found
+	  found = true;
+          break;
+	}
+        search_index++;        
+      }
+    }
+    
+    // return result of search
+    if ( !found ) {
+      // reset the index tree state, return status = false;
+      _in_id_ch->GetEntry( current_index );
+      status = false;
+    }
+    else {
+      // found a matching entry
+      go_to( search_index, false );
+      status = true;
+    }
+    return status;
+  }
   
   bool storage_manager::next_event(bool store){
     
@@ -1532,6 +1630,7 @@ namespace larlite {
 
     return status;
   }
+
   
   bool storage_manager::read_event(){
     
@@ -1693,7 +1792,7 @@ namespace larlite {
       } // loop over all types
 
     }
-    
+
     _index++;
     _nevents_read++;
     return true;
@@ -1753,7 +1852,7 @@ namespace larlite {
 
     for(int i=0; i<data::kDATA_TYPE_MAX; ++i) {
 
-      if(_use_write_bool && !(_write_data_array[i].size())) continue;
+      //if(_use_write_bool && !(_write_data_array[i].size())) continue;
 
       for(auto& name_ptr : _out_ch[i]) {
       
@@ -1776,7 +1875,7 @@ namespace larlite {
 
       for(int i=0; i<data::kSUBRUNDATA_TYPE_MAX; ++i) {
 	
-	if(_use_write_bool && !(_write_subrundata_array[i].size())) continue;
+	//if(_use_write_bool && !(_write_subrundata_array[i].size())) continue;
 	
 	for(auto& name_ptr : _out_subrundata_ch[i]) {
 	  
@@ -1798,7 +1897,7 @@ namespace larlite {
 	
 	for(int i=0; i<data::kRUNDATA_TYPE_MAX; ++i) {
 	  
-	  if(_use_write_bool && !(_write_rundata_array[i].size())) continue;
+	  //if(_use_write_bool && !(_write_rundata_array[i].size())) continue;
 	  
 	  for(auto& name_ptr : _out_rundata_ch[i]) {
 	    
@@ -1820,8 +1919,9 @@ namespace larlite {
       _last_subrun_id = _subrun_id;
     }
 
-    if(_mode==kWRITE)
+    if(_mode==kWRITE) {
       _index++;
+    }
 
     _nevents_written++;
     //_event_wf->clear_data();

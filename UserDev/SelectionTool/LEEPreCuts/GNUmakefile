@@ -28,16 +28,15 @@ OSNAMEMODE      = $(OSNAME)
 include $(LARLITE_BASEDIR)/Makefile/Makefile.${OSNAME}
 
 # call the common GNUmakefile
-LDFLAGS += $(shell larlite-config --libs)
+LDFLAGS += $(shell larlite-config --libs) -lBasicTool_FhiclLite
 include $(LARLITE_BASEDIR)/Makefile/GNUmakefile.CORE
 #
-#algosrc/LEEPreCutAlgo.h:
-#	@echo '<<init submodule>>'
-#	@git submodule init
-#	@git submodule update
+algosrc/LEEPreCutAlgo.h:
+	@echo '<<init submodule>>'
+	@git submodule init
+	@git submodule update
 
-#%.o: algosrc/%.cxx
-#	@echo '<< compiling' $< '>>'
-#	@$(CXX) $(CXXFLAGS) $(LARLITE_BASIC_ROOTINC) $(INCFLAGS) -c $<
-
+%.o: algosrc/%.cxx
+	@echo '<< compiling' $< '>>'
+	@$(CXX) $(CXXFLAGS) $(LARLITE_BASIC_ROOTINC) $(INCFLAGS) -c $<
 
