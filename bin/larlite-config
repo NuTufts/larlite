@@ -9,10 +9,10 @@ while test $# -gt 0; do
 
   case $1 in
       --incdir)
-	  out="${LARLITE_COREDIR}"
+	  out="${LARLITE_BASEDIR}/build/installed/include"
 	  ;;
       --includes)
-	  out="-I${LARLITE_COREDIR} "
+	  out="-I${LARLITE_BASEDIR}/build/installed/include "
 	  ;;
       --libdir)
 	  out="{$LARLITE_LIBDIR}"

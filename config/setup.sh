@@ -43,7 +43,7 @@ fi
 LARLITE_OS=`uname -s`
 
 # Set path to sub directories
-export LARLITE_LIBDIR=$LARLITE_BASEDIR/lib
+export LARLITE_LIBDIR=$LARLITE_BASEDIR/build/installed/lib
 export LARLITE_COREDIR=$LARLITE_BASEDIR/larlite/core
 
 if [[ -z $USER_MODULE ]]; then
