@@ -1,6 +1,0 @@
-#ifndef RECOTOOL_INVESTIGATOR_SAMPLE_CXX
-#define RECOTOOL_INVESTIGATOR_SAMPLE_CXX
-
-#include "sample.h"
-
-#endif

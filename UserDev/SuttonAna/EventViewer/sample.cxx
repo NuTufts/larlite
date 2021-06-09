@@ -1,6 +1,0 @@
-#ifndef SUTTONANA_EVENTVIEWER_SAMPLE_CXX
-#define SUTTONANA_EVENTVIEWER_SAMPLE_CXX
-
-#include "sample.h"
-
-#endif
