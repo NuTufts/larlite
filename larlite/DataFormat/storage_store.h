@@ -20,7 +20,7 @@
 #define LARLITE_STORAGE_STORE_H
 
 #include <TObject.h>
-#include "DataFormat/storage_manager.h"
+#include "storage_manager.h"
 
 #include <string>
 #include <vector>

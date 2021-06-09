@@ -17,8 +17,8 @@
 #include <TFile.h>
 #include <TChain.h>
 #include <TError.h>
-#include "Base/larlite_base.h"
-#include "Base/UtilFunc.h"
+#include "larlite/Base/larlite_base.h"
+#include "larlite/Base/UtilFunc.h"
 #include "data_base.h"
 #include "event_ass.h"
 namespace larlite {

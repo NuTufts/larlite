@@ -15,7 +15,7 @@
 #ifndef LARLITE_DATA_BASE_H
 #define LARLITE_DATA_BASE_H
 
-#include "Base/DataFormatConstants.h"
+#include "larlite/Base/DataFormatConstants.h"
 #include "larlite_dataformat_utils.h"
 #include <TString.h>
 #include "DataFormatException.h"

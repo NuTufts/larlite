@@ -19,7 +19,7 @@
 #include <iosfwd>
 #include <iostream>
 #include <iomanip>
-#include "Base/AnalysisConstants.h"
+#include "larlite/Base/AnalysisConstants.h"
 #include "data_base.h"
 
 namespace larlite {

@@ -4,8 +4,8 @@
 #include "roi.h"
 #include <iostream>
 
-#include "LArUtil/GeometryHelper.h"
-#include "LArUtil/Geometry.h"
+#include "larlite/LArUtil/GeometryHelper.h"
+#include "larlite/LArUtil/Geometry.h"
 
 namespace larlite{
 

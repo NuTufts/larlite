@@ -1,4 +1,4 @@
-#include "DataFormat/storage_store.h"
+#include "storage_store.h"
 
 ClassImp(larlite::storage_store);
 

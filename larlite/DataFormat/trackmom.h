@@ -16,8 +16,8 @@
 #define LARLITE_TRACKMOM_H
 
 #include "data_base.h"
-#include "Base/GeoTypes.h"
-#include "Base/RecoTypes.h"
+#include "larlite/Base/GeoTypes.h"
+#include "larlite/Base/RecoTypes.h"
 #include <TVector3.h>
 namespace larlite{
   /**

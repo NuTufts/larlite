@@ -11,7 +11,7 @@
 //#include "larsim/Simulation/AuxDetSimChannel.h"
 //#include "AuxDetSimChannel.h"
 #include "auxsimch.h"
-#include "Base/DataFormatConstants.h"
+#include "larlite/Base/DataFormatConstants.h"
 // C/C++ standard library
 #include <limits> // std::numeric_limits<>
 #include <stdexcept>

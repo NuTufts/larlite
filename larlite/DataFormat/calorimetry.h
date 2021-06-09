@@ -16,7 +16,7 @@
 #define LARLITE_CALORIMETRY_H
 
 #include "data_base.h"
-#include "Base/GeoTypes.h"
+#include "larlite/Base/GeoTypes.h"
 #include <TVector3.h>
 namespace larlite{
   /**

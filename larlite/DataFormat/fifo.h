@@ -16,8 +16,8 @@
 #define LARLITE_FIFO_H
 
 #include "data_base.h"
-#include "Base/MCConstants.h"
-#include "Base/FEMConstants.h"
+#include "larlite/Base/MCConstants.h"
+#include "larlite/Base/FEMConstants.h"
 #include <vector>
 namespace larlite {
 

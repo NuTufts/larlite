@@ -17,7 +17,7 @@
 
 #include "mctrajectory.h"
 #include <TVector3.h>
-#include "Base/MCConstants.h"
+#include "larlite/Base/MCConstants.h"
 namespace larlite {
   /**
      \class mcshower

@@ -16,7 +16,7 @@
 
 // LArSoft libraries
 //#include "larcore/SimpleTypesAndConstants/geo_types.h"
-#include "Base/GeoTypes.h"
+#include "larlite/Base/GeoTypes.h"
 
 #include "data_base.h"
 

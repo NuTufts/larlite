@@ -16,9 +16,9 @@
 #define LARLITE_HIT_H
 
 #include "data_base.h"
-#include "Base/GeoConstants.h"
-#include "Base/GeoTypes.h"
-#include "Base/RawConstants.h"
+#include "larlite/Base/GeoConstants.h"
+#include "larlite/Base/GeoTypes.h"
+#include "larlite/Base/RawConstants.h"
 #include <vector>
 namespace larlite{
   /**

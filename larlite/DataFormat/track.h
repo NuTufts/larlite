@@ -16,8 +16,8 @@
 #define LARLITE_TRACK_H
 
 #include "data_base.h"
-#include "Base/GeoTypes.h"
-#include "Base/GeoConstants.h"
+#include "larlite/Base/GeoTypes.h"
+#include "larlite/Base/GeoConstants.h"
 #include "TVector3.h"
 #include "TMatrixD.h"
 

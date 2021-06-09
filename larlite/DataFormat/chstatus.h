@@ -16,9 +16,9 @@
 #define LARLITE_CHSTATUS_H
 
 #include <vector>
-#include "Base/AnalysisConstants.h"
-#include "Base/GeoTypes.h"
-#include "Base/DetectorStatusTypes.h"
+#include "larlite/Base/AnalysisConstants.h"
+#include "larlite/Base/GeoTypes.h"
+#include "larlite/Base/DetectorStatusTypes.h"
 #include "data_base.h"
 
 namespace larlite {

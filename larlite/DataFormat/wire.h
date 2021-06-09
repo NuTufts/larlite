@@ -22,10 +22,10 @@
 //#include "SimpleTypesAndConstants/RawTypes.h" // raw::ChannelID_t
 //#include "SimpleTypesAndConstants/geo_types.h"
 //#include "Utilities/sparse_vector.h"
-//#include "Base/RawTypes.h"
-#include "Base/RawConstants.h"
-#include "Base/GeoTypes.h"
-#include "Base/GeoConstants.h"
+//#include "larlite/Base/RawTypes.h"
+#include "larlite/Base/RawConstants.h"
+#include "larlite/Base/GeoTypes.h"
+#include "larlite/Base/GeoConstants.h"
 #include "sparse_vector.h"
 
 // prototype declaration

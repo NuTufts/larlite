@@ -1,3 +1,6 @@
+#ifndef __LARLITE_DATAFORMAT_MINOS_H__
+#define __LARLITE_DATAFORMAT_MINOS_H__
+
 ////////////////////////////////////////////////////////////////////
 //
 // Definition of track data from minos
@@ -7,7 +10,7 @@
 //
 ////////////////////////////////////////////////////////////////////
 #include "data_base.h"
-#include "Base/GeoConstants.h"
+#include "larlite/Base/GeoConstants.h"
 #include <vector>
 
 ///ArgoNeuT specific analysis
@@ -125,3 +128,4 @@ namespace larlite{
 }
 
 ////////////////////////////////////////////////////////////////////////
+#endif

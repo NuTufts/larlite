@@ -16,8 +16,8 @@
 #define LARLITE_RAWDIGIT_H
 
 #include "data_base.h"
-#include "Base/RawConstants.h"
-#include "Base/GeoTypes.h"
+#include "larlite/Base/RawConstants.h"
+#include "larlite/Base/GeoTypes.h"
 #include <vector>
 #include <exception>
 namespace larlite{

@@ -3,7 +3,7 @@
 
 #include <exception>
 #include "track.h"
-#include "LArUtil/Geometry.h"
+#include "larlite/LArUtil/Geometry.h"
 namespace larlite {
 
   //########################################

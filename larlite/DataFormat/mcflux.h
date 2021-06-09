@@ -18,7 +18,7 @@
 #include "data_base.h"
 #include <vector>
 #include <cmath>
-#include "Base/MCConstants.h"
+#include "larlite/Base/MCConstants.h"
 namespace larlite{
 
   /**

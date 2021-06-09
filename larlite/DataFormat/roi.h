@@ -11,7 +11,7 @@
 #define LARLITE_ROI_H
 
 #include "TTree.h"
-#include "Base/MCConstants.h" 
+#include "larlite/Base/MCConstants.h" 
 #include <vector>
 #include <utility>
 #include "data_base.h"
