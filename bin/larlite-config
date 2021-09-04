@@ -18,7 +18,7 @@ while test $# -gt 0; do
 	  out="{$LARLITE_LIBDIR}"
 	  ;;
       --libs)
-	  out="-L${LARLITE_LIBDIR} -lLArLite_Analysis -lLArLite_LArUtil -lLArLite_DataFormat -lLArLite_Base "
+	  out="-L${LARLITE_LIBDIR} -llarlite_Analysis -llarlite_LArUtil -llarlite_DataFormat -llarlite_Base "
 	  ;;
       --python)
 	  out="${LARLITE_PYTHON}"
