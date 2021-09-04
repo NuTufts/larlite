@@ -44,6 +44,7 @@ LARLITE_OS=`uname -s`
 
 # Set path to sub directories
 export LARLITE_LIBDIR=$LARLITE_BASEDIR/build/installed/lib
+export LARLITE_INCDIR=$LARLITE_BASEDIR/build/installed/include
 export LARLITE_COREDIR=$LARLITE_BASEDIR/larlite/core
 
 if [[ -z $USER_MODULE ]]; then

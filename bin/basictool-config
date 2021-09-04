@@ -9,10 +9,11 @@ while test $# -gt 0; do
 
   case $1 in
       --includes)
-	  out="-I${LARLITE_USERDEVDIR}/BasicTool "
+	  out="-I${LARLITE_BASEDIR}/build/installed/include/larlite/BasicTool "
 	  ;;
       --libs)
-	  out="-L${LARLITE_LIBDIR} -lBasicTool_LArPyBackend -lBasicTool_EMShowerTools -lBasicTool_GeoAlgo -lBasicTool_FhiclLite -BasicTool_TreeGraph -lBasicTool_TwoDimTools"
+	  #out="-L${LARLITE_LIBDIR} -lBasicTool_LArPyBackend -lBasicTool_EMShowerTools -lBasicTool_GeoAlgo -lBasicTool_FhiclLite -BasicTool_TreeGraph -lBasicTool_TwoDimTools"
+	  out="-L${LARLITE_LIBDIR} -llarlite_BasicTool_FhiclLite"
 	  ;;
       --help)
 	  ### Print a help message
