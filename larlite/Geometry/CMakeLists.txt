@@ -1,38 +1,24 @@
-set(MODULE_NAME Base )
+set(MODULE_NAME Geometry )
 
 # DEFINE THE TARGET
 set( LIBNAME larlite_${MODULE_NAME} )
 
-set( HEADERS Base-TypeDef.h
-  AnalysisConstants.h
-  DataFormatConstants.h
-  DetectorStatusTypes.h
-  FEMConstants.h
-  FrameworkConstants.h
-  GeoConstants.h
-  GeoTypes.h
-  MCConstants.h
-  PhysicalConstants.h  
-  RawConstants.h
-  RecoTypes.h
-  UtilFunc.h
-  larlite_base.h
-  geo_vectors.h
-  messenger.h
-  span.h
-  )
+set( HEADERS BoxBoundedGeo.h
+  LineClosestPoint.h
+  WireGeo.h
+  geo_vectors_utils.h
+ )
 
-add_library( ${LIBNAME} SHARED DataFormatConstants.cxx
-  UtilFunc.cxx
-  GeoTypes.cxx
-  larlite_base.cxx
-  messenger.cxx )
+add_library( ${LIBNAME} SHARED
+  BoxBoundedGeo.cxx
+  WireGeo.cxx
+  )
 
 # create a property to hold our headers
 set_target_properties(${LIBNAME} PROPERTIES PUBLIC_HEADER "${HEADERS}")
 
 # DEFINE SOME VARS THAT MIGHT BE USEFUL FOR SUBMODULES
-#message("msg[${MODULE_NAME}]: for debug")
+#message("msg[${MODULE_NAME}: for debug")
 
 get_target_property(ALL_HEADERS ${LIBNAME} PUBLIC_HEADER)
 
