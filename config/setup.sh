@@ -125,7 +125,18 @@ fi
 
 
 export LD_LIBRARY_PATH=$LARLITE_LIBDIR:$LD_LIBRARY_PATH
+
+# PYTHON
 export PYTHONPATH=$LARLITE_BASEDIR/python:$PYTHONPATH
+let PYTHON_VERSION=`python -V 2>&1 | awk '{ print $2 }' | sed 's/\./\ /g' | awk '{ print $1 }'`
+if [ $PYTHON_VERSION=3 ]; then
+    echo "LARLITE USING PYTHON3"
+    export LARLITE_USE_PYTHON3=1
+else
+    echo "LARLITE USING PYTHON2"    
+    export LARLITE_USE_PYTHON2=1
+fi
+
 if [ $LARLITE_OS = 'Darwin' ]; then
     export DYLD_LIBRARY_PATH=$LARLITE_LIBDIR:$DYLD_LIBRARY_PATH
 fi
@@ -144,6 +155,6 @@ fi
 echo
 echo "Finish configuration. To build, type:"
 echo "> cd \$LARLITE_BASEDIR/build"
-echo "> cmake -DUSE_PYTHON2:bool=ON ../ or > cmake -DUSE_PYTHON3:bool=ON ../"
+echo "> cmake -DLARLITE_USE_PYTHON2:bool=ON ../ or > cmake -DLARLITE_USE_PYTHON3:bool=ON ../"
 echo "> make install"
 echo

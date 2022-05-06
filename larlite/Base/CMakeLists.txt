@@ -16,11 +16,13 @@ set( HEADERS Base-TypeDef.h
   RecoTypes.h
   UtilFunc.h
   larlite_base.h
+  geo_vectors.h
   messenger.h
   )
 
 add_library( ${LIBNAME} SHARED DataFormatConstants.cxx
   UtilFunc.cxx
+  GeoTypes.cxx
   larlite_base.cxx
   messenger.cxx )
 
