@@ -14,6 +14,10 @@
 #pragma link C++ class larlite::geo::PlaneGeo+;
 #pragma link C++ class larlite::geo::TPCGeo+;
 #pragma link C++ class larlite::geo::CryoGeo+;
+#pragma link C++ class std::vector<larlite::geo::WireGeo>+;
+#pragma link C++ class std::vector<larlite::geo::PlaneGeo>+;
+#pragma link C++ class std::vector<larlite::geo::TPCGeo>+;
+#pragma link C++ class std::vector<larlite::geo::CryoGeo>+;
 //ADD_NEW_CLASS ... do not change this line
 #endif
 

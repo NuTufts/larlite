@@ -13,10 +13,12 @@ namespace geo {
   public:
 
     PlaneGeo();
-    PlaneGeo( int plane_id, int cryo_id, larlite::geo::View_t view, larlite::geo::SigType_t sigtype );
+    PlaneGeo( int plane_id, int tpc_id, int cryo_id, 
+	      larlite::geo::View_t view, larlite::geo::SigType_t sigtype );
     virtual ~PlaneGeo() {};
 
     int planeid;
+    int tpcid;
     int cryoid;
     larlite::geo::View_t    view_type;
     larlite::geo::SigType_t signal_type;
