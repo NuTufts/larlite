@@ -4,6 +4,7 @@ set(MODULE_NAME Geometry )
 set( LIBNAME larlite_${MODULE_NAME} )
 
 set( HEADERS WireGeo.h
+  OpDetGeo.h
   PlaneGeo.h
   TPCGeo.h
   CryoGeo.h
@@ -12,6 +13,7 @@ set( HEADERS WireGeo.h
 
 add_library( ${LIBNAME} SHARED
   WireGeo.cxx
+  OpDetGeo.cxx
   PlaneGeo.cxx
   TPCGeo.cxx
   CryoGeo.cxx

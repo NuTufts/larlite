@@ -4,6 +4,7 @@
 #include <vector>
 #include "TVector3.h"
 #include "larlite/Geometry/TPCGeo.h"
+#include "larlite/Geometry/OpDetGeo.h"
 
 namespace larlite {
 namespace geo {
@@ -20,6 +21,7 @@ namespace geo {
     std::vector<double> fHalfLengths;
     std::vector<TVector3> fBounds;
     std::vector<TPCGeo> tpc_v;
+    std::vector<OpDetGeo> opdet_v;
     
   };
   

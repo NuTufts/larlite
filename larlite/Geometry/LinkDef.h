@@ -10,10 +10,12 @@
 #pragma link off all functions;
 
 #pragma link C++ namespace larlite::geo;
+#pragma link C++ class larlite::geo::OpDetGeo+;
 #pragma link C++ class larlite::geo::WireGeo+;
 #pragma link C++ class larlite::geo::PlaneGeo+;
 #pragma link C++ class larlite::geo::TPCGeo+;
 #pragma link C++ class larlite::geo::CryoGeo+;
+#pragma link C++ class std::vector<larlite::geo::OpDetGeo>+;
 #pragma link C++ class std::vector<larlite::geo::WireGeo>+;
 #pragma link C++ class std::vector<larlite::geo::PlaneGeo>+;
 #pragma link C++ class std::vector<larlite::geo::TPCGeo>+;
