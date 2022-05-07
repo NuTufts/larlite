@@ -3,15 +3,18 @@ set(MODULE_NAME Geometry )
 # DEFINE THE TARGET
 set( LIBNAME larlite_${MODULE_NAME} )
 
-set( HEADERS BoxBoundedGeo.h
-  LineClosestPoint.h
-  WireGeo.h
+set( HEADERS WireGeo.h
+  PlaneGeo.h
+  TPCGeo.h
+  CryoGeo.h
   geo_vectors_utils.h
  )
 
 add_library( ${LIBNAME} SHARED
-  BoxBoundedGeo.cxx
   WireGeo.cxx
+  PlaneGeo.cxx
+  TPCGeo.cxx
+  CryoGeo.cxx
   )
 
 # create a property to hold our headers

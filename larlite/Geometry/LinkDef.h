@@ -10,10 +10,10 @@
 #pragma link off all functions;
 
 #pragma link C++ namespace larlite::geo;
-
-#pragma link C++ struct larlite::geo::WireID+;
 #pragma link C++ class larlite::geo::WireGeo+;
-#pragma link C++ class larlite::geo::BoundingBoxGeo+; 
+#pragma link C++ class larlite::geo::PlaneGeo+;
+#pragma link C++ class larlite::geo::TPCGeo+;
+#pragma link C++ class larlite::geo::CryoGeo+;
 //ADD_NEW_CLASS ... do not change this line
 #endif
 
