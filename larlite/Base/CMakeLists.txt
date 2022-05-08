@@ -20,7 +20,6 @@ set( HEADERS Base-TypeDef.h
   larlite_base.h
   geo_vectors.h
   messenger.h
-  span.h
   )
 
 add_library( ${LIBNAME} SHARED DataFormatConstants.cxx

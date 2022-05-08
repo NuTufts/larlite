@@ -8,7 +8,6 @@ set( HEADERS WireGeo.h
   PlaneGeo.h
   TPCGeo.h
   CryoGeo.h
-  geo_vectors_utils.h
  )
 
 add_library( ${LIBNAME} SHARED
