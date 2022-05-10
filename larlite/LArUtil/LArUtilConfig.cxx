@@ -15,6 +15,7 @@ namespace larutil {
 
     case larlite::geo::kArgoNeuT: 
     case larlite::geo::kMicroBooNE:
+    case larlite::geo::kICARUS:      
       _detector = type;
       break;
     case larlite::geo::kBo:
@@ -24,7 +25,6 @@ namespace larutil {
     case larlite::geo::kLBNE34kt:
     case larlite::geo::kCSU40L:
     case larlite::geo::kLArIAT:
-    case larlite::geo::kICARUS:
     case larlite::geo::kDetIdMax:
       larlite::Message::send(larlite::msg::kERROR,__FUNCTION__,
 			      Form("Detector type: %d not supported!",type));

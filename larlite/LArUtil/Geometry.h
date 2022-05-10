@@ -20,6 +20,7 @@
 
 #include "larlite/Base/GeoConstants.h"
 #include "LArUtilBase.h"
+#include "LArUtilConfig.h"
 #include "CryoGeo.h"
 
 namespace larlite {
@@ -45,10 +46,13 @@ namespace larutil {
     /// Singleton getter
     static const Geometry* GetME( larlite::geo::DetId_t det=larlite::geo::kMicroBooNE )
     {
+
+      ::larutil::LArUtilConfig::SetDetector( det );
+      
       if ( _detector_geo_v.size()<larlite::geo::kDetIdMax+1 ) {
 	_detector_geo_v.resize(larlite::geo::kDetIdMax+1,nullptr);
       }
-
+      
       if (!_detector_geo_v.at((int)det)) {
 	_detector_geo_v.at((int)det) = new Geometry(det);
       }

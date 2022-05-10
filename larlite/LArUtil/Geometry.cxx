@@ -30,9 +30,12 @@ namespace larutil {
     std::string filename = Form("%s/LArUtil/dat/%s",
 				getenv("LARLITE_COREDIR"),
 				::larutil::kGEO_DATA_FILENAME[::larutil::LArUtilConfig::Detector()].c_str());
+
+    print(larlite::msg::kNORMAL, __FUNCTION__,
+	  Form("Loading geo data for DetID=%d ...\n file=%s ", ::larutil::LArUtilConfig::Detector(), filename.c_str()));
     
     TFile rfile = TFile(filename.c_str());
-    std::vector< larlite::larutil::CryoGeo >* _p_cryo_v = nullptr;
+    std::vector< larlite::larutil::CryoGeo >* _p_cryo_v = 0;
     TTree* geodata = (TTree*)rfile.Get("geodata");
     geodata->SetBranchAddress( "cryo_v", &_p_cryo_v );
     geodata->GetEntry(0);
@@ -40,9 +43,8 @@ namespace larutil {
     fCryo_v = *_p_cryo_v; // a copy
     
     rfile.Close();
-    print(larlite::msg::kNORMAL, __FUNCTION__,
-	  Form("Loading geo data for DetID=%d ...\n file=%s ", ::larutil::LArUtilConfig::Detector(), filename.c_str()));
 
+    print(larlite::msg::kNORMAL, __FUNCTION__," geometry loaded successfully.");
     return true;
   }
       
