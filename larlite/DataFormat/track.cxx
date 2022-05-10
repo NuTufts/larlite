@@ -128,7 +128,7 @@ namespace larlite {
     double length = 0.;
 
     //art::ServiceHandle<geo::Geometry> geo;
-    auto geo = ::larutil::Geometry::GetME();
+    auto geo = ::larlite::larutil::Geometry::GetME();
     double angleToVert = 0.;
     for(unsigned int i = 0; i < geo->Nplanes(); ++i){
       if(geo->PlaneToView(i) == view){
@@ -182,7 +182,7 @@ namespace larlite {
       throw std::exception();
     }
     //art::ServiceHandle<geo::Geometry> geo;
-    auto geo = ::larutil::Geometry::GetME();
+    auto geo = ::larlite::larutil::Geometry::GetME();
     //int TPC  = 0;
     //int Cryo = 0;
     //double Position[3];

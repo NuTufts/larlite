@@ -11,13 +11,15 @@
 /** \addtogroup LArUtil
 
     @{*/
-#ifndef INVALIDWIREEXCEPTION_H
-#define INVALIDWIREEXCEPTION_H
+#ifndef LARLITE_LARUTIL_INVALIDWIREEXCEPTION_H
+#define LARLITE_LARUTIL_INVALIDWIREEXCEPTION_H
 
 #include <iostream>
 #include <exception>
 
+namespace larlite {
 namespace larutil {
+  
   /**
      \class InvalidWireError
   */
@@ -44,6 +46,7 @@ namespace larutil {
     std::string _msg;
   };
 
+}
 }
 #endif
 /** @} */ // end of doxygen group 

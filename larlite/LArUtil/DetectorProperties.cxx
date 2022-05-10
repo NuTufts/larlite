@@ -56,7 +56,7 @@ namespace larutil {
     if(!(ch->GetBranch("fXTicksOffsets")))     error_msg += "      fXTicksOffsets\n";
     if(!error_msg.empty()) {
 
-      throw LArUtilException(Form("Missing following TBranches...\n%s",error_msg.c_str()));
+      throw larlite::larutil::LArUtilException(Form("Missing following TBranches...\n%s",error_msg.c_str()));
 
       return false;
     }

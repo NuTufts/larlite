@@ -7,6 +7,20 @@
 namespace larutil{
 
   /// Geometry default data file
+  const std::string kGEO_DATA_FILENAME[larlite::geo::kDetIdMax] = 
+    { "",                        // Bo
+      "larutil_argoneut.root",   // ArgoNeuT
+      "larutil_microboone.root", // MicroBoone
+      "",                        // LBNE 10kt 
+      "",                        // JPARC 250 L
+      "",                        // 35t prototype
+      "",                        // LBNE 34kt
+      "",                        // CSU 40 L
+      "",                        // LArIAT
+      "icarus_larlite_geodata.root" // ICARUS T600
+    };
+
+  // LAr Properties
   const std::string kUTIL_DATA_FILENAME[larlite::geo::kDetIdMax] = 
     { "",                        // Bo
       "larutil_argoneut.root",   // ArgoNeuT
@@ -19,7 +33,7 @@ namespace larutil{
       "",                        // LArIAT
       ""                         // ICARUS T600
     };
-
+  
   const std::string kTREENAME_GEOMETRY = "scanner/Geometry";
   const std::string kTREENAME_DETECTORPROPERTIES = "scanner/DetectorProperties";
   const std::string kTREENAME_LARPROPERTIES = "scanner/LArProperties";

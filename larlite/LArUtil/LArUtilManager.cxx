@@ -24,12 +24,12 @@ namespace larutil {
 
     // Geometry
     larlite::Message::send(larlite::msg::kNORMAL,__FUNCTION__,"Reconfiguring Geometry");
-    Geometry* geom = (Geometry*)(Geometry::GetME(false));
+    larlite::larutil::Geometry* geom = (larlite::larutil::Geometry*)(larlite::larutil::Geometry::GetME(LArUtilConfig::Detector()));
     geom->SetFileName(Form("%s/LArUtil/dat/%s",
 			   getenv("LARLITE_COREDIR"),
 			   kUTIL_DATA_FILENAME[LArUtilConfig::Detector()].c_str()));
     geom->SetTreeName(kTREENAME_GEOMETRY);
-    status = status && geom->LoadData(true);
+    status = status && geom->LoadData(LArUtilConfig::Detector(),true);
 
     // LArProperties
     larlite::Message::send(larlite::msg::kNORMAL,__FUNCTION__,"Reconfiguring LArProperties");

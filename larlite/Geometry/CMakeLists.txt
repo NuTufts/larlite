@@ -8,6 +8,8 @@ set( HEADERS WireGeo.h
   PlaneGeo.h
   TPCGeo.h
   CryoGeo.h
+  InvalidWireError.h
+  Geometry.h
  )
 
 add_library( ${LIBNAME} SHARED
@@ -16,6 +18,8 @@ add_library( ${LIBNAME} SHARED
   PlaneGeo.cxx
   TPCGeo.cxx
   CryoGeo.cxx
+  InvalidWireError.cxx  
+  Geometry.cxx
   )
 
 # create a property to hold our headers

@@ -11,37 +11,50 @@
 /** \addtogroup LArUtil
 
     @{*/
-#ifndef LARLITE_GEOMETRY_H
-#define LARLITE_GEOMETRY_H
+#ifndef LARLITE_LARUTIL_GEOMETRY_H
+#define LARLITE_LARUTIL_GEOMETRY_H
 
-#include "LArUtilBase.h"
 #include <TMath.h>
 #include <TVector3.h>
 #include <set>
 
-namespace larutil {
-/**
-   \class Geometry
-*/
-class Geometry : public LArUtilBase {
+#include "larlite/Base/GeoConstants.h"
+#include "LArUtilBase.h"
+#include "CryoGeo.h"
 
-private:
+namespace larlite {
+namespace larutil {  
+  /**
+     \class Geometry
+  */
+  class Geometry : public ::larutil::LArUtilBase {
 
+  private:
+    
     /// Singleton constructor
-    Geometry(bool default_load = true);
-
+    Geometry( larlite::geo::DetId_t det=larlite::geo::kMicroBooNE, bool force_reload=false );
+    
     /// Default destructor
     virtual ~Geometry() {};
+    
+    static Geometry* _me;  ///< current pointer
+    static std::vector<Geometry*> _detector_geo_v;
 
-    static Geometry* _me;
-
-public:
+  public:
 
     /// Singleton getter
-    static const Geometry* GetME(bool default_load = true)
+    static const Geometry* GetME( larlite::geo::DetId_t det=larlite::geo::kMicroBooNE )
     {
-        if (!_me) _me = new Geometry(default_load);
-        return _me;
+      if ( _detector_geo_v.size()<larlite::geo::kDetIdMax+1 ) {
+	_detector_geo_v.resize(larlite::geo::kDetIdMax+1,nullptr);
+      }
+
+      if (!_detector_geo_v.at((int)det)) {
+	_detector_geo_v.at((int)det) = new Geometry(det);
+      }
+      
+      _me = _detector_geo_v.at((int)det);
+      return _me;
     }
 
     //--- LArSoft Implementation ---//
@@ -86,7 +99,7 @@ public:
 
     /// return vector of possible views in the detector
     std::set<larlite::geo::View_t>  const Views() const;
-
+    
     /// convert plane, wire to channel
     UInt_t   PlaneWireToChannel(const UInt_t plane,
                                 const UInt_t wire) const;
@@ -165,6 +178,8 @@ public:
     const std::vector<Double_t>& GetFirstWireProj() const { return fFirstWireProj; };
 
 private:
+
+    
 
     Double_t fDetLength;
     Double_t fDetHalfWidth;
@@ -262,7 +277,7 @@ public:
 
     void PlaneOriginVtx(UChar_t plane, Double_t *vtx) const;
 
-    virtual bool LoadData(bool force_reload = false);
+    virtual bool LoadData( larlite::geo::DetId_t detid, bool force_reload = false);
 
 protected:
 
@@ -301,8 +316,12 @@ private:
     std::vector<Double_t> fOrthVectorsY;
     std::vector<Double_t> fOrthVectorsZ;
     std::vector<Double_t> fFirstWireProj;
+
+    std::vector<::larlite::larutil::CryoGeo> fCryo_v;
 };
-}
+
+}//namespace geo
+}//namespace larlite
 
 #endif
 /** @} */ // end of doxygen group

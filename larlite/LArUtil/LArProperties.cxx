@@ -140,7 +140,7 @@ namespace larutil {
 
     if(!error_msg.empty()) {
 
-      throw LArUtilException(Form("Missing following TBranches...\n%s",error_msg.c_str()));
+      throw larlite::larutil::LArUtilException(Form("Missing following TBranches...\n%s",error_msg.c_str()));
 
       return false;
     }
@@ -295,7 +295,7 @@ namespace larutil {
   Double_t LArProperties::Efield(UInt_t planegap) const
   {
     if(planegap >= fEfield.size())
-      throw LArUtilException("requesting Electric field in a plane gap that is not defined");
+      throw larlite::larutil::LArUtilException("requesting Electric field in a plane gap that is not defined");
     
     return fEfield.at(planegap);
   }
@@ -564,7 +564,7 @@ namespace larutil {
       msg << "The vectors specifying the fast scintillation spectrum are "
 	  << " different sizes - " << fFastScintSpectrum.size()
 	  << " " << fFastScintEnergies.size();
-      throw LArUtilException(msg.str());
+      throw larlite::larutil::LArUtilException(msg.str());
     }
     
     std::map<Double_t, Double_t> ToReturn;
@@ -582,7 +582,7 @@ namespace larutil {
       msg << "The vectors specifying the slow scintillation spectrum are "
 	  << " different sizes - " << fFastScintSpectrum.size()
 	  << " " << fFastScintEnergies.size();
-      throw LArUtilException(msg.str());
+      throw larlite::larutil::LArUtilException(msg.str());
     }
     
     std::map<Double_t, Double_t> ToReturn;
@@ -600,7 +600,7 @@ namespace larutil {
       msg << "The vectors specifying the RIndex spectrum are "
 	  << " different sizes - " << fRIndexSpectrum.size()
 	  << " " << fRIndexEnergies.size();
-      throw LArUtilException(msg.str());
+      throw larlite::larutil::LArUtilException(msg.str());
     }
     
     std::map<Double_t, Double_t> ToReturn;
@@ -619,7 +619,7 @@ namespace larutil {
       msg << "The vectors specifying the Abs Length spectrum are "
 	  << " different sizes - " << fAbsLengthSpectrum.size()
 	  << " " << fAbsLengthEnergies.size();
-      throw LArUtilException(msg.str());
+      throw larlite::larutil::LArUtilException(msg.str());
     }
     
     std::map<Double_t, Double_t> ToReturn;
@@ -637,7 +637,7 @@ namespace larutil {
       msg << "The vectors specifying the rayleigh spectrum are "
 	  << " different sizes - " << fRayleighSpectrum.size()
 	  << " " << fRayleighEnergies.size();
-      throw LArUtilException(msg.str());
+      throw larlite::larutil::LArUtilException(msg.str());
     }
     
     std::map<Double_t, Double_t> ToReturn;
@@ -656,13 +656,13 @@ namespace larutil {
       std::ostringstream msg;
 	msg << "The vectors specifying the surface reflectivities "
 	    << "do not have consistent sizes";
-	throw LArUtilException(msg.str());
+	throw larlite::larutil::LArUtilException(msg.str());
     }
     for(size_t i=0; i!=fReflectiveSurfaceNames.size(); ++i){
       if(fReflectiveSurfaceEnergies.size()!=fReflectiveSurfaceReflectances.at(i).size()){
 	std::ostringstream msg;
 	msg << "The vectors specifying the surface reflectivities do not have consistent sizes";
-	throw LArUtilException(msg.str());
+	throw larlite::larutil::LArUtilException(msg.str());
       }
     }
     for(size_t iName=0; iName!=fReflectiveSurfaceNames.size(); ++iName)
@@ -681,13 +681,13 @@ namespace larutil {
     if(fReflectiveSurfaceNames.size()!=fReflectiveSurfaceDiffuseFractions.size()){
       std::ostringstream msg;
       msg << "The vectors specifying the surface reflectivities do not have consistent sizes";
-      LArUtilException(msg.str());
+      larlite::larutil::LArUtilException(msg.str());
     }
     for(size_t i=0; i!=fReflectiveSurfaceNames.size(); ++i){
       if(fReflectiveSurfaceEnergies.size()!=fReflectiveSurfaceDiffuseFractions.at(i).size()){
 	std::ostringstream msg;
 	msg << "The vectors specifying the surface reflectivities do not have consistent sizes";
-	throw LArUtilException(msg.str());
+	throw larlite::larutil::LArUtilException(msg.str());
       }
     }
     for(size_t iName=0; iName!=fReflectiveSurfaceNames.size(); ++iName)

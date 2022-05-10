@@ -35,7 +35,7 @@ namespace larutil {
 	fFramePeriod(frame_period),
 	fFrequency(frequency)
     { 
-      if( fFrequency <= 0 ) throw larutil::LArUtilException("Negative frequency is prohibited!"); 
+      if( fFrequency <= 0 ) throw larlite::larutil::LArUtilException("Negative frequency is prohibited!"); 
     }
     
     /// Default destructor

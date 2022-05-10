@@ -49,11 +49,11 @@ namespace larlite{
     
     std::vector<double> xyz = {vtx.X(), vtx.Y(), vtx.Z()};
 
-    double wire2cm  = larutil::GeometryHelper::GetME()->WireToCm();
-    double time2cm  = larutil::GeometryHelper::GetME()->TimeToCm();
+    double wire2cm  = ::larutil::GeometryHelper::GetME()->WireToCm();
+    double time2cm  = ::larutil::GeometryHelper::GetME()->TimeToCm();
 
-    auto geoH = larutil::GeometryHelper::GetME();
-    auto geom = larutil::Geometry::GetME();
+    auto geoH = ::larutil::GeometryHelper::GetME();
+    auto geom = larlite::larutil::Geometry::GetME();
     for (size_t pl = 0; pl < 3; pl++){
 
       // get the time-coordinate of the wires on this plane

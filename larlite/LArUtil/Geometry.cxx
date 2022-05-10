@@ -1,81 +1,93 @@
-#ifndef LARLITE_GEOMETRY_CXX
-#define LARLITE_GEOMETRY_CXX
+#ifndef LARLITE_LARUTIL_GEOMETRY_CXX
+#define LARLITE_LARUTIL_GEOMETRY_CXX
 
 #include "Geometry.h"
+
+#include "TFile.h"
+
 #include "InvalidWireError.h"
+#include "LArUtilException.h"
+#include "larlite/Base/DataFormatConstants.h"
+
+namespace larlite {
 namespace larutil {
 
-Geometry* Geometry::_me = 0;
-
-void Geometry::CryostatBoundaries(Double_t* boundaries) const
-{
-  if ( fCryostatBoundaries.size() != 6 )
-    throw LArUtilException("CryostatBoundaries not loaded (length != 6)... ");
-
-  //if( fCryostatBoundaries.size() != sizeof(boundaries)/8 )
-  // throw LArUtilException("Input argument for CryostatBoundaries must be length 6 double array!");
-
-  for (size_t i = 0; i < fCryostatBoundaries.size(); ++i)
-    boundaries[i] = fCryostatBoundaries[i];
-}
-
-Geometry::Geometry(bool default_load) : LArUtilBase()
-{
-  _name = "Geometry";
-  if (default_load) {
-    _file_name = Form("%s/LArUtil/dat/%s",
-                      getenv("LARLITE_COREDIR"),
-                      kUTIL_DATA_FILENAME[LArUtilConfig::Detector()].c_str());
-    _tree_name = kTREENAME_GEOMETRY;
-    LoadData();
+  Geometry* Geometry::_me = 0; ///< pointer to current instance
+  std::vector<Geometry*> Geometry::_detector_geo_v; ///< repository of different geometries
+  
+  Geometry::Geometry( larlite::geo::DetId_t detid, bool force_reload )
+  {
+    _name = "Geometry";
+    LoadData(detid,force_reload);
   }
-}
 
-bool Geometry::LoadData(bool force_reload)
-{
-  bool status = LArUtilBase::LoadData(force_reload);
+  bool Geometry::LoadData( larlite::geo::DetId_t detid, bool force_reload)
+  {
+    // check to see if we've already loaded the larutil classes
+    //bool status = ::larutil::LArUtilBase::LoadData(force_reload);
+    //if (!status) return status;
 
-  if (!status) return status;
+    std::string filename = Form("%s/LArUtil/dat/%s",
+				getenv("LARLITE_COREDIR"),
+				::larutil::kGEO_DATA_FILENAME[::larutil::LArUtilConfig::Detector()].c_str());
+    
+    TFile rfile = TFile(filename.c_str());
+    std::vector< larlite::larutil::CryoGeo >* _p_cryo_v = nullptr;
+    TTree* geodata = (TTree*)rfile.Get("geodata");
+    geodata->SetBranchAddress( "cryo_v", &_p_cryo_v );
+    geodata->GetEntry(0);
+    
+    fCryo_v = *_p_cryo_v; // a copy
+    
+    rfile.Close();
+    print(larlite::msg::kNORMAL, __FUNCTION__,
+	  Form("Loading geo data for DetID=%d ...\n file=%s ", ::larutil::LArUtilConfig::Detector(), filename.c_str()));
 
-  fOrthVectorsY.resize(this->Nplanes());
-  fOrthVectorsZ.resize(this->Nplanes());
-  fFirstWireProj.resize(this->Nplanes());
-  for (size_t plane = 0; plane < this->Nplanes(); ++plane) {
-
-    larlite::geo::View_t view = this->PlaneToView(plane);
-
-    Double_t ThisWirePitch = this->WirePitch(view);
-
-    Double_t WireCentre1[3] = {0.};
-    Double_t WireCentre2[3] = {0.};
-
-    Double_t  th = this->WireAngleToVertical(view);
-    Double_t sth = TMath::Sin(th);
-    Double_t cth = TMath::Cos(th);
-
-    for (size_t coord = 0; coord < 3; ++coord) {
-      WireCentre1[coord] = (fWireEndVtx.at(plane).at(0).at(coord) + fWireStartVtx.at(plane).at(0).at(coord)) / 2.;
-      WireCentre2[coord] = (fWireEndVtx.at(plane).at(1).at(coord) + fWireStartVtx.at(plane).at(1).at(coord)) / 2.;
-    }
-
-    Double_t OrthY =  cth;
-    Double_t OrthZ = -sth;
-    if (((WireCentre2[1] - WireCentre1[1])*OrthY
-         + (WireCentre2[2] - WireCentre1[2])*OrthZ) < 0) {
-      OrthZ *= -1;
-      OrthY *= -1;
-    }
-
-    fOrthVectorsY[plane] = OrthY / ThisWirePitch;
-    fOrthVectorsZ[plane] = OrthZ / ThisWirePitch;
-
-    fFirstWireProj[plane]  = WireCentre1[1] * OrthY + WireCentre1[2] * OrthZ;
-    fFirstWireProj[plane] /= ThisWirePitch;
-    fFirstWireProj[plane] -= 0.5;
-
+    return true;
   }
-  return status;
-}
+      
+  // OLD LOADING FOR REFERENCES PERSONS. WILL BE DELETED
+//   bool Geometry::LoadData( bool force_reload)    
+
+//   fOrthVectorsY.resize(this->Nplanes());
+//   fOrthVectorsZ.resize(this->Nplanes());
+//   fFirstWireProj.resize(this->Nplanes());
+//   for (size_t plane = 0; plane < this->Nplanes(); ++plane) {
+
+//     larlite::geo::View_t view = this->PlaneToView(plane);
+
+//     Double_t ThisWirePitch = this->WirePitch(view);
+
+//     Double_t WireCentre1[3] = {0.};
+//     Double_t WireCentre2[3] = {0.};
+
+//     Double_t  th = this->WireAngleToVertical(view);
+//     Double_t sth = TMath::Sin(th);
+//     Double_t cth = TMath::Cos(th);
+
+//     for (size_t coord = 0; coord < 3; ++coord) {
+//       WireCentre1[coord] = (fWireEndVtx.at(plane).at(0).at(coord) + fWireStartVtx.at(plane).at(0).at(coord)) / 2.;
+//       WireCentre2[coord] = (fWireEndVtx.at(plane).at(1).at(coord) + fWireStartVtx.at(plane).at(1).at(coord)) / 2.;
+//     }
+
+//     Double_t OrthY =  cth;
+//     Double_t OrthZ = -sth;
+//     if (((WireCentre2[1] - WireCentre1[1])*OrthY
+//          + (WireCentre2[2] - WireCentre1[2])*OrthZ) < 0) {
+//       OrthZ *= -1;
+//       OrthY *= -1;
+//     }
+
+//     fOrthVectorsY[plane] = OrthY / ThisWirePitch;
+//     fOrthVectorsZ[plane] = OrthZ / ThisWirePitch;
+
+//     fFirstWireProj[plane]  = WireCentre1[1] * OrthY + WireCentre1[2] * OrthZ;
+//     fFirstWireProj[plane] /= ThisWirePitch;
+//     fFirstWireProj[plane] -= 0.5;
+
+//   }
+//   return status;
+// }
 
 void Geometry::ClearData()
 {
@@ -123,7 +135,7 @@ bool Geometry::ReadTree()
   if (!(ch->GetBranch("fCryoHalfWidth")))  error_msg += "      fCryoHalfWidth\n";
   if (!(ch->GetBranch("fCryoHalfHeight"))) error_msg += "      fCryoHalfHeight\n";
 
-  if (LArUtilConfig::Detector() != larlite::geo::kArgoNeuT) {
+  if (::larutil::LArUtilConfig::Detector() != larlite::geo::kArgoNeuT) {
     if (!(ch->GetBranch("fCryostatBoundaries"))) error_msg += "       fCryostatBoundaries\n";
   }
   if (!(ch->GetBranch("fChannelToPlaneMap")))     error_msg += "      fChannelToPlaneMap\n";
@@ -142,7 +154,7 @@ bool Geometry::ReadTree()
 
   if (!(ch->GetBranch("fWirePitch")))       error_msg += "      fWirePitch\n";
   if (!(ch->GetBranch("fWireAngle")))       error_msg += "      fWireAngle\n";
-  if (LArUtilConfig::Detector() != larlite::geo::kArgoNeuT) {
+  if (::larutil::LArUtilConfig::Detector() != larlite::geo::kArgoNeuT) {
     if (!(ch->GetBranch("fOpChannelVtx")))    error_msg += "      fOpChannelVtx\n";
     if (!(ch->GetBranch("fOpChannel2OpDet"))) error_msg += "      fOpChannel2OpDet\n";
     if (!(ch->GetBranch("fOpDetVtx")))     error_msg += "      fOpDetVtx\n";
@@ -190,7 +202,7 @@ bool Geometry::ReadTree()
   ch->SetBranchAddress("fCryoHalfWidth", &fCryoHalfWidth);
   ch->SetBranchAddress("fCryoHalfHeight", &fCryoHalfHeight);
 
-  if (LArUtilConfig::Detector() != larlite::geo::kArgoNeuT) {
+  if (::larutil::LArUtilConfig::Detector() != larlite::geo::kArgoNeuT) {
     ch->SetBranchAddress("fCryostatBoundaries", &pCryostatBoundaries);
   }
 
@@ -211,7 +223,7 @@ bool Geometry::ReadTree()
   ch->SetBranchAddress("fWirePitch", &pWirePitch);
   ch->SetBranchAddress("fWireAngle", &pWireAngle);
 
-  if (LArUtilConfig::Detector() != larlite::geo::kArgoNeuT) {
+  if (::larutil::LArUtilConfig::Detector() != larlite::geo::kArgoNeuT) {
     ch->SetBranchAddress("fOpChannelVtx", &pOpChannelVtx);
     ch->SetBranchAddress("fOpDetVtx", &pOpDetVtx);
     ch->SetBranchAddress("fOpChannel2OpDet", &pOpChannel2OpDet);
@@ -219,7 +231,7 @@ bool Geometry::ReadTree()
   ch->GetEntry(0);
 
 
-  if (LArUtilConfig::Detector() != larlite::geo::kArgoNeuT) {
+  if (::larutil::LArUtilConfig::Detector() != larlite::geo::kArgoNeuT) {
     fCryostatBoundaries.resize(pCryostatBoundaries->size());
 
     for (size_t i = 0; i < pCryostatBoundaries->size(); ++i)
@@ -269,7 +281,7 @@ bool Geometry::ReadTree()
     fWireAngle.push_back(pWireAngle->at(i));
   }
 
-  if (LArUtilConfig::Detector() != larlite::geo::kArgoNeuT) {
+  if (::larutil::LArUtilConfig::Detector() != larlite::geo::kArgoNeuT) {
     // Copy op-channel-wise variables
     size_t n_opchannel = pOpChannelVtx->size();
     fOpChannelVtx.reserve(n_opchannel);
@@ -290,6 +302,19 @@ bool Geometry::ReadTree()
   delete ch;
   return true;
 }
+
+  void Geometry::CryostatBoundaries(Double_t* boundaries) const
+  {
+    if ( fCryostatBoundaries.size() != 6 )
+      throw LArUtilException("CryostatBoundaries not loaded (length != 6)... ");
+    
+    //if( fCryostatBoundaries.size() != sizeof(boundaries)/8 )
+    // throw LArUtilException("Input argument for CryostatBoundaries must be length 6 double array!");
+    
+    for (size_t i = 0; i < fCryostatBoundaries.size(); ++i)
+      boundaries[i] = fCryostatBoundaries[i];
+  }
+  
 
 
 UInt_t Geometry::Nwires(UInt_t p) const
@@ -869,6 +894,6 @@ void Geometry::PlaneOriginVtx(UChar_t plane, Double_t *vtx) const
 }
 
 }
-
+}
 
 #endif

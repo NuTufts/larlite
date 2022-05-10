@@ -17,6 +17,7 @@
 #include <iostream>
 #include <exception>
 
+namespace larlite {
 namespace larutil {
   /**
      \class LArUtilException
@@ -42,6 +43,7 @@ namespace larutil {
     std::string _msg;
   };
 
+}
 }
 #endif
 /** @} */ // end of doxygen group 

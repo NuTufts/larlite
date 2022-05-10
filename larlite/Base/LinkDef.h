@@ -17,6 +17,7 @@
 //#pragma link C++ namespace larlite::data+;
 #pragma link C++ class larlite::data+;
 #pragma link C++ namespace larlite::geo+;
+#pragma link C++ enum larlite::geo::DetId_t+;
 
 #pragma link C++ enum larlite::geo::SigType_t+;
 #pragma link C++ enum larlite::geo::View_t+;

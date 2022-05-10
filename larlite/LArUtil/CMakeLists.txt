@@ -6,6 +6,11 @@ set( LIBNAME larlite_${MODULE_NAME} )
 set( HEADERS ClockConstants.h
 DetectorProperties.h
 ElecClock.h
+WireGeo.h
+PlaneGeo.h
+TPCGeo.h
+OpDetGeo.h
+CryoGeo.h
 Geometry.h
 GeometryHelper.h
 InvalidWireError.h
@@ -24,20 +29,25 @@ SpaceChargeMicroBooNEMCC9.h
 TimeService.h )
 
 add_library( ${LIBNAME} SHARED DetectorProperties.cxx
-ElecClock.cxx
-Geometry.cxx
-GeometryHelper.cxx
-InvalidWireError.cxx
-LArProperties.cxx
-LArUtilBase.cxx
-LArUtilConfig.cxx
-LArUtilException.cxx
-LArUtilManager.cxx
-SpaceChargeMicroBooNE.cxx
-SpaceChargeMicroBooNEInterface.cxx
-SpaceChargeMicroBooNEMCC8.cxx
-SpaceChargeMicroBooNEMCC9.cxx
-TimeService.cxx )
+  ElecClock.cxx
+  WireGeo.cxx
+  PlaneGeo.cxx
+  OpDetGeo.cxx  
+  TPCGeo.cxx
+  CryoGeo.cxx  
+  Geometry.cxx
+  GeometryHelper.cxx
+  InvalidWireError.cxx
+  LArProperties.cxx
+  LArUtilBase.cxx
+  LArUtilConfig.cxx
+  LArUtilException.cxx
+  LArUtilManager.cxx
+  SpaceChargeMicroBooNE.cxx
+  SpaceChargeMicroBooNEInterface.cxx
+  SpaceChargeMicroBooNEMCC8.cxx
+  SpaceChargeMicroBooNEMCC9.cxx
+  TimeService.cxx )
 
 # create a property to hold our headers
 set_target_properties(${LIBNAME} PROPERTIES PUBLIC_HEADER "${HEADERS}")

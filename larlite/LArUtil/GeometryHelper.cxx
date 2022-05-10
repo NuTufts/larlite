@@ -12,7 +12,7 @@ GeometryHelper* GeometryHelper::_me = 0;
 void GeometryHelper::Reconfigure()
 {
 
-  geom = (larutil::Geometry*)(larutil::Geometry::GetME());
+  geom = (larlite::larutil::Geometry*)(larlite::larutil::Geometry::GetME());
   detp = (larutil::DetectorProperties*)(larutil::DetectorProperties::GetME());
   larp = (larutil::LArProperties*)(larutil::LArProperties::GetME());
 
@@ -33,7 +33,7 @@ Point2D GeometryHelper::Point_3Dto2D(const TVector3 & _3D_position, unsigned int
 
   // Make a check on the plane:
   if (plane > geom -> Nplanes()) {
-    throw larutil::LArUtilException(Form("Can't project 3D point to unknown plane %u", plane));
+    throw larlite::larutil::LArUtilException(Form("Can't project 3D point to unknown plane %u", plane));
   }
 
   // Verify that the point is in the TPC before trying to project:
@@ -181,7 +181,7 @@ TVector3 GeometryHelper::Project_3DLine_OnPlane(const TVector3& inputVector, con
   else if (pl == 2)
     plane = {0, 1., 0};
   else
-    throw LArUtilException("Invalid plane! this plane number does not exist");
+    throw larlite::larutil::LArUtilException("Invalid plane! this plane number does not exist");
 
   return Project_3DLine_OnPlane(inputVector, plane);
 }
@@ -190,7 +190,7 @@ TVector3 GeometryHelper::Project_3DLine_OnPlane(const TVector3& inputVector, con
 std::vector<double> GeometryHelper::Project_3DLine_OnPlane(const std::vector<double>& V, const std::vector<double>& N) const {
 
   if ( (V.size() != 3) or (N.size() != 3) )
-    throw LArUtilException("Project_3DLine_OnPlane failed due to unrecognized vector size");
+    throw larlite::larutil::LArUtilException("Project_3DLine_OnPlane failed due to unrecognized vector size");
 
   // calculate the equivalent vector projected on the plane of interest
 
@@ -219,7 +219,7 @@ std::vector<double> GeometryHelper::Project_3DLine_OnPlane(const std::vector<dou
   else if (pl == 2)
     plane = {0, 1., 0};
   else
-    throw LArUtilException("Invalid plane! this plane number does not exist");
+    throw larlite::larutil::LArUtilException("Invalid plane! this plane number does not exist");
 
   return Project_3DLine_OnPlane(V, plane);
 }
@@ -364,7 +364,7 @@ double GeometryHelper::GetPitch(const TVector3& direction, const int& pl) const
   else if (pl == 2)
     wireDir = {0., 0., 1.};
   else
-    throw LArUtilException("Plane number out of bounds!");
+    throw larlite::larutil::LArUtilException("Plane number out of bounds!");
 
   // cosine between shower direction and plane direction gives the factor
   // by which to divide 0.3, the minimum wire-spacing
@@ -433,7 +433,7 @@ double GeometryHelper::PitchInView(UInt_t plane, double phi, double theta) const
                                  TMath::Cos(angleToVert) * dirs[2]);
 
   if (cosgamma < 1.e-5)
-    throw LArUtilException("cosgamma is basically 0, that can't be right");
+    throw larlite::larutil::LArUtilException("cosgamma is basically 0, that can't be right");
 
   return wirePitch / cosgamma;
 }
@@ -462,7 +462,7 @@ double GeometryHelper::GetCosAngleBetweenLines(const Point2D& p1, const Point2D&
 
   if ( ( (p1.w == p2.w) and (p1.t == p2.t) ) or
        ( (p1.w == p3.w) and (p1.t == p3.t) ) )
-    throw LArUtilException("Trying to calculate dot-product using a zero-length vector!");
+    throw larlite::larutil::LArUtilException("Trying to calculate dot-product using a zero-length vector!");
 
   double den = sqrt( ( (p2.w - p1.w) * (p2.w - p1.w) + (p2.t - p1.t) * (p2.t - p1.t) ) *
                      ( (p3.w - p1.w) * (p3.w - p1.w) + (p3.t - p1.t) * (p3.t - p1.t) ) );
@@ -477,7 +477,7 @@ double GeometryHelper::GetCosAngleBetweenLines(const Point2D& p1, const Point2D&
 
   if ( ( (p1.w == p2.w) and (p1.t == p2.t) ) or
        ( (p4.w == p3.w) and (p4.t == p3.t) ) )
-    throw LArUtilException("Trying to calculate dot-product using a zero-length vector!");
+    throw larlite::larutil::LArUtilException("Trying to calculate dot-product using a zero-length vector!");
 
   double den = sqrt( ( (p2.w - p1.w) * (p2.w - p1.w) + (p2.t - p1.t) * (p2.t - p1.t) ) *
                      ( (p4.w - p3.w) * (p4.w - p3.w) + (p4.t - p3.t) * (p4.t - p3.t) ) );
@@ -506,7 +506,7 @@ void GeometryHelper::SelectPolygonHitList(const std::vector<Hit2D> &inputHits,
 
   // if hit list is empty get out of here!
   if (!(inputHits.size())) {
-    throw LArUtilException("Provided empty hit list!");
+    throw larlite::larutil::LArUtilException("Provided empty hit list!");
     return;
   }
 
@@ -557,7 +557,7 @@ void GeometryHelper::SelectPolygonHitList(const std::vector<Hit2D> &inputHits,
     ordered_hits.at(index)->t > time_max ||
     ordered_hits.at(index)->w > wire_max ) {
 
-    throw LArUtilException(Form("Invalid wire/time (%g,%g) for plane %i ... range is (0=>%g,0=>%g)",
+    throw larlite::larutil::LArUtilException(Form("Invalid wire/time (%g,%g) for plane %i ... range is (0=>%g,0=>%g)",
           ordered_hits.at(index)->w,
           ordered_hits.at(index)->t,
           plane,
@@ -664,7 +664,7 @@ void GeometryHelper::SelectPolygonHitList(const std::vector<Hit2D> &inputHits,
   }
 
   // we should only have a maximum of 8 edges for the polygon!
-  if (unique_index.size() > 8) throw LArUtilException("Size of the polygon > 8!");
+  if (unique_index.size() > 8) throw larlite::larutil::LArUtilException("Size of the polygon > 8!");
 
   //Untangle Polygon
   candidate_polygon = OrderPolygonEdges( ordered_hits, candidate_polygon);
@@ -675,7 +675,7 @@ void GeometryHelper::SelectPolygonHitList(const std::vector<Hit2D> &inputHits,
   }
 
   //check that polygon does not have more than 8 sides
-  if (unique_index.size() > 8) throw LArUtilException("Size of the polygon > 8!");
+  if (unique_index.size() > 8) throw larlite::larutil::LArUtilException("Size of the polygon > 8!");
 
   return;
 }

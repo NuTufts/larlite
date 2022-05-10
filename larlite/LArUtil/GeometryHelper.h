@@ -533,7 +533,7 @@ public:
 private:
 
     // services to be used
-    larutil::Geometry* geom;
+    larlite::larutil::Geometry* geom;
     larutil::DetectorProperties* detp;
     larutil::LArProperties* larp;
 

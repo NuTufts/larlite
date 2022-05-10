@@ -27,7 +27,7 @@ namespace larutil {
 
     if(_file_name.empty() || _tree_name.empty()) {
 
-      throw LArUtilException(Form("Either file or tree name not specified to load data for %s",_name.c_str()));
+      throw larlite::larutil::LArUtilException(Form("Either file or tree name not specified to load data for %s",_name.c_str()));
       
       return false;
     }
@@ -40,9 +40,9 @@ namespace larutil {
       ClearData();
       status = ReadTree();
       if(!status)
-	throw LArUtilException("Failed to load !");
+	throw larlite::larutil::LArUtilException("Failed to load !");
     }
-    catch (LArUtilException &e) {
+    catch (larlite::larutil::LArUtilException &e) {
 
       print(larlite::msg::kERROR, __FUNCTION__,
 	    Form("Failed loading data for %s...",_name.c_str()));
