@@ -10,7 +10,7 @@ namespace larutil{
   const std::string kGEO_DATA_FILENAME[larlite::geo::kDetIdMax] = 
     { "",                        // Bo
       "larutil_argoneut.root",   // ArgoNeuT
-      "larutil_microboone.root", // MicroBoone
+      "microboone_larlite_geodata.root", // MicroBoone
       "",                        // LBNE 10kt 
       "",                        // JPARC 250 L
       "",                        // 35t prototype
