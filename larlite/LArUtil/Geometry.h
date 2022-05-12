@@ -85,12 +85,30 @@ namespace larutil {
     // UInt_t Nplanes() const
     // { return fPlanePitch.size(); }
 
-    /// boundaries of cryostat, 3 pairs of +/- coord
-    void     CryostatBoundaries(Double_t* boundaries, int cryo_id=0) const;    
+    // Number of cryostats
+    UInt_t Ncryostats() const { return fCryo_v.size(); };
+
+    // Number of TPCS in cryostat
+    UInt_t NTPCs( UInt_t cryoid=0) const;
 
     /// Number of wires in plane "p" of TPC "tpc" of cryostat "cstat".
     UInt_t Nwires(UInt_t p, UInt_t tpc=0, UInt_t cstat=0) const;
+    
+    /// boundaries of cryostat, 3 pairs of +/- coord
+    void   CryostatBoundaries(Double_t* boundaries, int cryo_id=0) const;
 
+    /// Ends of wire for given channel
+    TVector3 ChannelWireStart( int channel_id ) const;
+
+    /// Ends of wire for given channel
+    TVector3 ChannelWireEnd( int channel_id ) const;
+
+    /// boundaries of cryostat, 3 pairs of +/- coord
+    void   TPCBoundaries( TVector3& minbounds, TVector3& maxbounds, int tpc_id, int cryo_id) const;
+
+    /// Get the drift direction of ionization electrons in the TPC
+    TVector3 TPCDriftDir( int tpc_id, int cryo_id) const;
+    
     /// convert channel number to list of possible WireIDs
     larlite::geo::WireID ChannelToWireID(const UInt_t channel) const;
 
@@ -223,21 +241,21 @@ public:
     //        Double_t* zhi)  const;
     // */
 
-    // /**
-    //    The following functions are utilized to determine if two wires
-    //    in the TPC intersect or not, and if they do then
-    //    determine the coordinates of the intersection.
-    //    Starting point of wire is end with lower z-coordinate.
-    // */
-    // bool ValueInRange(const Double_t value, Double_t min, Double_t max) const
-    // {  if (min > max) std::swap(min, max); return ( (min <= value) && (value <= max) ); }
+    /**
+       The following functions are utilized to determine if two wires
+       in the TPC intersect or not, and if they do then
+       determine the coordinates of the intersection.
+       Starting point of wire is end with lower z-coordinate.
+    */
+    bool ValueInRange(const Double_t value, Double_t min, Double_t max) const
+    {  if (min > max) std::swap(min, max); return ( (min <= value) && (value <= max) ); }
 
     // void WireEndPoints(const UChar_t plane,
     //                    const UInt_t wire,
     //                    Double_t *xyzStart,
     //                    Double_t *xyzEnd) const;
 
-    // bool ChannelsIntersect(const UInt_t c1, const UInt_t c2, Double_t &y, Double_t &z) const;
+    bool ChannelsIntersect(const UInt_t c1, const UInt_t c2, TVector3& intersectionpt ) const;
 
     // void IntersectionPoint(const UInt_t  wire1,  const UInt_t  wire2,
     //                        const UChar_t plane1, const UChar_t plane2,
@@ -298,7 +316,8 @@ private:
     std::vector< larlite::geo::PlaneID  >  fChannelToPlaneMap;
     std::vector<UShort_t>                  fChannelToWireMap;
     std::vector< std::vector<int> >        fChannelToWireID;    
-    std::map< std::vector<int>, int >      fWireIDToChannel;
+    std::map< std::vector<int>, int >      fWireIDToChannel; // vector<int> = {cryo,tpc,plane,wire}
+    std::vector< const larlite::larutil::WireGeo* > fChannelToWireGeoMap; // fast access
 
     // Vectors with length = # planes
     std::vector< larlite::geo::PlaneID >   fSimplePlaneIDToPlaneID;

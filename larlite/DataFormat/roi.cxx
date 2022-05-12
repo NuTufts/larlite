@@ -43,43 +43,43 @@ namespace larlite{
 
   roi::roi(const larlite::vertex& vtx, const double& radius) {
 
-    _wire_range.resize(3);
-    _time_range.resize(3);
-    _vtx.resize(3);
+    // _wire_range.resize(3);
+    // _time_range.resize(3);
+    // _vtx.resize(3);
     
-    std::vector<double> xyz = {vtx.X(), vtx.Y(), vtx.Z()};
+    // std::vector<double> xyz = {vtx.X(), vtx.Y(), vtx.Z()};
 
-    double wire2cm  = ::larutil::GeometryHelper::GetME()->WireToCm();
-    double time2cm  = ::larutil::GeometryHelper::GetME()->TimeToCm();
+    // double wire2cm  = ::larutil::GeometryHelper::GetME()->WireToCm();
+    // double time2cm  = ::larutil::GeometryHelper::GetME()->TimeToCm();
 
-    auto geoH = ::larutil::GeometryHelper::GetME();
-    auto geom = larlite::larutil::Geometry::GetME();
-    for (size_t pl = 0; pl < 3; pl++){
+    // auto geoH = ::larutil::GeometryHelper::GetME();
+    // auto geom = larlite::larutil::Geometry::GetME();
+    // for (size_t pl = 0; pl < 3; pl++){
 
-      // get the time-coordinate of the wires on this plane
-      double *origin;
-      origin = new double[3];
-      geom->PlaneOriginVtx(pl,origin);
+    //   // get the time-coordinate of the wires on this plane
+    //   double *origin;
+    //   origin = new double[3];
+    //   geom->PlaneOriginVtx(pl,origin);
 
-      auto const& pt = geoH->Point_3Dto2D(xyz,pl);
+    //   auto const& pt = geoH->Point_3Dto2D(xyz,pl);
 
-      double vtxwcm = pt.w;
-      double vtxtcm = pt.t;
+    //   double vtxwcm = pt.w;
+    //   double vtxtcm = pt.t;
       
-      vtxtcm += 800 * time2cm - origin[0];
+    //   vtxtcm += 800 * time2cm - origin[0];
 
-      int wmin = (int) ( (vtxwcm - radius) / wire2cm );
-      int wmax = (int) ( (vtxwcm + radius) / wire2cm );
+    //   int wmin = (int) ( (vtxwcm - radius) / wire2cm );
+    //   int wmax = (int) ( (vtxwcm + radius) / wire2cm );
       
-      int tmin = (int) ( (vtxtcm - radius) / time2cm );
-      int tmax = (int) ( (vtxtcm + radius) / time2cm );
+    //   int tmin = (int) ( (vtxtcm - radius) / time2cm );
+    //   int tmax = (int) ( (vtxtcm + radius) / time2cm );
 
-      _wire_range[pl] = std::make_pair( wmin, wmax );
-      _time_range[pl] = std::make_pair( tmin, tmax );
+    //   _wire_range[pl] = std::make_pair( wmin, wmax );
+    //   _time_range[pl] = std::make_pair( tmin, tmax );
 
-      _vtx[pl]        = std::make_pair( vtxwcm / wire2cm , vtxtcm / time2cm );
+    //   _vtx[pl]        = std::make_pair( vtxwcm / wire2cm , vtxtcm / time2cm );
       
-    }// for all 3 planes      
+    // }// for all 3 planes      
 
   }
 

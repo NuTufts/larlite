@@ -12,7 +12,7 @@ TPCGeo.h
 OpDetGeo.h
 CryoGeo.h
 Geometry.h
-#GeometryHelper.h
+GeometryHelper.h
 InvalidWireError.h
 LArProperties.h
 LArUtilBase.h
@@ -36,7 +36,7 @@ add_library( ${LIBNAME} SHARED DetectorProperties.cxx
   TPCGeo.cxx
   CryoGeo.cxx  
   Geometry.cxx
-  #GeometryHelper.cxx
+  GeometryHelper.cxx
   InvalidWireError.cxx
   LArProperties.cxx
   LArUtilBase.cxx

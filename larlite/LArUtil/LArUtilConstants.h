@@ -17,7 +17,8 @@ namespace larutil{
       "",                        // LBNE 34kt
       "",                        // CSU 40 L
       "",                        // LArIAT
-      "icarus_larlite_geodata.root" // ICARUS T600
+      "icarus_larlite_geodata.root", // ICARUS T600
+      "sbnd_larlite_geodata.root" // ICARUS T600
     };
 
   // LAr Properties
@@ -31,7 +32,8 @@ namespace larutil{
       "",                        // LBNE 34kt
       "",                        // CSU 40 L
       "",                        // LArIAT
-      ""                         // ICARUS T600
+      "",                         // ICARUS T600
+      ""
     };
   
   const std::string kTREENAME_GEOMETRY = "scanner/Geometry";

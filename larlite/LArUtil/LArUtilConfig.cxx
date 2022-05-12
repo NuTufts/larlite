@@ -13,11 +13,12 @@ namespace larutil {
     bool status = true;
     switch(type) {
 
-    case larlite::geo::kArgoNeuT: 
     case larlite::geo::kMicroBooNE:
-    case larlite::geo::kICARUS:      
+    case larlite::geo::kICARUS:
+    case larlite::geo::kSBND:      
       _detector = type;
       break;
+    case larlite::geo::kArgoNeuT:       
     case larlite::geo::kBo:
     case larlite::geo::kLBNE10kt:
     case larlite::geo::kJP250L:

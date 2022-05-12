@@ -54,6 +54,7 @@ namespace larutil {
     fChannelToPlaneMap.resize( max_channel+1 );
     fChannelToWireMap.resize( max_channel+1 );
     fChannelToWireID.resize( max_channel+1 );
+    fChannelToWireGeoMap.resize( max_channel+1, nullptr );
     for (auto const& cryogeo :  fCryo_v ) {
       for (auto const& tpcgeo : cryogeo.tpc_v ) {
 	for ( auto const& planegeo : tpcgeo.planes_v ) {
@@ -64,6 +65,7 @@ namespace larutil {
 	    std::vector<int> wid = {planegeo.cryoid, planegeo.tpcid, planegeo.planeid, wiregeo.wireid};
 	    fWireIDToChannel[ wid ] = ch;
 	    fChannelToWireID[ ch ]  = wid;
+	    fChannelToWireGeoMap[ch] = &wiregeo;
 	  }
 	}
       }
@@ -78,6 +80,7 @@ namespace larutil {
     fChannelToPlaneMap.clear();
     fChannelToWireMap.clear();
     fChannelToWireID.clear();
+    fChannelToWireGeoMap.clear();
     fWireIDToChannel.clear();
     fSimplePlaneIDToPlaneID.clear();
     fPlaneIDToSimplePlaneID.clear();
@@ -132,7 +135,7 @@ namespace larutil {
     return true;
   }  
 
-  /*
+  /**
    * @brief return cryo stat bounds
    *
    * returns 6 pairs of numbers
@@ -148,6 +151,74 @@ namespace larutil {
       boundaries[2*i]   = cryogeo.fBounds[0][i];
       boundaries[2*i+1] = cryogeo.fBounds[1][i];
     }
+  }
+
+  /**
+   * @brief get start position of wire of given channel
+   *
+   */
+  TVector3 Geometry::ChannelWireStart( int channel_id ) const
+  {
+    if ( channel_id<0 || channel_id>=(int)fChannelToWireGeoMap.size() ) {
+      throw LArUtilException(Form("Invalid channel: %d", channel_id));
+      return TVector3(0,0,0);
+    }
+    return fChannelToWireGeoMap[channel_id]->fWireStartVtx;
+  }
+
+  /**
+   * @brief get start position of wire of given channel
+   *
+   */
+  TVector3 Geometry::ChannelWireEnd( int channel_id ) const
+  {
+    if ( channel_id<0 || channel_id>=(int)fChannelToWireGeoMap.size() ) {
+      throw LArUtilException(Form("Invalid channel: %d", channel_id));
+      return TVector3(0,0,0);
+    }
+    return fChannelToWireGeoMap[channel_id]->fWireEndVtx;
+  }
+  
+  /**
+   * @brief return tpc boundaries
+   */
+  void Geometry::TPCBoundaries( TVector3& minbounds, TVector3& maxbounds, int tpc_id, int cryo_id) const
+  {
+    if ( !IsValid(0,tpc_id,cryo_id) ) {
+      throw LArUtilException(Form("Invalid ID tpc_id=%d cryo_id=%d", tpc_id,cryo_id));
+      return;
+    }
+
+    auto const& tpcgeo = fCryo_v.at(cryo_id).tpc_v.at(tpc_id);
+    minbounds = tpcgeo.fBounds[0];
+    maxbounds = tpcgeo.fBounds[1];
+    return;
+  }
+
+  /**
+   * @brief return tpc boundaries
+   */
+  TVector3 Geometry::TPCDriftDir( int tpc_id, int cryo_id) const
+  {
+    if ( !IsValid(0,tpc_id,cryo_id) ) {
+      throw LArUtilException(Form("Invalid ID tpc_id=%d cryo_id=%d", tpc_id,cryo_id));
+      return TVector3(0,0,0);
+    }
+
+    auto const& tpcgeo = fCryo_v.at(cryo_id).tpc_v.at(tpc_id);
+    return tpcgeo.fDriftDirection;
+  }
+  
+  /**
+   * @brief Get the number of TPCs in a cryostat
+   *
+   */
+  UInt_t Geometry::NTPCs( UInt_t cryo_id ) const
+  {
+    if ( cryo_id<0 || cryo_id>=Ncryostats() ) {
+      throw LArUtilException(Form("Invalid cryo ID :%d", cryo_id));
+    }
+    return fCryo_v[cryo_id].tpc_v.size();
   }
   
   /**
@@ -449,184 +520,229 @@ namespace larutil {
 
 // }
 
-// bool Geometry::ChannelsIntersect(const UInt_t c1,
-//                                  const UInt_t c2,
-//                                  Double_t &y, Double_t &z) const
-// {
-//   if (c1 == c2) {
-//     throw LArUtilException("Same channel does not intersect!");
-//     return false;
-//   }
+  /** 
+   * @brief Determine if channel wires intersect
+   *
+   * First we check if wires are in same TPC, but different physical wireplanes.
+   * Then we put wires onto same math plane. 
+   * We use line-line intersection in 2D to determine intersection point.
+   * If outside TPC bounds, we return false. Else true.
+   *
+   */
+  bool Geometry::ChannelsIntersect(const UInt_t c1,
+				   const UInt_t c2,
+				   TVector3& intersection ) const
+  {
+    if (c1 == c2) {
+      throw LArUtilException("Same channel does not intersect!");
+      return false;
+    }
 
-//   if ( c1 >= fChannelToPlaneMap.size() || c2 >= fChannelToPlaneMap.size() ) {
-//     throw LArUtilException(Form("Invalid channels : %d and %d", c1, c2));
-//     return false;
-//   }
-//   if ( fViewType.at(fChannelToPlaneMap.at(c1)) == fViewType.at(fChannelToPlaneMap.at(c2)) ) {
-//     return false;
-//   }
+    if ( c1 >= fChannelToPlaneMap.size() || c2 >= fChannelToPlaneMap.size() ) {
+      throw LArUtilException(Form("Invalid channels : %d and %d", c1, c2));
+      return false;
+    }
 
-//   UInt_t w1 = fChannelToWireMap.at(c1);
-//   UInt_t w2 = fChannelToWireMap.at(c2);
+    std::vector<int> widv1 = fChannelToWireID.at(c1);
+    std::vector<int> widv2 = fChannelToWireID.at(c2);
 
-//   UChar_t p1 = fChannelToPlaneMap.at(c1);
-//   UChar_t p2 = fChannelToPlaneMap.at(c2);
+    if ( widv1[0]!=widv2[0] || widv1[1]!=widv2[1] ) {
+      // not the same cryostat id [0] OR not the same TPC id [1]
+      //std::cout << "not the same cryostat or tpc" <<  std::endl;
+      return false;
+    }
+    
+    if ( widv1[2]==widv2[2] ) {
+      // the same plane
+      //std::cout << "the same wireplane" <<  std::endl;      
+      return false;
+    }
 
-//   larlite::geo::View_t v1 = fViewType.at(p1);
-//   larlite::geo::View_t v2 = fViewType.at(p2);
+    TVector3 tpcmin(0,0,0);
+    TVector3 tpcmax(0,0,0);
+    TPCBoundaries( tpcmin, tpcmax, widv1[1], widv1[0] );
+    TVector3 tpcdriftdir = TPCDriftDir( widv1[1], widv1[0] );
+    const larlite::larutil::WireGeo* wg1 = fChannelToWireGeoMap.at(c1);
+    const larlite::larutil::WireGeo* wg2 = fChannelToWireGeoMap.at(c2);    
 
-//   Double_t start1[3] = {0.};
-//   Double_t start2[3] = {0.};
-//   Double_t end1[3] = {0.};
-//   Double_t end2[3] = {0.};
+    Double_t start1[3] = {0.};
+    Double_t start2[3] = {0.};
+    Double_t end1[3] = {0.};
+    Double_t end2[3] = {0.};
+    int idx=0;
+    for (int i=0; i<3; i++) {
+      if ( fabs(tpcdriftdir[i])<=1.0e-3 ) {
+	start1[idx] = wg1->fWireStartVtx[i];
+	start2[idx] = wg2->fWireStartVtx[i];      
+	end1[idx]   = wg1->fWireEndVtx[i];
+	end2[idx]   = wg2->fWireEndVtx[i];
+	idx++;
+      }
+    }
+    if ( idx!=2 ) {
+      throw LArUtilException(Form("BAD TPC Drift Dir used for interesection"));
+      return false;
+    }
 
-//   WireEndPoints(p1, w1, start1, end1);
-//   WireEndPoints(p2, w2, start2, end2);
+    Double_t a[2] = {0,0};
+    Double_t b[2] = {0,0};
+    Double_t c[2] = {0,0};
+    for (int i=0; i<2; i++) {
+      a[i] = end1[i]-start1[i];
+      b[i] = end2[i]-start2[i];
+      c[i] = start2[i]-start1[i];
+    }
 
-//   // if endpoint of one input wire is within range of other input wire in
-//   // BOTH y AND z, wires overlap
-//   bool overlapY = (ValueInRange(start1[1], start2[1], end2[1]) || ValueInRange(end1[1], start2[1], end2[1]));
-//   bool overlapZ = (ValueInRange(start1[2], start2[2], end2[2]) || ValueInRange(end1[2], start2[2], end2[2]));
+    Double_t axb = a[0]*b[1]-a[1]*b[0];
+    if (fabs(axb)<1.0e-5) {
+      //std::cout << "is parallel" << std::endl;
+      return false;
+    }
 
-//   bool overlapY_rev = (ValueInRange(start2[1], start1[1], end1[1]) || ValueInRange(end2[1], start1[1], end1[1]));
-//   bool overlapZ_rev = (ValueInRange(start2[2], start1[2], end1[2]) || ValueInRange(end2[2], start1[2], end1[2]));
+    Double_t cxb = c[0]*b[1]-c[1]*b[0];
+    Double_t s = (cxb*axb)/(axb*axb);
+    Double_t pt2d[2] = { 0, 0 };
+    for (int i=0; i<2; i++)
+      pt2d[i] = start1[i] + a[i]*s;
 
-//   // override y overlap checks if a vertical plane exists:
-//   if ( fWireAngle.at(v1) == TMath::Pi() / 2 || fWireAngle.at(v2) == TMath::Pi() / 2 ) {
-//     overlapY     = true;
-//     overlapY_rev = true;
-//   }
+    // std::cout << "axb: " << axb << std::endl;
+    // std::cout << "cxb: " << cxb << std::endl;
+    // std::cout << s << std::endl;
+   
+    bool inbounds = true;    
+    Double_t pt3d[3] = {0,0,0};
+    idx = 0;
+    Double_t driftpos = 0;
+    for (int i=0; i<3; i++) {
+      if ( fabs(tpcdriftdir[i])<=1.0e-3 ) {
+	//non-drift dimension
+	pt3d[i] = pt2d[idx];
+	if ( pt3d[i]<tpcmin[i] || pt3d[i]>tpcmax[i] ) {
+	  // outside of TPC
+	  inbounds = false;
+	}
+	idx++;
+      }
+      else {
+	if ( tpcdriftdir[i]>0 )
+	  pt3d[i] = std::min(wg1->fWireStartVtx[i],wg2->fWireStartVtx[i]);
+	else
+	  pt3d[i] = std::max(wg1->fWireStartVtx[i],wg2->fWireStartVtx[i]);
+      }
+    }
+    
+    for (int i=0; i<3; i++)
+      intersection[i] = pt3d[i];
+    
+    return inbounds;
+  }
 
-//   //catch to get vertical wires, where the standard overlap might not work, Andrzej
-//   if (std::abs(start2[2] - end2[2]) < 0.01) overlapZ = overlapZ_rev;
+  // void Geometry::IntersectionPoint(const UInt_t  wire1,  const UInt_t  wire2,
+  // 				   const UChar_t plane1, const UChar_t plane2,
+  // 				   Double_t start_w1[3], Double_t end_w1[3],
+  // 				   Double_t start_w2[3], Double_t end_w2[3],
+  // 				   Double_t &y, Double_t &z) const
+  // {
+    
+  //   larlite::geo::View_t v1 = fViewType.at(plane1);
+  //   larlite::geo::View_t v2 = fViewType.at(plane2);
+  //   //angle of wire1 wrt z-axis in Y-Z plane...in radians
+  //   Double_t angle1 = fWireAngle.at(v1);
+  //   //angle of wire2 wrt z-axis in Y-Z plane...in radians
+  //   Double_t angle2 = fWireAngle.at(v2);
+    
+  //   if (angle1 == angle2) return; //comparing two wires in the same plane...pointless.
+    
+  //   //coordinates of "upper" endpoints...(z1,y1) = (a,b) and (z2,y2) = (c,d)
+  //   double a = 0.;
+  //   double b = 0.;
+  //   double c = 0.;
+  //   double d = 0.;
+  //   double angle = 0.;
+  //   double anglex = 0.;
+    
+  //   // below is a special case of calculation when one of the planes is vertical.
+  //   angle1 < angle2 ? angle = angle1 : angle = angle2;//get angle closest to the z-axis
+    
+  //   // special case, one plane is vertical
+  //   if (angle1 == TMath::Pi() / 2 || angle2 == TMath::Pi() / 2) {
+  //     if (angle1 == TMath::Pi() / 2) {
+	
+  // 	anglex = (angle2 - TMath::Pi() / 2);
+  // 	a = end_w1[2];
+  // 	b = end_w1[1];
+  // 	c = end_w2[2];
+  // 	d = end_w2[1];
+  // 	// the if below can in principle be replaced by the sign of anglex (inverted)
+  // 	// in the formula for y below. But until the geometry is fully symmetric in y I'm
+  // 	// leaving it like this. Andrzej
+  // 	if ((anglex) > 0 ) b = start_w1[1];
+	
+  //     }
+  //     else if (angle2 == TMath::Pi() / 2) {
+  // 	anglex = (angle1 - TMath::Pi() / 2);
+  // 	a = end_w2[2];
+  // 	b = end_w2[1];
+  // 	c = end_w1[2];
+  // 	d = end_w1[1];
+  // 	// the if below can in principle be replaced by the sign of anglex (inverted)
+  // 	// in the formula for y below. But until the geometry is fully symmetric in y I'm
+  // 	// leaving it like this. Andrzej
+  // 	if ((anglex) > 0 ) b = start_w2[1];
+  //     }
+  
+  //     y = b + ((c - a) - (b - d) * tan(anglex)) / tan(anglex);
+  //     z = a;   // z is defined by the wire in the vertical plane
+      
+  //     return;
+  //   }
+    
+  //   // end of vertical case
+  //   z = 0; y = 0;
+    
+  //   if (angle1 < (TMath::Pi() / 2.0)) {
+  //     c = end_w1[2];
+  //     d = end_w1[1];
+  //     a = start_w2[2];
+  //     b = start_w2[1];
+  //   }
+  //   else {
+  //     c = end_w2[2];
+  //     d = end_w2[1];
+  //     a = start_w1[2];
+  //     b = start_w1[1];
+  //   }
+    
+  //   //Intersection point of two wires in the yz plane is completely
+  //   //determined by wire endpoints and angle of inclination.
+  //   z = 0.5 * ( c + a + (b - d) / TMath::Tan(angle) );
+  //   y = 0.5 * ( b + d + (a - c) * TMath::Tan(angle) );
+    
+  //   return;
+    
+  // }
 
-
-//   if (overlapY && overlapZ) {
-//     IntersectionPoint(w1, w2, p1, p2,
-//                       start1, end1,
-//                       start2, end2,
-//                       y, z);
-//     return true;
-//   }
-
-//   else if (overlapY_rev && overlapZ_rev) {
-//     this->IntersectionPoint(w2, w1, p2, p1,
-//                             start2, end2,
-//                             start1, end1,
-//                             y, z);
-//     return true;
-//   }
-
-//   return false;
-
-// }
-
-// void Geometry::IntersectionPoint(const UInt_t  wire1,  const UInt_t  wire2,
-//                                  const UChar_t plane1, const UChar_t plane2,
-//                                  Double_t start_w1[3], Double_t end_w1[3],
-//                                  Double_t start_w2[3], Double_t end_w2[3],
-//                                  Double_t &y, Double_t &z) const
-// {
-
-//   larlite::geo::View_t v1 = fViewType.at(plane1);
-//   larlite::geo::View_t v2 = fViewType.at(plane2);
-//   //angle of wire1 wrt z-axis in Y-Z plane...in radians
-//   Double_t angle1 = fWireAngle.at(v1);
-//   //angle of wire2 wrt z-axis in Y-Z plane...in radians
-//   Double_t angle2 = fWireAngle.at(v2);
-
-//   if (angle1 == angle2) return; //comparing two wires in the same plane...pointless.
-
-//   //coordinates of "upper" endpoints...(z1,y1) = (a,b) and (z2,y2) = (c,d)
-//   double a = 0.;
-//   double b = 0.;
-//   double c = 0.;
-//   double d = 0.;
-//   double angle = 0.;
-//   double anglex = 0.;
-
-//   // below is a special case of calculation when one of the planes is vertical.
-//   angle1 < angle2 ? angle = angle1 : angle = angle2;//get angle closest to the z-axis
-
-//   // special case, one plane is vertical
-//   if (angle1 == TMath::Pi() / 2 || angle2 == TMath::Pi() / 2) {
-//     if (angle1 == TMath::Pi() / 2) {
-
-//       anglex = (angle2 - TMath::Pi() / 2);
-//       a = end_w1[2];
-//       b = end_w1[1];
-//       c = end_w2[2];
-//       d = end_w2[1];
-//       // the if below can in principle be replaced by the sign of anglex (inverted)
-//       // in the formula for y below. But until the geometry is fully symmetric in y I'm
-//       // leaving it like this. Andrzej
-//       if ((anglex) > 0 ) b = start_w1[1];
-
-//     }
-//     else if (angle2 == TMath::Pi() / 2) {
-//       anglex = (angle1 - TMath::Pi() / 2);
-//       a = end_w2[2];
-//       b = end_w2[1];
-//       c = end_w1[2];
-//       d = end_w1[1];
-//       // the if below can in principle be replaced by the sign of anglex (inverted)
-//       // in the formula for y below. But until the geometry is fully symmetric in y I'm
-//       // leaving it like this. Andrzej
-//       if ((anglex) > 0 ) b = start_w2[1];
-//     }
-
-//     y = b + ((c - a) - (b - d) * tan(anglex)) / tan(anglex);
-//     z = a;   // z is defined by the wire in the vertical plane
-
-//     return;
-//   }
-
-//   // end of vertical case
-//   z = 0; y = 0;
-
-//   if (angle1 < (TMath::Pi() / 2.0)) {
-//     c = end_w1[2];
-//     d = end_w1[1];
-//     a = start_w2[2];
-//     b = start_w2[1];
-//   }
-//   else {
-//     c = end_w2[2];
-//     d = end_w2[1];
-//     a = start_w1[2];
-//     b = start_w1[1];
-//   }
-
-//   //Intersection point of two wires in the yz plane is completely
-//   //determined by wire endpoints and angle of inclination.
-//   z = 0.5 * ( c + a + (b - d) / TMath::Tan(angle) );
-//   y = 0.5 * ( b + d + (a - c) * TMath::Tan(angle) );
-
-//   return;
-
-// }
-
-// // Added shorthand function where start and endpoints are looked up automatically
-// //  - whether to use this or the full function depends on optimization of your
-// //    particular algorithm.  Ben J, Oct 2011
-// //--------------------------------------------------------------------
-// void Geometry::IntersectionPoint(const UInt_t  wire1,  const UInt_t  wire2,
-//                                  const UChar_t plane1, const UChar_t plane2,
-//                                  Double_t &y, Double_t &z) const
-
-// {
-//   double WireStart1[3] = {0.};
-//   double WireStart2[3] = {0.};
-//   double WireEnd1[3]   = {0.};
-//   double WireEnd2[3]   = {0.};
-
-//   this->WireEndPoints(plane1, wire1, WireStart1, WireEnd1);
-//   this->WireEndPoints(plane2, wire2, WireStart2, WireEnd2);
-//   this->IntersectionPoint(wire1, wire2, plane1, plane2,
-//                           WireStart1, WireEnd1,
-//                           WireStart2, WireEnd2, y, z);
-// }
-
+  // // Added shorthand function where start and endpoints are looked up automatically
+  // //  - whether to use this or the full function depends on optimization of your
+  // //    particular algorithm.  Ben J, Oct 2011
+  // //--------------------------------------------------------------------
+  // void Geometry::IntersectionPoint(const UInt_t  wire1,  const UInt_t  wire2,
+  // 				   const UChar_t plane1, const UChar_t plane2,
+  // 				   Double_t &y, Double_t &z) const
+    
+  // {
+  //   double WireStart1[3] = {0.};
+  //   double WireStart2[3] = {0.};
+  //   double WireEnd1[3]   = {0.};
+  //   double WireEnd2[3]   = {0.};
+    
+  //   this->WireEndPoints(plane1, wire1, WireStart1, WireEnd1);
+  //   this->WireEndPoints(plane2, wire2, WireStart2, WireEnd2);
+  //   this->IntersectionPoint(wire1, wire2, plane1, plane2,
+  // 			    WireStart1, WireEnd1,
+  // 			    WireStart2, WireEnd2, y, z);
+  // }
+  
 // UInt_t Geometry::GetClosestOpDet(const Double_t *xyz) const
 // {
 //   Double_t dist2      = 0;
