@@ -297,7 +297,8 @@ private:
     // Vectors with length = # channels
     std::vector< larlite::geo::PlaneID  >  fChannelToPlaneMap;
     std::vector<UShort_t>                  fChannelToWireMap;
-    std::map< larlite::geo::WireID, int >  fWireIDToChannel;
+    std::vector< std::vector<int> >        fChannelToWireID;    
+    std::map< std::vector<int>, int >      fWireIDToChannel;
 
     // Vectors with length = # planes
     std::vector< larlite::geo::PlaneID >   fSimplePlaneIDToPlaneID;

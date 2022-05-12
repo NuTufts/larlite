@@ -37,7 +37,7 @@
 
 #pragma link C++ class larutil::LArUtilConfig+;
 #pragma link C++ class larutil::LArUtilManager+;
-#pragma link C++ class larutil::GeometryHelper+;
+//#pragma link C++ class larutil::GeometryHelper+;
 #pragma link C++ class larutil::SpaceChargeMicroBooNEInterface+;
 #pragma link C++ class larutil::SpaceChargeMicroBooNEMCC8+;
 #pragma link C++ class larutil::SpaceChargeMicroBooNEMCC9+;

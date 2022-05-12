@@ -52,14 +52,14 @@ namespace larutil {
     if(status){
 
       // GeometryHelper
-      larlite::Message::send(larlite::msg::kNORMAL,__FUNCTION__,"Reconfiguring GeometryHelper...");
-      GeometryHelper* gser = (GeometryHelper*)(GeometryHelper::GetME());
-      gser->Reconfigure();
+      // larlite::Message::send(larlite::msg::kNORMAL,__FUNCTION__,"Reconfiguring GeometryHelper...");
+      // GeometryHelper* gser = (GeometryHelper*)(GeometryHelper::GetME());
+      // gser->Reconfigure();
 
-      // GeometryHelper
-      larlite::Message::send(larlite::msg::kNORMAL,__FUNCTION__,"Reconfiguring GeometryHelper...");
-      GeometryHelper* ghelp = (GeometryHelper*)(GeometryHelper::GetME());
-      ghelp->Reconfigure();
+      // // GeometryHelper
+      // larlite::Message::send(larlite::msg::kNORMAL,__FUNCTION__,"Reconfiguring GeometryHelper...");
+      // GeometryHelper* ghelp = (GeometryHelper*)(GeometryHelper::GetME());
+      // ghelp->Reconfigure();
 
     }
 

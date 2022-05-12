@@ -23,9 +23,6 @@ namespace larutil {
 
   bool Geometry::LoadData( larlite::geo::DetId_t detid, bool force_reload)
   {
-    // check to see if we've already loaded the larutil classes
-    //bool status = ::larutil::LArUtilBase::LoadData(force_reload);
-    //if (!status) return status;
 
     // Load the maps
     ReadTree();
@@ -39,14 +36,15 @@ namespace larutil {
 	  larlite::geo::PlaneID planeid( planegeo.cryoid, planegeo.tpcid, planegeo.planeid );
 	  fSimplePlaneIDToPlaneID.push_back( planeid );
 	  for ( auto const& wiregeo : planegeo.fWires_v ) {
-	    //std::vector< int > ptc_id = { planegeo.plane_id, planegeo.tpcid, planegeo.cryoid };
+	    std::vector< int > ptc_id = { planegeo.planeid, planegeo.tpcid, planegeo.cryoid };
 	    int ch = wiregeo.channelid;
-	    if ( ch<max_channel )
+	    if ( ch>max_channel )
 	      max_channel = ch;
 	  }
 	}
       }
     }
+    print(larlite::msg::kNORMAL, __FUNCTION__,Form(" max channel numbers: %d",max_channel));
     std::sort( fSimplePlaneIDToPlaneID.begin(), fSimplePlaneIDToPlaneID.end() );
     for (int i=0; i<fSimplePlaneIDToPlaneID.size(); i++) {
       fPlaneIDToSimplePlaneID[ fSimplePlaneIDToPlaneID[i] ] = i;
@@ -55,6 +53,7 @@ namespace larutil {
     // make channelid -> planeid map
     fChannelToPlaneMap.resize( max_channel+1 );
     fChannelToWireMap.resize( max_channel+1 );
+    fChannelToWireID.resize( max_channel+1 );
     for (auto const& cryogeo :  fCryo_v ) {
       for (auto const& tpcgeo : cryogeo.tpc_v ) {
 	for ( auto const& planegeo : tpcgeo.planes_v ) {
@@ -62,7 +61,9 @@ namespace larutil {
 	    int ch = wiregeo.channelid;
 	    fChannelToPlaneMap[ch] = larlite::geo::PlaneID( planegeo.cryoid, planegeo.tpcid, planegeo.planeid );
 	    fChannelToWireMap[ch]  = (UShort_t)wiregeo.wireid;
-	    fWireIDToChannel[ larlite::geo::WireID( planegeo.cryoid, planegeo.tpcid, planegeo.planeid, wiregeo.wireid ) ] = ch;
+	    std::vector<int> wid = {planegeo.cryoid, planegeo.tpcid, planegeo.planeid, wiregeo.wireid};
+	    fWireIDToChannel[ wid ] = ch;
+	    fChannelToWireID[ ch ]  = wid;
 	  }
 	}
       }
@@ -76,6 +77,7 @@ namespace larutil {
   {
     fChannelToPlaneMap.clear();
     fChannelToWireMap.clear();
+    fChannelToWireID.clear();
     fWireIDToChannel.clear();
     fSimplePlaneIDToPlaneID.clear();
     fPlaneIDToSimplePlaneID.clear();
@@ -195,20 +197,19 @@ namespace larutil {
     return fChannelToWireMap.at(ch);
   }
 
-//   larlite::geo::WireID Geometry::ChannelToWireID(const UInt_t ch)const
-//   {
-//     if (ch >= fChannelToWireMap.size()) {
-//       throw LArUtilException(Form("Invalid channel number: %d", ch));
-//       return larlite::geo::WireID();
-//     }
+  larlite::geo::WireID Geometry::ChannelToWireID(const UInt_t ch)const
+  {
+    if (ch >= fChannelToWireMap.size()) {
+      throw LArUtilException(Form("Invalid channel number: %d", ch));
+      return larlite::geo::WireID();
+    }
 
-//     UInt_t wire  = fChannelToWireMap.at(ch);
-//     UInt_t plane = ChannelToPlane(ch);
+    auto const& widv = fChannelToWireID.at(ch);
     
-//     larlite::geo::WireID wireID(0, 0, plane, wire);
+    larlite::geo::WireID wireID( widv[0], widv[1], widv[2], widv[3] );
     
-//     return wireID;
-//   }
+    return wireID;
+  }
 
 // larlite::geo::SigType_t Geometry::SignalType(const UInt_t ch) const
 // {
