@@ -220,6 +220,24 @@ namespace larutil {
     }
     return fCryo_v[cryo_id].tpc_v.size();
   }
+
+  /**
+   * @brief Get the number of planes in a tpc
+   *
+   */
+  UInt_t Geometry::Nplanes(UInt_t tpc_id, UInt_t cryo_id) const
+  {
+
+    if ( !IsValid(0, tpc_id, cryo_id) ) {
+      throw LArUtilException(Form("Invalid tpc,cryo ID: %d, %d", tpc_id, cryo_id));
+      return larlite::data::kINVALID_UINT;      
+    }
+
+    auto const& cryogeo  = fCryo_v[cryo_id];
+    auto const& tpcgeo   = cryogeo.tpc_v[tpc_id];
+    
+    return tpcgeo.planes_v.size();
+  }  
   
   /**
    * @brief Get the number of wires on a plane
@@ -329,16 +347,29 @@ namespace larutil {
 //   return views;
 // }
 
-// UInt_t Geometry::PlaneWireToChannel(const UInt_t plane,
-//                                     const UInt_t wire) const
-// {
+  UInt_t Geometry::PlaneWireToChannel(const UInt_t wire,
+				      const UInt_t plane,
+				      const UInt_t tpc,
+				      const UInt_t cryo ) const
+  {
 
-//   if (plane >= Nplanes() || fPlaneWireToChannelMap.at(plane).size() <= wire) {
-//     throw LArUtilException(Form("Invalid (plane, wire) = (%d, %d)", plane, wire));
-//     return larlite::data::kINVALID_UINT;
-//   }
-//   return fPlaneWireToChannelMap.at(plane).at(wire);
-// }
+    if ( !IsValid(plane,tpc,cryo) ) {
+      throw LArUtilException(Form("Invalid (plane, tpc, cryo) = (%d, %d, %d)", plane, tpc, cryo));
+      return larlite::data::kINVALID_UINT;
+    }
+
+    auto const& cryogeo  = fCryo_v[cryo];
+    auto const& tpcgeo   = cryogeo.tpc_v[tpc];
+    auto const& planegeo = tpcgeo.planes_v[plane];
+
+    if ( (int)wire<0 || wire>=planegeo.fWires_v.size() ) {
+      throw LArUtilException(Form("Invalid Wire (wire, plane, tpc, cryo) = (%d, %d, %d, %d)", wire, plane, tpc, cryo));
+      return larlite::data::kINVALID_UINT;
+    }
+    
+    return planegeo.fWires_v[wire].channelid;
+    
+  }
 
 // UInt_t Geometry::NearestChannel(const Double_t worldLoc[3],
 //                                 const UInt_t PlaneNo) const

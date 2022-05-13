@@ -91,6 +91,9 @@ namespace larutil {
     // Number of TPCS in cryostat
     UInt_t NTPCs( UInt_t cryoid=0) const;
 
+    // Number of TPCS in cryostat
+    UInt_t Nplanes( UInt_t tpcid=0, UInt_t cryoid=0 ) const;
+    
     /// Number of wires in plane "p" of TPC "tpc" of cryostat "cstat".
     UInt_t Nwires(UInt_t p, UInt_t tpc=0, UInt_t cstat=0) const;
     
@@ -128,8 +131,11 @@ namespace larutil {
     // std::set<larlite::geo::View_t>  const Views() const;
     
     // /// convert plane, wire to channel
-    // UInt_t   PlaneWireToChannel(const UInt_t plane,
-    //                             const UInt_t wire) const;
+    UInt_t   PlaneWireToChannel(const UInt_t wire,
+				const UInt_t plane,
+				const UInt_t tpc=0,
+				const UInt_t cryoid=0 ) const;
+                                
 
     /// convert channel to planeid
     larlite::geo::PlaneID  ChannelToPlane(const UInt_t ch) const;
