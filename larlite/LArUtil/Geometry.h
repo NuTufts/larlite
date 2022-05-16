@@ -151,9 +151,11 @@ namespace larutil {
     // UInt_t   NearestChannel(const std::vector<Double_t> &worldLoc,
     //                         const UInt_t PlaneNo) const;
 
-    // /// find the nearest channel to input world coordinates
+    /// find the nearest channel to input world coordinates
     // UInt_t   NearestChannel(const TVector3& worldLoc,
-    //                         const UInt_t    PlaneNo) const;
+    //                         const UInt_t    PlaneNo,
+    // 			    const UInt_t    tpcid=0,
+    // 			    const UInt_t    cryoid=0) const;
 
     // /// nearest wire to input world coordinates
     // UInt_t NearestWire(const Double_t worldLoc[3],
@@ -163,9 +165,11 @@ namespace larutil {
     // UInt_t NearestWire(const std::vector<Double_t> &worldLoc,
     //                    const UInt_t  PlaneNo) const;
 
-    // /// nearest wire to input world coordinates
-    // UInt_t NearestWire(const TVector3& worldLoc,
-    //                    const UInt_t PlaneNo) const;
+    /// nearest wire to input world coordinates
+    UInt_t NearestWire(const TVector3& worldLoc,
+                       const UInt_t PlaneNo,
+		       const UInt_t tpcid=0,
+		       const UInt_t cryoid=0) const;
 
     // /// exact wire coordinate (fractional wire) to input world coordinates
     // Double_t WireCoordinate(const Double_t worldLoc[3],
@@ -175,9 +179,17 @@ namespace larutil {
     // Double_t WireCoordinate(const std::vector<Double_t> &worldLoc,
     //                         const UInt_t  PlaneNo) const;
 
-    // /// exact wire coordinate (fractional wire) to input world coordinates
-    // Double_t WireCoordinate(const TVector3& worldLoc,
-    //                         const UInt_t PlaneNo) const;
+    /// exact wire coordinate (fractional wire) to input world coordinates
+    Double_t WireCoordinate(const TVector3& worldLoc,
+                            const UInt_t PlaneNo,
+			    const UInt_t tpcid=0,
+			    const UInt_t cryoid=0) const;
+
+    // Projection position onto a plane
+    TVector3 ProjectionOntoPlane( const TVector3& worldLoc,
+				  const UInt_t PlaneNo,
+				  const UInt_t tpcid=0,
+				  const UInt_t cryoid=0 ) const;
 
     // /// half width of the TPC
     // Double_t   DetHalfWidth() const

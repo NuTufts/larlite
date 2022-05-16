@@ -403,39 +403,44 @@ namespace larutil {
 //   return NearestWire(loc, PlaneNo);
 // }
 
-// UInt_t Geometry::NearestWire(const TVector3 &worldLoc,
-//                              const UInt_t PlaneNo) const
-// {
-//   int NearestWireNumber = int(nearbyint(worldLoc[1] * fOrthVectorsY.at(PlaneNo)
-//                                         + worldLoc[2] * fOrthVectorsZ.at(PlaneNo)
-//                                         - fFirstWireProj.at(PlaneNo)));
+  UInt_t Geometry::NearestWire(const TVector3 &worldLoc,
+			       const UInt_t PlaneNo,
+			       const UInt_t tpcid,
+			       const UInt_t cryoid ) const
+  {
 
-//   unsigned int wireNumber = (unsigned int) NearestWireNumber;
+    if (!IsValid( PlaneNo, tpcid, cryoid)) {
+      throw LArUtilException(Form("Invalid ID plane_id=%d tpc_id=%d cryo_id=%d", PlaneNo, tpcid, cryoid));
+      return larlite::data::kINVALID_UINT;
+    }
 
-//   if (NearestWireNumber < 0 ||
-//       NearestWireNumber >= (int)(this->Nwires(PlaneNo)) ) {
+    // get the plane
+    auto const& cryogeo  = fCryo_v[cryoid];
+    auto const& tpcgeo   = cryogeo.tpc_v[tpcid];
+    auto const& planegeo = tpcgeo.planes_v[PlaneNo];
+    
+    auto const& firstWirePos = planegeo.fWires_v[0].fWireStartVtx;
+    
+    double cospitchdir = 0.;
+    for (int i=0; i<3; i++)
+      cospitchdir += (worldLoc[i]-firstWirePos[i])*planegeo.fWirePitchDir[i];
+    cospitchdir /= planegeo.fWirePitchLen;
+    
+    int NearestWireNumber = nearbyint(cospitchdir);
+    
+    unsigned int wireNumber = 0;
+    if (NearestWireNumber < 0 )
+      wireNumber = 0;
+    else if (NearestWireNumber>=(int)planegeo.fWires_v.size())
+      wireNumber = planegeo.fWires_v.size()-1;
+    else
+      wireNumber = NearestWireNumber;
 
-//     if (NearestWireNumber < 0) wireNumber = 0;
-//     else wireNumber = this->Nwires(PlaneNo) - 1;
+    // std::cout << "wirepitchdir=(" << planegeo.fWirePitchDir[0] << "," << planegeo.fWirePitchDir[1] << "," << planegeo.fWirePitchDir[2] << ")" << std::endl;
+    // std::cout << "cospitchdir=" << cospitchdir << std::endl;
 
-//     larutil::InvalidWireError err(Form("Can't find nearest wire for (%g,%g,%g)",
-// 				       worldLoc[0], worldLoc[1], worldLoc[2]));
-//     err.better_wire_number = wireNumber;
-
-//     throw err;
-//   }
-//   /*
-//   std::cout<<"NearestWireID"<<std::endl;
-//   std::cout<<Form("(%g,%g,%g) position ... using (%g,%g,%g) ... Wire %d Plane %d",
-//                   worldLoc[0],worldLoc[1],worldLoc[2],
-//                   fOrthVectorsY[PlaneNo],
-//                   fOrthVectorsZ[PlaneNo],
-//                   fFirstWireProj[PlaneNo],
-//                   wireNumber,PlaneNo)
-//            << std::endl;
-//   */
-//   return wireNumber;
-// }
+    return wireNumber;
+  }
 
 // /// exact wire coordinate (fractional wire) to input world coordinates
 // Double_t Geometry::WireCoordinate(const Double_t worldLoc[3],
@@ -453,29 +458,63 @@ namespace larutil {
 //   return WireCoordinate(loc, PlaneNo);
 // }
 
-// /// exact wire coordinate (fractional wire) to input world coordinates
-// Double_t Geometry::WireCoordinate(const TVector3& worldLoc,
-//                                   const UInt_t PlaneNo) const
-// {
+  // exact wire coordinate (fractional wire) to input world coordinates
+  Double_t Geometry::WireCoordinate(const TVector3& worldLoc,
+				    const UInt_t PlaneNo,
+				    const UInt_t tpcid,
+				    const UInt_t cryoid ) const
+  {
+    
+    if (!IsValid( PlaneNo, tpcid, cryoid)) {
+      throw LArUtilException(Form("Invalid ID plane_id=%d tpc_id=%d cryo_id=%d", PlaneNo, tpcid, cryoid));
+      return larlite::data::kINVALID_UINT;
+    }
+    
+    // get the plane
+    auto const& cryogeo  = fCryo_v[cryoid];
+    auto const& tpcgeo   = cryogeo.tpc_v[tpcid];
+    auto const& planegeo = tpcgeo.planes_v[PlaneNo];
+    
+    auto const& firstWirePos = planegeo.fWires_v[0].fWireStartVtx;
+    
+    double cospitchdir = 0.;
+    for (int i=0; i<3; i++)
+      cospitchdir += (worldLoc[i]-firstWirePos[i])*planegeo.fWirePitchDir[i];
+    cospitchdir /= planegeo.fWirePitchLen;
+    
+    return cospitchdir;
+  }
+  
+  // Projection position onto a plane
+  TVector3 Geometry::ProjectionOntoPlane( const TVector3& worldLoc,
+					  const UInt_t PlaneNo,
+					  const UInt_t tpcid,
+					  const UInt_t cryoid ) const
+  {
+    if ( !IsValid(PlaneNo,tpcid,cryoid) ) {
+      throw LArUtilException(Form("Invalid ID plane_id=%d tpc_id=%d cryo_id=%d", PlaneNo, tpcid, cryoid));
+      return TVector3(0,0,0);
+    }
 
-//   Double_t NearestWireNumber = worldLoc[1] * fOrthVectorsY.at(PlaneNo)
-//                                + worldLoc[2] * fOrthVectorsZ.at(PlaneNo)
-//                                - fFirstWireProj.at(PlaneNo);
+    // get the plane
+    auto const& cryogeo  = fCryo_v[cryoid];
+    auto const& tpcgeo   = cryogeo.tpc_v[tpcid];
+    auto const& planegeo = tpcgeo.planes_v[PlaneNo];
 
-
-//   /*
-//   std::cout<<"NearestWireID"<<std::endl;
-//   std::cout<<Form("(%g,%g,%g) position ... using (%g,%g,%g) ... Wire %d Plane %d",
-//                   worldLoc[0],worldLoc[1],worldLoc[2],
-//                   fOrthVectorsY[PlaneNo],
-//                   fOrthVectorsZ[PlaneNo],
-//                   fFirstWireProj[PlaneNo],
-//                   wireNumber,PlaneNo)
-//            << std::endl;
-//   */
-//   return NearestWireNumber;
-// }
-
+    TVector3 r = worldLoc-planegeo.fBoundingBox[0];
+    double proj = 0.;
+    for (int i=0; i<3; i++) {
+      proj += planegeo.fNormToCathode[i]*r[i];
+    }
+    TVector3 projection = worldLoc-proj*planegeo.fNormToCathode;
+    //withinPlane = true;
+    // for (int i=0; i<3; i++) {
+    //   if ( projection[i]<planegeo.fBoundingBox[0][i]-0.1 || projection[i]>planegeo.fBoundingBox[1][i]+0.1 )
+    // 	withinPlane = false;
+    // }
+    return projection;
+  }
+  
 
 // // distance between planes p1 < p2
 // Double_t Geometry::PlanePitch(const UChar_t p1, const UChar_t p2) const
