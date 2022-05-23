@@ -122,7 +122,11 @@ namespace larutil {
 
   private:
     
-    std::vector< Double_t >          fEfield;           ///< kV/cm 
+    std::vector< Double_t >          fEfield_cryoid;    ///< kV/cm
+    std::vector< Double_t >          fEfield_tpcid;     ///< kV/cm
+    std::vector< Double_t >          fEfield_planeid;   ///< kV/cm
+    std::vector< Double_t >          fEfield;           ///< kV/cm
+    std::map<std::vector<int>,int>   fCTP_to_efieldindex;
     Double_t                         fTemperature;      ///< kelvin
     Double_t                         fVd;               ///< cm/us
     Double_t                         fElectronlifetime; ///< microseconds

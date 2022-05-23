@@ -133,8 +133,46 @@ namespace larutil {
       return false;
 
     return true;
-  }  
+  }
 
+  /**
+   * @brief return Cryo stat geo object
+   *
+   */
+  const larlite::larutil::CryoGeo& Geometry::GetCryostat( UInt_t cryoid ) const
+  {
+    if ( cryoid<0 || cryoid>=fCryo_v.size() ) {
+      throw LArUtilException(Form("Invalid cryostat id: %d", cryoid));
+    }
+    return fCryo_v.at(cryoid);
+  }
+
+  /**
+   * @brief return TPC geo object
+   *
+   */
+  const larlite::larutil::TPCGeo& Geometry::GetTPC( UInt_t tpcid, UInt_t cryoid ) const
+  {
+    auto const& cryo = GetCryostat(cryoid);
+    if ( tpcid<0 || tpcid>=cryo.tpc_v.size() )
+      throw LArUtilException(Form("Invalid TPC id: %d", tpcid));
+    
+    return cryo.tpc_v.at(tpcid);
+  }
+
+  /**
+   * @brief return Plane Geo object
+   *
+   */
+  const larlite::larutil::PlaneGeo& Geometry::GetPlane( UInt_t planeid, UInt_t tpcid, UInt_t cryoid ) const
+  {
+    auto const& tpc = GetTPC(tpcid,cryoid);
+    if ( planeid<0 || planeid>=tpc.planes_v.size() )
+      throw LArUtilException(Form("Invalid Plane id: %d", planeid));
+    
+    return tpc.planes_v.at(planeid);
+  }
+  
   /**
    * @brief return cryo stat bounds
    *

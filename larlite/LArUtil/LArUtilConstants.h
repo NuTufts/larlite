@@ -18,7 +18,7 @@ namespace larutil{
       "",                        // CSU 40 L
       "",                        // LArIAT
       "icarus_larlite_geodata.root", // ICARUS T600
-      "sbnd_larlite_geodata.root" // ICARUS T600
+      "sbnd_larlite_geodata.root"    // SBND
     };
 
   // LAr Properties
@@ -32,14 +32,14 @@ namespace larutil{
       "",                        // LBNE 34kt
       "",                        // CSU 40 L
       "",                        // LArIAT
-      "",                         // ICARUS T600
-      ""
+      "icarus_larlite_servicesdata.root", // ICARUS T600
+      ""                         // SBND
     };
   
-  const std::string kTREENAME_GEOMETRY = "scanner/Geometry";
-  const std::string kTREENAME_DETECTORPROPERTIES = "scanner/DetectorProperties";
-  const std::string kTREENAME_LARPROPERTIES = "scanner/LArProperties";
-  const std::string kTREENAME_TIMESERVICE = "scanner/TimeService";
+  const std::string kTREENAME_GEOMETRY           = "Geometry";
+  const std::string kTREENAME_DETECTORPROPERTIES = "DetectorProperties";
+  const std::string kTREENAME_LARPROPERTIES      = "LArProperties";
+  const std::string kTREENAME_TIMESERVICE        = "scanner/TimeService";
   //--- LArSoft parameters ---//
 
   // Recombination factor coefficients come from Nucl.Instrum.Meth.A523:275-286,2004

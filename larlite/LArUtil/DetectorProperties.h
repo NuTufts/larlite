@@ -60,13 +60,11 @@ namespace larutil {
       return (X / fXTicksCoefficient +  fXTicksOffsets.at(p));
     }
 
-    Double_t ConvertTicksToX(Double_t ticks, Int_t p) const {
-      return (ticks - fXTicksOffsets.at(p) ) * fXTicksCoefficient;
+    Double_t ConvertTicksToX(Double_t ticks, Int_t p, Int_t tpc=0, Int_t cryo=0) const {
+      return (ticks - GetXTicksOffset(p,tpc,cryo) ) * fXTicksCoefficient;
     }
     
-    Double_t GetXTicksOffset(Int_t p) const {
-      return fXTicksOffsets.at(p);
-    }
+    Double_t GetXTicksOffset(Int_t p, Int_t tpc=0, Int_t cryo=0) const;
 
     Double_t GetXTicksCoefficient() const {
       return fXTicksCoefficient;
@@ -101,7 +99,11 @@ namespace larutil {
     
     Double_t fXTicksCoefficient; ///< Parameters for x<-->ticks
     bool     fXTicksParamsLoaded;///<  calculations
+    std::vector<Int_t>    fXTicksOffsets_cryoid;
+    std::vector<Int_t>    fXTicksOffsets_tpcid;
+    std::vector<Int_t>    fXTicksOffsets_planeid;
     std::vector<Double_t> fXTicksOffsets;
+    std::map< std::vector<int>, int > fCTP_to_offsetindex;
 
   };
 }

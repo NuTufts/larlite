@@ -22,6 +22,9 @@ namespace larutil {
   void LArProperties::ClearData()
   {
     fEfield.clear();
+    fEfield_cryoid.clear();
+    fEfield_tpcid.clear();
+    fEfield_planeid.clear();
     fTemperature = larlite::data::kINVALID_DOUBLE;
     fVd = larlite::data::kINVALID_DOUBLE;
     fElectronlifetime = larlite::data::kINVALID_DOUBLE;
@@ -80,7 +83,16 @@ namespace larutil {
     ch->AddFile(_file_name.c_str());
 
     std::string error_msg("");
-    if(!(ch->GetBranch("fEfield")))           error_msg += "      fEfield\n";
+    if ( LArUtilConfig::Detector()==larlite::geo::kMicroBooNE ) {
+      std::cout << "old fEfield branch used for MicroBooNE" << std::endl;      
+      if(!(ch->GetBranch("fEfield")))           error_msg += "      fEfield\n";
+    }
+    else {
+      if(!(ch->GetBranch("fEfield_cryoid")))   error_msg += "      fEfield_cryoid\n";
+      if(!(ch->GetBranch("fEfield_tpcid")))    error_msg += "      fEfield_tpcid\n";
+      if(!(ch->GetBranch("fEfield_planeid")))  error_msg += "      fEfield_planeid\n";
+      if(!(ch->GetBranch("fEfield_field")))    error_msg += "      fEfield_field\n";      
+    }      
     if(!(ch->GetBranch("fTemperature")))      error_msg += "      fTemperature\n";
     if(!(ch->GetBranch("fElectronlifetime"))) error_msg += "      fElectronlifetime\n";
     if(!(ch->GetBranch("fRadiationLength")))  error_msg += "      fRadiationLength\n";
@@ -146,8 +158,18 @@ namespace larutil {
     }
 
     std::vector<Double_t> *pEfield=nullptr;
-    ch->SetBranchAddress("fEfield",&pEfield);
-
+    std::vector<Int_t> *pEfield_cryoid=nullptr;
+    std::vector<Int_t> *pEfield_tpcid=nullptr;
+    std::vector<Int_t> *pEfield_planeid=nullptr;
+    if ( LArUtilConfig::Detector()==larlite::geo::kMicroBooNE ) {    
+      ch->SetBranchAddress("fEfield",  &pEfield);
+    }
+    else {
+      ch->SetBranchAddress("fEfield_field",  &pEfield);      
+      ch->SetBranchAddress("fEfield_cryoid", &pEfield_cryoid);
+      ch->SetBranchAddress("fEfield_tpcid",  &pEfield_tpcid);
+      ch->SetBranchAddress("fEfield_planeid",&pEfield_planeid);
+    }      
     ch->SetBranchAddress("fTemperature",&fTemperature);
     ch->SetBranchAddress("fElectronlifetime",&fElectronlifetime);
     ch->SetBranchAddress("fRadiationLength",&fRadiationLength);
@@ -223,8 +245,16 @@ namespace larutil {
     
     // Copy vector contents
 
-    for(size_t i=0; i<pEfield->size(); ++i)
-      fEfield.push_back(pEfield->at(i));
+    for(size_t i=0; i<pEfield->size(); ++i) {
+      std::vector<int> ctp = { pEfield_cryoid->at(i),
+	pEfield_tpcid->at(i),
+	pEfield_planeid->at(i) };
+      fCTP_to_efieldindex[ ctp ] = i;
+      fEfield_cryoid.push_back(  pEfield_cryoid->at(i) );
+      fEfield_tpcid.push_back(   pEfield_tpcid->at(i) );
+      fEfield_planeid.push_back( pEfield_planeid->at(i) );      
+      fEfield.push_back(pEfield->at(i));      
+    }
 
     size_t n_entries = pFastScintSpectrum->size();
     fFastScintSpectrum.reserve(n_entries);

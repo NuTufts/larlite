@@ -96,6 +96,15 @@ namespace larutil {
     
     /// Number of wires in plane "p" of TPC "tpc" of cryostat "cstat".
     UInt_t Nwires(UInt_t p, UInt_t tpc=0, UInt_t cstat=0) const;
+
+    /// Get Cryostat
+    const CryoGeo& GetCryostat(UInt_t cryoid) const;
+
+    /// Get TPC
+    const TPCGeo& GetTPC(UInt_t tpcid, UInt_t cryoid) const;
+
+    /// Get Plane 
+    const PlaneGeo& GetPlane(UInt_t planeid, UInt_t tpcid, UInt_t cryoid) const;
     
     /// boundaries of cryostat, 3 pairs of +/- coord
     void   CryostatBoundaries(Double_t* boundaries, int cryo_id=0) const;

@@ -32,6 +32,11 @@ namespace larutil {
     fTimeOffsetZ = larlite::data::kINVALID_DOUBLE;
 
     fXTicksCoefficient = larlite::data::kINVALID_DOUBLE;
+
+
+    fXTicksOffsets_cryoid.clear();
+    fXTicksOffsets_tpcid.clear();
+    fXTicksOffsets_planeid.clear();            
     fXTicksOffsets.clear();    
 
   }
@@ -53,7 +58,16 @@ namespace larutil {
     if(!(ch->GetBranch("fTimeOffsetV")))       error_msg += "      fTimeOffsetV\n";
     if(!(ch->GetBranch("fTimeOffsetZ")))       error_msg += "      fTimeOffsetZ\n";
     if(!(ch->GetBranch("fXTicksCoefficient"))) error_msg += "      fXTicksCoefficient\n";
-    if(!(ch->GetBranch("fXTicksOffsets")))     error_msg += "      fXTicksOffsets\n";
+    if ( LArUtilConfig::Detector()==larlite::geo::kMicroBooNE ) {
+      std::cout << "old fXTicksOffsets branch used for MicroBooNE" << std::endl;
+      if(!(ch->GetBranch("fXTicksOffsets")))     error_msg += "      fXTicksOffsets\n";
+    }
+    else {
+      if(!(ch->GetBranch("fXTicksOffsets_cryoid")))   error_msg += "      fXTicksOffsets_cryoid\n";
+      if(!(ch->GetBranch("fXTicksOffsets_tpcid")))    error_msg += "      fXTicksOffsets_tpcid\n";
+      if(!(ch->GetBranch("fXTicksOffsets_planeid")))  error_msg += "      fXTicksOffsets_planeid\n";
+      if(!(ch->GetBranch("fXTicksOffsets_offset")))   error_msg += "      fXTicksOffsets_offset\n";      
+    }
     if(!error_msg.empty()) {
 
       throw larlite::larutil::LArUtilException(Form("Missing following TBranches...\n%s",error_msg.c_str()));
@@ -71,16 +85,49 @@ namespace larutil {
     ch->SetBranchAddress("fTimeOffsetZ",&fTimeOffsetZ);
     ch->SetBranchAddress("fXTicksCoefficient",&fXTicksCoefficient);
 
-    std::vector<Double_t> *pXTicksOffsets=nullptr;
-    ch->SetBranchAddress("fXTicksOffsets",&pXTicksOffsets);
+    std::vector<Int_t>    *pXTicksOffsets_cryoid=nullptr;
+    std::vector<Int_t>    *pXTicksOffsets_tpcid=nullptr;
+    std::vector<Int_t>    *pXTicksOffsets_planeid=nullptr;
+    std::vector<Double_t> *pXTicksOffsets_offset=nullptr;    
+    if ( LArUtilConfig::Detector()==larlite::geo::kMicroBooNE ) {
+      ch->SetBranchAddress("fXTicksOffsets",&pXTicksOffsets_offset);
+    }
+    else {
+      ch->SetBranchAddress("fXTicksOffsets_cryoid", &pXTicksOffsets_cryoid);      
+      ch->SetBranchAddress("fXTicksOffsets_tpcid",  &pXTicksOffsets_tpcid);      
+      ch->SetBranchAddress("fXTicksOffsets_planeid",&pXTicksOffsets_planeid);      
+      ch->SetBranchAddress("fXTicksOffsets_offset", &pXTicksOffsets_offset);
+    }
 
     ch->GetEntry(0);
 
-    for(size_t i=0; i<pXTicksOffsets->size(); ++i)
-      fXTicksOffsets.push_back(pXTicksOffsets->at(i));
-
+    for(size_t i=0; i<pXTicksOffsets_offset->size(); ++i) {
+      std::vector<int> ctp = { pXTicksOffsets_cryoid->at(i),
+	pXTicksOffsets_tpcid->at(i),
+	pXTicksOffsets_planeid->at(i) };
+      fCTP_to_offsetindex[ ctp ] = i;
+      fXTicksOffsets_cryoid.push_back(  pXTicksOffsets_cryoid->at(i) );
+      fXTicksOffsets_tpcid.push_back(   pXTicksOffsets_tpcid->at(i) );
+      fXTicksOffsets_planeid.push_back( pXTicksOffsets_planeid->at(i) );      
+      fXTicksOffsets.push_back(pXTicksOffsets_offset->at(i));
+    }
+    
     delete ch;
     return true;
+  }
+
+  /**
+   * @brief Get Offset between start of image and trigger tick
+   *
+   */
+  Double_t DetectorProperties::GetXTicksOffset(Int_t p, Int_t tpc, Int_t cryo) const {
+    std::vector< int > ctp = { cryo, tpc, p };
+    auto it=fCTP_to_offsetindex.find(ctp);
+    if ( it==fCTP_to_offsetindex.end() ) {
+      throw larlite::larutil::LArUtilException(Form("Bad (cryo,tpc,plane) number"));
+    }
+
+    return fXTicksOffsets.at( it->second );
   }
 
 }
