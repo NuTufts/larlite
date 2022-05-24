@@ -15,6 +15,9 @@ namespace larutil {
 			getenv("LARLITE_COREDIR"),
 			kUTIL_DATA_FILENAME[LArUtilConfig::Detector()].c_str());
       _tree_name = kTREENAME_DETECTORPROPERTIES;
+      if ( LArUtilConfig::Detector()==larlite::geo::kMicroBooNE ) {
+	_tree_name = "scanner/"+kTREENAME_DETECTORPROPERTIES;
+      }
       LoadData();
     }
   }
@@ -102,13 +105,23 @@ namespace larutil {
     ch->GetEntry(0);
 
     for(size_t i=0; i<pXTicksOffsets_offset->size(); ++i) {
-      std::vector<int> ctp = { pXTicksOffsets_cryoid->at(i),
-	pXTicksOffsets_tpcid->at(i),
-	pXTicksOffsets_planeid->at(i) };
-      fCTP_to_offsetindex[ ctp ] = i;
-      fXTicksOffsets_cryoid.push_back(  pXTicksOffsets_cryoid->at(i) );
-      fXTicksOffsets_tpcid.push_back(   pXTicksOffsets_tpcid->at(i) );
-      fXTicksOffsets_planeid.push_back( pXTicksOffsets_planeid->at(i) );      
+      if ( LArUtilConfig::Detector()==larlite::geo::kMicroBooNE) {
+	// to do: homogenize microboone with other detectors
+	std::vector<int> ctp = { 0, 0, (int)i };
+	fCTP_to_offsetindex[ ctp ] = i;
+	fXTicksOffsets_cryoid.push_back(  0 );
+	fXTicksOffsets_tpcid.push_back(   0 );
+	fXTicksOffsets_planeid.push_back( (int)i );
+      }
+      else {
+	std::vector<int> ctp = { pXTicksOffsets_cryoid->at(i),
+	  pXTicksOffsets_tpcid->at(i),
+	  pXTicksOffsets_planeid->at(i) };
+	fCTP_to_offsetindex[ ctp ] = i;
+	fXTicksOffsets_cryoid.push_back(  pXTicksOffsets_cryoid->at(i) );
+	fXTicksOffsets_tpcid.push_back(   pXTicksOffsets_tpcid->at(i) );
+	fXTicksOffsets_planeid.push_back( pXTicksOffsets_planeid->at(i) );	
+      }
       fXTicksOffsets.push_back(pXTicksOffsets_offset->at(i));
     }
     

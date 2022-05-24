@@ -244,18 +244,27 @@ namespace larutil {
     ch->GetEntry(0);
     
     // Copy vector contents
-
     for(size_t i=0; i<pEfield->size(); ++i) {
-      std::vector<int> ctp = { pEfield_cryoid->at(i),
-	pEfield_tpcid->at(i),
-	pEfield_planeid->at(i) };
-      fCTP_to_efieldindex[ ctp ] = i;
-      fEfield_cryoid.push_back(  pEfield_cryoid->at(i) );
-      fEfield_tpcid.push_back(   pEfield_tpcid->at(i) );
-      fEfield_planeid.push_back( pEfield_planeid->at(i) );      
+      if ( LArUtilConfig::Detector()==larlite::geo::kMicroBooNE) {
+	// to do: homogenize microboone with other detectors
+	std::vector<int> ctp = { 0, 0, (int)i };
+	fCTP_to_efieldindex[ ctp ] = (int)i;
+	fEfield_cryoid.push_back(  0 );
+	fEfield_tpcid.push_back(   0 );
+	fEfield_planeid.push_back( i ); 
+      }
+      else {
+	std::vector<int> ctp = { pEfield_cryoid->at(i),
+	  pEfield_tpcid->at(i),
+	  pEfield_planeid->at(i) };
+	fCTP_to_efieldindex[ ctp ] = i;
+	fEfield_cryoid.push_back(  pEfield_cryoid->at(i) );
+	fEfield_tpcid.push_back(   pEfield_tpcid->at(i) );
+	fEfield_planeid.push_back( pEfield_planeid->at(i) );
+      }
       fEfield.push_back(pEfield->at(i));      
     }
-
+    
     size_t n_entries = pFastScintSpectrum->size();
     fFastScintSpectrum.reserve(n_entries);
     fFastScintEnergies.reserve(n_entries);
@@ -263,6 +272,8 @@ namespace larutil {
       fFastScintSpectrum.push_back(pFastScintSpectrum->at(i));
       fFastScintEnergies.push_back(pFastScintEnergies->at(i));
     }
+    //std::cout << "finished fast-scint" << std::endl;
+	
     n_entries = pSlowScintSpectrum->size();
     fSlowScintSpectrum.reserve(n_entries);
     fSlowScintEnergies.reserve(n_entries);
@@ -270,6 +281,8 @@ namespace larutil {
       fSlowScintSpectrum.push_back(pSlowScintSpectrum->at(i));
       fSlowScintEnergies.push_back(pSlowScintEnergies->at(i));
     }
+    //std::cout << "finished slow-scint" << std::endl;
+    
     n_entries = pRIndexSpectrum->size();
     fRIndexSpectrum.reserve(n_entries);
     fRIndexEnergies.reserve(n_entries);
@@ -277,6 +290,8 @@ namespace larutil {
       fRIndexSpectrum.push_back(pRIndexSpectrum->at(i));
       fRIndexEnergies.push_back(pRIndexEnergies->at(i));
     }
+    //std::cout << "finished rindex" << std::endl;
+	
     n_entries = pAbsLengthSpectrum->size();
     fAbsLengthSpectrum.reserve(n_entries);
     fAbsLengthEnergies.reserve(n_entries);
@@ -284,6 +299,8 @@ namespace larutil {
       fAbsLengthSpectrum.push_back(pAbsLengthSpectrum->at(i));
       fAbsLengthEnergies.push_back(pAbsLengthEnergies->at(i));
     }
+    //std::cout << "finished abslength" << std::endl;
+    
     n_entries = pRayleighSpectrum->size();
     fRayleighSpectrum.reserve(n_entries);
     fRayleighEnergies.reserve(n_entries);
@@ -291,22 +308,29 @@ namespace larutil {
       fRayleighSpectrum.push_back(pRayleighSpectrum->at(i));
       fRayleighEnergies.push_back(pRayleighEnergies->at(i));
     }
+    //std::cout << "finished raleigh" << std::endl;
 
+    // BROKEN
+    // size_t n_surface = pReflectiveSurfaceNames->size();
+    // std::cout << pReflectiveSurfaceNames->size() << " "
+    // 	      << pReflectiveSurfaceEnergies->size() << " "
+    // 	      << pReflectiveSurfaceReflectances->size() << " "
+    // 	      << pReflectiveSurfaceDiffuseFractions->size()
+    // 	      << std::endl;
+    // fReflectiveSurfaceNames.reserve(n_surface);
+    // fReflectiveSurfaceEnergies.reserve(n_surface);
+    // fReflectiveSurfaceReflectances.reserve(n_surface);
+    // fReflectiveSurfaceDiffuseFractions.reserve(n_surface);
+    // for(size_t i=0; i<n_surface; ++i) {
 
-    size_t n_surface = pReflectiveSurfaceNames->size();
-    fReflectiveSurfaceNames.reserve(n_surface);
-    fReflectiveSurfaceEnergies.reserve(n_surface);
-    fReflectiveSurfaceReflectances.reserve(n_surface);
-    fReflectiveSurfaceDiffuseFractions.reserve(n_surface);
-    for(size_t i=0; i<n_surface; ++i) {
+    //   fReflectiveSurfaceNames.push_back(pReflectiveSurfaceNames->at(i));
+    //   fReflectiveSurfaceEnergies.push_back(pReflectiveSurfaceEnergies->at(i));
+    //   fReflectiveSurfaceReflectances.push_back(pReflectiveSurfaceReflectances->at(i));
+    //   fReflectiveSurfaceDiffuseFractions.push_back(pReflectiveSurfaceDiffuseFractions->at(i));
 
-      fReflectiveSurfaceNames.push_back(pReflectiveSurfaceNames->at(i));
-      fReflectiveSurfaceEnergies.push_back(pReflectiveSurfaceEnergies->at(i));
-      fReflectiveSurfaceReflectances.push_back(pReflectiveSurfaceReflectances->at(i));
-      fReflectiveSurfaceDiffuseFractions.push_back(pReflectiveSurfaceDiffuseFractions->at(i));
-
-    }
-    
+    // }
+    // std::cout << "finished surfaces" << std::endl;
+	
     delete ch;
     return true;
   }

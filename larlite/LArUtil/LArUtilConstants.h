@@ -33,7 +33,7 @@ namespace larutil{
       "",                        // CSU 40 L
       "",                        // LArIAT
       "icarus_larlite_servicesdata.root", // ICARUS T600
-      ""                         // SBND
+      "sbnd_larlite_servicesdata.root"    // SBND
     };
   
   const std::string kTREENAME_GEOMETRY           = "Geometry";
