@@ -132,6 +132,12 @@ namespace larutil {
     /// convert channel number to list of possible WireIDs
     larlite::geo::WireID ChannelToWireID(const UInt_t channel) const;
 
+    // get simple, sequential plane index for cryo,tpc,plane id
+    int GetSimplePlaneIndexFromCTP( const int cryoid, const int tpcid, const int planeid ) const;
+
+    // from simple, sequential plane index get cryo,tpc,plane id
+    std::vector<int> GetCTPfromSimplePlaneIndex( const int planeindex ) const;
+
     // /// return the signal type for a given channel
     // larlite::geo::SigType_t SignalType(const UInt_t channel)  const;
 
@@ -207,6 +213,9 @@ namespace larutil {
 				  const UInt_t PlaneNo,
 				  const UInt_t tpcid=0,
 				  const UInt_t cryoid=0 ) const;
+
+    // Get cryo and tpc id's that contains the 3D point
+    std::vector<int> GetContainingCryoAndTPCIDs( const TVector3& worldLoc ) const;
 
     // /// half width of the TPC
     // Double_t   DetHalfWidth() const
@@ -355,8 +364,13 @@ private:
     std::vector< const larlite::larutil::WireGeo* > fChannelToWireGeoMap; // fast access
 
     // Vectors with length = # planes
+    // SimplePlaneID is a sequential ID looping through cryos and tpcs in that order
+    // Used for connecting to images stored sequentially in an std::vector
     std::vector< larlite::geo::PlaneID >   fSimplePlaneIDToPlaneID;
     std::map< larlite::geo::PlaneID, int > fPlaneIDToSimplePlaneID;
+    std::vector< std::array<int,3> >       fSimplePlaneIDtoCTP;
+    std::map< std::array<int,3>, int >     fCTPtoSimplePlaneID;
+
     
     //std::vector<larlite::geo::SigType_t> fSignalType;
     //std::vector<larlite::geo::View_t>    fViewType;

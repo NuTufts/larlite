@@ -46,8 +46,14 @@ namespace larutil {
     }
     print(larlite::msg::kNORMAL, __FUNCTION__,Form(" max channel numbers: %d",max_channel));
     std::sort( fSimplePlaneIDToPlaneID.begin(), fSimplePlaneIDToPlaneID.end() );
+    fSimplePlaneIDtoCTP.clear();
+    fCTPtoSimplePlaneID.clear();
     for (int i=0; i<fSimplePlaneIDToPlaneID.size(); i++) {
+      auto const& planeid = fSimplePlaneIDToPlaneID[i];
       fPlaneIDToSimplePlaneID[ fSimplePlaneIDToPlaneID[i] ] = i;
+      std::array<int,3> ctp = { (int)planeid.Cryostat, (int)planeid.TPC, (int)planeid.Plane };
+      fSimplePlaneIDtoCTP.push_back( ctp );
+      fCTPtoSimplePlaneID[ ctp ] = i;
     }
     
     // make channelid -> planeid map
@@ -974,6 +980,64 @@ namespace larutil {
       vtx[0] = planegeo.fCenter[i];
   }
 
+  std::vector<int> Geometry::GetContainingCryoAndTPCIDs( const TVector3& worldLoc ) const
+  {
+    
+    for (int icryo=0; icryo<Ncryostats(); icryo++) {
+      auto const& cryogeo = GetCryostat(icryo);
+      bool cryo_contained = true;
+      for (size_t v=0; v<3; v++) {
+	if ( worldLoc[v]<cryogeo.fBounds[0][v] || worldLoc[v]>cryogeo.fBounds[1][v] )
+	  cryo_contained = false;
+      }
+      
+      if ( cryo_contained ) {
+
+	for (size_t itpc=0; itpc<cryogeo.tpc_v.size(); itpc++) {
+	  
+	  auto const& tpcgeo = cryogeo.tpc_v.at(itpc);
+	  bool tpc_contained = true;
+	  for (size_t v=0; v<3; v++) {
+	    if ( worldLoc[v]<tpcgeo.fBounds[0][v] || worldLoc[v]>tpcgeo.fBounds[1][v] )
+	      tpc_contained = false;
+	  }
+	  if ( tpc_contained ) {
+	    std::vector<int> ids = { icryo, (int)itpc };
+	    return ids;
+	  }
+	}
+	
+      }//end of if cryo container
+    }//end of cryo loop
+
+    // return empty vector if no ids found.
+    std::vector<int> ids;
+    return ids;    
+  }
+
+  int Geometry::GetSimplePlaneIndexFromCTP( const int cryoid, const int tpcid, const int planeid ) const
+  {
+    std::array<int,3> ctp = { cryoid, tpcid, planeid };
+    auto it = fCTPtoSimplePlaneID.find( ctp );
+    if ( it==fCTPtoSimplePlaneID.end() )
+      return -1;
+    return it->second;
+  }
+
+  std::vector<int> Geometry::GetCTPfromSimplePlaneIndex( const int planeindex ) const
+  {
+    std::vector<int> ctp;
+    if ( planeindex<0 || planeindex>=(int)fSimplePlaneIDtoCTP.size() )
+      return ctp;
+
+    auto const& a_ctp = fSimplePlaneIDtoCTP[planeindex];
+    ctp.resize(3,0);
+    for (int i=0; i<3; i++)
+      ctp[i] = a_ctp[i];
+
+    return ctp;
+  }
+  
 }
 }
 
