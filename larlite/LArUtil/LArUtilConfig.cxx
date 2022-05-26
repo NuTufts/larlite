@@ -5,7 +5,7 @@
 
 namespace larutil {
 
-  larlite::geo::DetId_t LArUtilConfig::_detector = larlite::geo::kMicroBooNE;
+  larlite::geo::DetId_t LArUtilConfig::_detector = larlite::geo::kDetIdMax;
 
   bool LArUtilConfig::SetDetector(larlite::geo::DetId_t type)
   {

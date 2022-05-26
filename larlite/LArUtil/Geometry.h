@@ -44,10 +44,18 @@ namespace larutil {
   public:
 
     /// Singleton getter
-    static const Geometry* GetME( larlite::geo::DetId_t det=larlite::geo::kMicroBooNE )
+    static const Geometry* GetME( larlite::geo::DetId_t det=larlite::geo::kDetIdMax )
     {
 
-      ::larutil::LArUtilConfig::SetDetector( det );
+      if ( det==larlite::geo::kDetIdMax ) {
+	det = ::larutil::LArUtilConfig::Detector();
+	if ( det==larlite::geo::kDetIdMax ) {
+	  throw larlite::larutil::LArUtilException("Need to set detector first!. Use argument of GetME or static function ::larutil::LArUtilConfig::SetDetector( kDetId_t )\n");
+	}
+      }
+      else {
+	::larutil::LArUtilConfig::SetDetector( det );
+      }
       
       if ( _detector_geo_v.size()<larlite::geo::kDetIdMax+1 ) {
 	_detector_geo_v.resize(larlite::geo::kDetIdMax+1,nullptr);
