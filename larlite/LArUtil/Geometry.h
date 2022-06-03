@@ -299,7 +299,8 @@ public:
     //                    Double_t *xyzStart,
     //                    Double_t *xyzEnd) const;
 
-    bool ChannelsIntersect(const UInt_t c1, const UInt_t c2, TVector3& intersectionpt ) const;
+    bool ChannelsIntersect(const UInt_t c1, const UInt_t c2,
+			   TVector3& intersectionpt, bool verbose=false ) const;
 
     // void IntersectionPoint(const UInt_t  wire1,  const UInt_t  wire2,
     //                        const UChar_t plane1, const UChar_t plane2,
@@ -359,7 +360,7 @@ private:
     // Vectors with length = # channels
     std::vector< larlite::geo::PlaneID  >  fChannelToPlaneMap;
     std::vector<UShort_t>                  fChannelToWireMap;
-    std::vector< std::vector<int> >        fChannelToWireID;    
+    std::vector< std::vector< std::vector<int> > > fChannelToWireID; // [index] -> vector of {cryo,tpc,plane,wire}
     std::map< std::vector<int>, int >      fWireIDToChannel; // vector<int> = {cryo,tpc,plane,wire}
     std::vector< const larlite::larutil::WireGeo* > fChannelToWireGeoMap; // fast access
 

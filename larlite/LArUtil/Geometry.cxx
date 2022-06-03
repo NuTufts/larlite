@@ -70,7 +70,7 @@ namespace larutil {
 	    fChannelToWireMap[ch]  = (UShort_t)wiregeo.wireid;
 	    std::vector<int> wid = {planegeo.cryoid, planegeo.tpcid, planegeo.planeid, wiregeo.wireid};
 	    fWireIDToChannel[ wid ] = ch;
-	    fChannelToWireID[ ch ]  = wid;
+	    fChannelToWireID[ ch ].push_back(wid);
 	    fChannelToWireGeoMap[ch] = &wiregeo;
 	  }
 	}
@@ -330,14 +330,14 @@ namespace larutil {
     return fChannelToWireMap.at(ch);
   }
 
-  larlite::geo::WireID Geometry::ChannelToWireID(const UInt_t ch)const
+  larlite::geo::WireID Geometry::ChannelToWireID(const UInt_t ch) const
   {
     if (ch >= fChannelToWireMap.size()) {
       throw LArUtilException(Form("Invalid channel number: %d", ch));
       return larlite::geo::WireID();
     }
 
-    auto const& widv = fChannelToWireID.at(ch);
+    auto const& widv = fChannelToWireID.at(ch)[0];
     
     larlite::geo::WireID wireID( widv[0], widv[1], widv[2], widv[3] );
     
@@ -645,39 +645,63 @@ namespace larutil {
    */
   bool Geometry::ChannelsIntersect(const UInt_t c1,
 				   const UInt_t c2,
-				   TVector3& intersection ) const
+				   TVector3& intersection,
+				   bool verbose ) const
   {
+
+    for (int v=0; v<3; v++)
+      intersection[v] = 0;
+    
     if (c1 == c2) {
       throw LArUtilException("Same channel does not intersect!");
       return false;
     }
 
     if ( c1 >= fChannelToPlaneMap.size() || c2 >= fChannelToPlaneMap.size() ) {
-      throw LArUtilException(Form("Invalid channels : %d and %d", c1, c2));
+      throw LArUtilException(Form("Invalid channels : %d and %d. Must be smaller than %d", c1, c2,(int)fChannelToPlaneMap.size()));
       return false;
     }
 
-    std::vector<int> widv1 = fChannelToWireID.at(c1);
-    std::vector<int> widv2 = fChannelToWireID.at(c2);
+    std::vector<int> widv1 = fChannelToWireID.at(c1)[0];
+    std::vector<int> widv2 = fChannelToWireID.at(c2)[0];
 
-    if ( widv1[0]!=widv2[0] || widv1[1]!=widv2[1] ) {
-      // not the same cryostat id [0] OR not the same TPC id [1]
-      //std::cout << "not the same cryostat or tpc" <<  std::endl;
+    bool same_tpc = false;
+    for ( auto& _widv1 : fChannelToWireID.at(c1) ) {
+      for ( auto& _widv2 : fChannelToWireID.at(c2) ) {
+	if ( _widv1[0]==_widv2[0] && _widv1[1]==_widv2[1] ) {
+	  same_tpc = true;
+	  widv1 = _widv1;
+	  widv2 = _widv2;
+	}
+      }
+    }
+
+    
+    // not the same cryostat id [0] OR not the same TPC id [1]
+    if ( !same_tpc ) {
+      if ( verbose )
+	std::cout << "not the same cryostat (" << widv1[0] << " vs. " << widv2[0] << ") "
+		  << " or tpc (" <<  widv1[1] << " vs. " << widv2[1] << ")"
+		  << std::endl;
       return false;
     }
     
     if ( widv1[2]==widv2[2] ) {
       // the same plane
-      //std::cout << "the same wireplane" <<  std::endl;      
+      if (verbose)
+	std::cout << "the same wireplane" <<  std::endl;      
       return false;
     }
 
+    auto const& planegeo1 = GetPlane( widv1[2], widv1[1], widv1[0] );
+    auto const& planegeo2 = GetPlane( widv2[2], widv2[1], widv2[0] );
+				      
     TVector3 tpcmin(0,0,0);
     TVector3 tpcmax(0,0,0);
     TPCBoundaries( tpcmin, tpcmax, widv1[1], widv1[0] );
     TVector3 tpcdriftdir = TPCDriftDir( widv1[1], widv1[0] );
-    const larlite::larutil::WireGeo* wg1 = fChannelToWireGeoMap.at(c1);
-    const larlite::larutil::WireGeo* wg2 = fChannelToWireGeoMap.at(c2);    
+    const larlite::larutil::WireGeo* wg1 = &planegeo1.fWires_v[ widv1[3] ];
+    const larlite::larutil::WireGeo* wg2 = &planegeo2.fWires_v[ widv2[3] ];
 
     Double_t start1[3] = {0.};
     Double_t start2[3] = {0.};
@@ -709,7 +733,7 @@ namespace larutil {
 
     Double_t axb = a[0]*b[1]-a[1]*b[0];
     if (fabs(axb)<1.0e-5) {
-      //std::cout << "is parallel" << std::endl;
+      if ( verbose ) std::cout << "is parallel" << std::endl;
       return false;
     }
 
@@ -719,9 +743,11 @@ namespace larutil {
     for (int i=0; i<2; i++)
       pt2d[i] = start1[i] + a[i]*s;
 
-    // std::cout << "axb: " << axb << std::endl;
-    // std::cout << "cxb: " << cxb << std::endl;
-    // std::cout << s << std::endl;
+    if (verbose) {
+      std::cout << "axb: " << axb << std::endl;
+      std::cout << "cxb: " << cxb << std::endl;
+      std::cout << s << std::endl;
+    }
    
     bool inbounds = true;    
     Double_t pt3d[3] = {0,0,0};
