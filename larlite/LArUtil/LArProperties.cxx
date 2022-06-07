@@ -79,9 +79,17 @@ namespace larutil {
 
     fVd = larutil::kDriftVelMCC9;
     
-    TChain* ch = new TChain(_tree_name.c_str());
-    ch->AddFile(_file_name.c_str());
-
+    TChain* ch = nullptr;
+    if ( LArUtilConfig::Detector()==larlite::geo::kMicroBooNE ) {
+      std::string ubtreename = "scanner/"+_tree_name;
+      ch = new TChain( ubtreename.c_str() );
+      ch->AddFile(_file_name.c_str());
+    }
+    else {
+      ch = new TChain( _tree_name.c_str() );
+      ch->AddFile(_file_name.c_str());
+    }
+    
     std::string error_msg("");
     if ( LArUtilConfig::Detector()==larlite::geo::kMicroBooNE ) {
       std::cout << "old fEfield branch used for MicroBooNE" << std::endl;      

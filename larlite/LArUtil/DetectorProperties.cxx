@@ -104,6 +104,12 @@ namespace larutil {
 
     ch->GetEntry(0);
 
+    // HACK: update values for MCC9
+    if ( LArUtilConfig::Detector()==larlite::geo::kMicroBooNE ) {
+      fXTicksCoefficient = 0.5*larutil::kDriftVelMCC9;
+      pXTicksOffsets_offset->at(0) = 3200; // location of trigger
+    }
+
     for(size_t i=0; i<pXTicksOffsets_offset->size(); ++i) {
       if ( LArUtilConfig::Detector()==larlite::geo::kMicroBooNE) {
 	// to do: homogenize microboone with other detectors
