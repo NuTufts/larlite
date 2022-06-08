@@ -220,7 +220,12 @@ namespace larlite{
         else return false;
       }
     };
-  }
+
+  std::string SignalTypeName(SigType_t sigType);
+    
+  }//namespace geo
+
+
 }
 #endif
 /** @} */ // end of doxygen group

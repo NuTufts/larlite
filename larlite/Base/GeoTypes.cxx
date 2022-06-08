@@ -9,25 +9,27 @@
  */
 
 // header library
-#include "geo_types.h"
+#include "GeoTypes.h"
 
 // C++ standard libraries
 #include <stdexcept> // std::logic_error
 
 
 // -----------------------------------------------------------------------------
-std::string geo::SignalTypeName(geo::SigType_t sigType) {
-  switch (sigType) {
-    case geo::kInduction:   return "induction";
-    case geo::kCollection:  return "collection";
-    case geo::kMysteryType: return "unknown";
-  } // switch
-  throw std::logic_error(
-    "geo::SignalTypeName(): unexpected signal type #"
-    + std::to_string(static_cast<int>(sigType))
-    );
-} // geo::SignalTypeName()
-
+namespace larlite {
+namespace geo {
+  std::string SignalTypeName(larlite::geo::SigType_t sigType) {
+    switch (sigType) {
+    case kInduction:   return "induction";
+    case kCollection:  return "collection";
+    case kMysteryType: return "unknown";
+    } // switch
+    throw std::logic_error("geo::SignalTypeName(): unexpected signal type #"
+			   + std::to_string(static_cast<int>(sigType))
+			   );
+  } // geo::SignalTypeName()
+}
+}
 
 // -----------------------------------------------------------------------------
 

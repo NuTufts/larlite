@@ -106,15 +106,15 @@ namespace larutil {
     print(larlite::msg::kNORMAL, __FUNCTION__,
 	  Form("Loading geo data for DetID=%d ...\n file=%s ", ::larutil::LArUtilConfig::Detector(), filename.c_str()));
     
-    TFile rfile = TFile(filename.c_str());
+    TFile* rfile = new TFile(filename.c_str());
     std::vector< larlite::larutil::CryoGeo >* _p_cryo_v = 0;
-    TTree* geodata = (TTree*)rfile.Get("geodata");
+    TTree* geodata = (TTree*)rfile->Get("geodata");
     geodata->SetBranchAddress( "cryo_v", &_p_cryo_v );
     geodata->GetEntry(0);
     
     fCryo_v = *_p_cryo_v; // a copy
     
-    rfile.Close();
+    rfile->Close();
     
     return true;
   }
