@@ -61,7 +61,10 @@ treenode.h
 trigger.h
 user_info.h
 vertex.h
-wire.h )
+wire.h
+simenergydeposit.h
+simenergydepositlite.h
+)
 
 add_library( ${LIBNAME} SHARED auxsimch.cxx
 calorimetry.cxx
@@ -118,7 +121,10 @@ treenode.cxx
 trigger.cxx
 user_info.cxx
 vertex.cxx
-wire.cxx )
+wire.cxx
+simenergydeposit.cxx
+simenergydepositlite.cxx
+)
 
 # create a property to hold our headers
 set_target_properties(${LIBNAME} PROPERTIES PUBLIC_HEADER "${HEADERS}")
