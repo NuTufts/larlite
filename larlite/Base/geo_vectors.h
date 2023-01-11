@@ -11,8 +11,8 @@
  * Additional utilities are available from `geo_vectors_utils.h`.
  */
 
-#ifndef LARCOREOBJ_SIMPLETYPESANDCONSTANTS_GEO_VECTORS_H
-#define LARCOREOBJ_SIMPLETYPESANDCONSTANTS_GEO_VECTORS_H
+#ifndef LARLITE_SIMPLETYPESANDCONSTANTS_GEO_VECTORS_H
+#define LARLITE_SIMPLETYPESANDCONSTANTS_GEO_VECTORS_H
 
 // ROOT libraries
 #include "Math/GenVector/CoordinateSystemTags.h"
@@ -239,4 +239,4 @@ namespace geo {
 // END Geometry group ----------------------------------------------------------
 
 
-#endif // LARCOREOBJ_SIMPLETYPESANDCONSTANTS_GEO_VECTORS_H
+#endif // LARLITE_SIMPLETYPESANDCONSTANTS_GEO_VECTORS_H

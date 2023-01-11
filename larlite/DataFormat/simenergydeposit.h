@@ -11,6 +11,7 @@
 // Define the LArSoft standard geometry types and methods.
 //#include "larcoreobj/SimpleTypesAndConstants/geo_vectors.h"
 #include "larlite/Base/geo_vectors.h"
+#include "data_base.h"
 
 // C++ includes
 #include <vector>
@@ -226,5 +227,35 @@ namespace larlite {
   /* } */
 
   typedef std::vector<SimEnergyDeposit> SimEnergyDepositCollection;
-} // namespace sim
+
+  /**
+     \class event_track 
+     A collection storage class of multiple tracks.
+  */
+  class event_SimEnergyDeposit : public std::vector<SimEnergyDeposit>, public event_base 
+  {
+    
+  public:
+    
+    /// Default constructor
+  event_SimEnergyDeposit(std::string name="noname") 
+    : event_base(data::kSimEnergyDeposit,name) { clear_data(); }
+    
+    /// Default copy constructor
+  event_SimEnergyDeposit(const event_SimEnergyDeposit& original) 
+    : std::vector<larlite::SimEnergyDeposit>(original),
+      event_base(original)
+      {};
+    
+    /// Default destructor
+    ~event_SimEnergyDeposit(){};
+    
+    /// Method to clear currently held data contents in the buffer
+    virtual void clear_data(){event_base::clear_data(); clear();}
+    
+  private:
+    
+  };
+
+} // namespace larlite
 #endif // LARDATAOBJ_SIMULATION_SIMENERGYDEPOSIT_H

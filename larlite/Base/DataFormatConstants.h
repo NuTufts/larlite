@@ -103,6 +103,8 @@ namespace larlite{
       kLArFlow3DHit,       ///< larflow::LArFlow3DHit   (larflow addition)
       kLArFlowCluster,     ///< larflow::LArFlowCluster (larflow addition)
       kPixelMask,          ///< larlite::pixelmask (larflow addition)
+      kSimEnergyDeposit,   ///< larlite::SimEnergyDeposit (translation of lardataobj/Simulation/SimEnergyDeposit.h)
+      kSimEnergyDepositLite, ///< larlite::SimEnergyDepositLite (translation of lardataobj/Simulation/SimEnergyDepositLite.h)
       kDATA_TYPE_MAX       ///< Event-wise enum boundary
     };
 
