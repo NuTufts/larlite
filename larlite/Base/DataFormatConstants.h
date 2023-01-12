@@ -176,7 +176,9 @@ namespace larlite{
       "swtrigger",
       "larflow3dhit",
       "larflowcluster",
-      "pixelmask"
+      "pixelmask",
+      "simenergydeposit",
+      "simenergydepositlite"
     };
 
     const std::string kRUNDATA_TREE_NAME[kRUNDATA_TYPE_MAX] = {
