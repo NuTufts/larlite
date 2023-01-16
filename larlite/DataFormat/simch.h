@@ -39,7 +39,8 @@ namespace larlite {
 			     energy(origin.energy),
 			     x(origin.x),
 			     y(origin.y),
-			     z(origin.z)
+                             z(origin.z),
+                             originID(origin.originID)
     {}
 
     int    trackID;      ///< Geant4 supplied track ID
@@ -48,6 +49,7 @@ namespace larlite {
     double x;            ///< x position of ionization
     double y;            ///< y position of ionization
     double z;            ///< z position of ionization
+    int    originID; 
     
     /// Initialize attributes
     void clear_data();

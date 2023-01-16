@@ -12,6 +12,7 @@ namespace larlite {
     trackID      = data::kINVALID_INT;
     numElectrons = data::kINVALID_DOUBLE;
     energy       = data::kINVALID_DOUBLE;
+    originID     = data::kINVALID_INT;
 
     x = data::kINVALID_DOUBLE;
     y = data::kINVALID_DOUBLE;
