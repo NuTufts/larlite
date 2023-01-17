@@ -1,7 +1,10 @@
 #ifndef LARLITE_DETECTORPROPERTIES_CXX
 #define LARLITE_DETECTORPROPERTIES_CXX
 
+#include <TVector3.h>
+#include "LArProperties.h"
 #include "DetectorProperties.h"
+#include "Geometry.h"
 
 namespace larutil {
 
@@ -96,6 +99,7 @@ namespace larutil {
       ch->SetBranchAddress("fXTicksOffsets",&pXTicksOffsets_offset);
     }
     else {
+      // This variable seems like garbage
       ch->SetBranchAddress("fXTicksOffsets_cryoid", &pXTicksOffsets_cryoid);      
       ch->SetBranchAddress("fXTicksOffsets_tpcid",  &pXTicksOffsets_tpcid);      
       ch->SetBranchAddress("fXTicksOffsets_planeid",&pXTicksOffsets_planeid);      
@@ -111,6 +115,7 @@ namespace larutil {
     }
 
     for(size_t i=0; i<pXTicksOffsets_offset->size(); ++i) {
+      
       if ( LArUtilConfig::Detector()==larlite::geo::kMicroBooNE) {
 	// to do: homogenize microboone with other detectors
 	std::vector<int> ctp = { 0, 0, (int)i };
@@ -120,11 +125,15 @@ namespace larutil {
 	fXTicksOffsets_planeid.push_back( (int)i );
       }
       else {
+	
 	std::vector<int> ctp = { pXTicksOffsets_cryoid->at(i),
 	  pXTicksOffsets_tpcid->at(i),
 	  pXTicksOffsets_planeid->at(i) };
 	fCTP_to_offsetindex[ ctp ] = i;
-	fXTicksOffsets_cryoid.push_back(  pXTicksOffsets_cryoid->at(i) );
+
+	// extraction from services seems broken.
+	
+	fXTicksOffsets_cryoid.push_back( pXTicksOffsets_cryoid->at(i)  );
 	fXTicksOffsets_tpcid.push_back(   pXTicksOffsets_tpcid->at(i) );
 	fXTicksOffsets_planeid.push_back( pXTicksOffsets_planeid->at(i) );	
       }
@@ -149,6 +158,27 @@ namespace larutil {
     return fXTicksOffsets.at( it->second );
   }
 
+
+  Double_t DetectorProperties::ConvertXToTicks(Double_t X, Int_t p, Int_t tpc, Int_t cryo) const {
+    TVector3 posmin;
+    TVector3 posmax;
+    larlite::larutil::Geometry::GetME()->TPCBoundaries( posmin, posmax, tpc, cryo );
+    TVector3 driftdir = larlite::larutil::Geometry::GetME()->TPCDriftDir( tpc, cryo );
+    double x_anode = (driftdir[0]>=0) ? posmax[0] : posmin[0];
+    return -driftdir[0]*(X-x_anode) / fXTicksCoefficient;
+  }
+
+  Double_t DetectorProperties::ConvertTicksToX(Double_t ticks, Int_t p, Int_t tpc, Int_t cryo) const {
+
+    TVector3 posmin;
+    TVector3 posmax;
+    larlite::larutil::Geometry::GetME()->TPCBoundaries( posmin, posmax, tpc, cryo );
+    TVector3 driftdir = larlite::larutil::Geometry::GetME()->TPCDriftDir( tpc, cryo );
+    double x_anode = (driftdir[0]>=0) ? posmax[0] : posmin[0];
+    
+    return x_anode - driftdir[0]*(ticks - fTriggerOffset )*fXTicksCoefficient;
+  }
+  
 }
 
 #endif
