@@ -3,10 +3,13 @@ from larlite import larlite
 from ROOT import larutil as larutil
 from ROOT import TVector3
 
-name = "SBND"
-detid = larlite.geo.kSBND
+#name = "SBND"
+#detid = larlite.geo.kSBND
 #name = "ICARUS"
 #detid = larlite.geo.kICARUS
+
+name = "uboone"
+detid = larlite.geo.kMicroBooNE
 
 geo = larlite.larutil.Geometry.GetME( detid )
 
@@ -15,11 +18,12 @@ larp = larutil.LArProperties.GetME()
 driftv = larp.DriftVelocity()
 usec_per_tick = detp.SamplingRate()*1.0e-3
 cm_per_tick = driftv*usec_per_tick
+nticks = detp.NumberTimeSamples()
 print("usec per tick=",usec_per_tick)
 print("driftv=",driftv," cm/microsecond")
 print("cmspertick=",cm_per_tick)
+print("nticks=",nticks)
 
-maxticks = detp.NumberTimeSamples()
 
 #for name,detid in [("ICARUS",larlite.geo.kICARUS),("SBND",larlite.geo.kSBND),("uB",larlite.geo.kMicroBooNE)]:
 #for name,detid in [("uB",larlite.geo.kMicroBooNE)]:
@@ -48,8 +52,11 @@ for cryoid in range( geo.Ncryostats() ):
             print(" xtickscoeff: ",detp.GetXTicksCoefficient())
             print(" trigger offset: ",detp.TriggerOffset())
             print(" sampling rate: ",detp.SamplingRate())
-            for ticks in [0,int(0.2*maxticks),int(0.4*maxticks),int(0.6*maxticks),int(0.8*maxticks),maxticks,detp.TriggerOffset()]:
+            minticks = detp.GetXTicksOffset(planeid,tpcid,cryoid)-detp.TriggerOffset()
+            for ticks in [minticks,int(minticks+0.2*nticks),int(minticks+0.4*nticks),
+                          int(minticks+0.6*nticks),int(minticks+0.8*nticks),minticks+nticks,
+                          detp.TriggerOffset()]:
                 xconvert = detp.ConvertTicksToX(ticks,planeid,tpcid,cryoid)
-                x = (ticks-detp.TriggerOffset())*cm_per_tick
-                print(" tick=%d --> x=%.2f vs. %.2f"%(ticks,xconvert,x))
+                x = (ticks-detp.GetXTicksOffset(planeid,tpcid,cryoid))*cm_per_tick
+                print(" tick=%d --> (detp) x=%.2f vs. (manual) %.2f"%(ticks,xconvert,x))
         

@@ -112,6 +112,8 @@ namespace larutil {
     if ( LArUtilConfig::Detector()==larlite::geo::kMicroBooNE ) {
       fXTicksCoefficient = 0.5*larutil::kDriftVelMCC9;
       pXTicksOffsets_offset->at(0) = 3200; // location of trigger
+      pXTicksOffsets_offset->at(1) = 3200; // location of trigger
+      pXTicksOffsets_offset->at(2) = 3200; // location of trigger      
     }
 
     for(size_t i=0; i<pXTicksOffsets_offset->size(); ++i) {
@@ -165,7 +167,7 @@ namespace larutil {
     larlite::larutil::Geometry::GetME()->TPCBoundaries( posmin, posmax, tpc, cryo );
     TVector3 driftdir = larlite::larutil::Geometry::GetME()->TPCDriftDir( tpc, cryo );
     double x_anode = (driftdir[0]>=0) ? posmax[0] : posmin[0];
-    return -driftdir[0]*(X-x_anode) / fXTicksCoefficient;
+    return -driftdir[0]*(X-x_anode) / fXTicksCoefficient + fXTicksOffsets.at(0); // still hacky, need to sort this out
   }
 
   Double_t DetectorProperties::ConvertTicksToX(Double_t ticks, Int_t p, Int_t tpc, Int_t cryo) const {
@@ -176,7 +178,7 @@ namespace larutil {
     TVector3 driftdir = larlite::larutil::Geometry::GetME()->TPCDriftDir( tpc, cryo );
     double x_anode = (driftdir[0]>=0) ? posmax[0] : posmin[0];
     
-    return x_anode - driftdir[0]*(ticks - fTriggerOffset )*fXTicksCoefficient;
+    return x_anode - driftdir[0]*(ticks - fXTicksOffsets.at(0) )*fXTicksCoefficient; // still hacky, need to sort this out
   }
   
 }
