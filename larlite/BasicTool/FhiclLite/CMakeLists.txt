@@ -23,7 +23,11 @@ set_target_properties(${LIBNAME} PROPERTIES PUBLIC_HEADER "${HEADERS}")
 # DEFINE SOME VARS THAT MIGHT BE USEFUL FOR SUBMODULES
 #message("msg[${MODULE_NAME}]: for debug")
 
-get_target_property(ALL_HEADERS ${LIBNAME} PUBLIC_HEADER)
+set_target_properties(${LIBNAME} PROPERTIES
+  PUBLIC_HEADER "${HEADERS}"
+  CXX_STANDARD ${CXX_STANDARD}
+  CXX_STANDARD_REQUIRED ON )  
+
 
 target_include_directories(${LIBNAME}
   PUBLIC

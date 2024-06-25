@@ -19,13 +19,13 @@ execute_process(
     OUTPUT_VARIABLE ROOT_CXX_STANDARD )
 if (${ROOT_CXX_STANDARD} MATCHES "cxx17")
   message( STATUS "Using cxx17")
-  set(CMAKE_CXX_STANDARD 17)
+  set(CXX_STANDARD "17")
 elseif (${ROOT_CXX_STANDARD} MATCHES "cxx14")
   message( STATUS "Using cxx14")
-  set(CMAKE_CXX_STANDARD 14)
+  set(CXX_STANDARD "14")
 else ()
   message( STATUS "Using cxx11")  
-  set(CMAKE_CXX_STANDARD 11)
+  set(CXX_STANDARD "11")
 endif()
 
 #---PYTHON
@@ -73,7 +73,6 @@ include(${ROOT_USE_FILE})
 #---Define Variables for subdirectory cmakelists
 set(LARLITE_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
-## Add Source
 
 #---Add base of source
 add_subdirectory(larlite)
