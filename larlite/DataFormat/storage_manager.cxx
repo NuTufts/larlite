@@ -88,6 +88,12 @@ namespace larlite {
     _check_alignment=true;
     reset();
     _mode=mode;
+
+    // initialize name map
+    _datatype_name_to_enum.clear();
+    for (int i=0; i<(int)larlite::data::kDATA_TYPE_MAX; i++) {
+      _datatype_name_to_enum[ larlite::data::kDATA_TREE_NAME[i] ] = i;
+    }
     
   };
 
@@ -389,6 +395,18 @@ namespace larlite {
     }
     
     return result_ptr;    
+  }
+
+  event_base* storage_manager::get_data(const std::string& data_type_name, const std::string& tree_name )
+  {
+    auto it_datatype = _datatype_name_to_enum.find( data_type_name );
+    if ( it_datatype==_datatype_name_to_enum.end() ) {
+      print(msg::kERROR,__FUNCTION__,
+	    Form("Could not find data type name \"%s\". See larlite::data::kDATA_TREE_NAME in larlite/Base/DataFormatConstants.h for options.",
+		 data_type_name.c_str()));
+      throw DataFormatException("Unrecognized data type");
+    }
+    return get_data( (larlite::data::DataType_t)(it_datatype->second), tree_name );
   }
 
   void storage_manager::reset()
@@ -1497,6 +1515,20 @@ namespace larlite {
     _status=kCLOSED;
     return status;
   }
+
+  void storage_manager::set_data_to_read( const std::string& type_name, 
+					  const std::string& name)
+  {
+    auto it_datatype = _datatype_name_to_enum.find( type_name );
+    if ( it_datatype==_datatype_name_to_enum.end() ) {
+      print(msg::kERROR,__FUNCTION__,
+	    Form("Could not find data type name \"%s\". See larlite::data::kDATA_TREE_NAME in larlite/Base/DataFormatConstants.h for options.",
+		 type_name.c_str()));
+      throw DataFormatException("Unrecognized data type");
+    }
+    set_data_to_read( (larlite::data::DataType_t)(it_datatype->second), name );
+  }
+
   
   bool storage_manager::go_to(uint32_t index,bool store) {
     

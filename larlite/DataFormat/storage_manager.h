@@ -116,6 +116,10 @@ namespace larlite {
       _read_data_array[(size_t)type].insert(std::make_pair(name,true));
     }
 
+    /// Setter to specify a certain data class to be read from input
+    void set_data_to_read( const std::string& type_name, 
+			   const std::string& name);
+    
     /// Setter to specify a certain data class to be written into output
     void set_data_to_write(data::DataType_t const type,
 			   const std::string name)
@@ -198,6 +202,9 @@ namespace larlite {
     
     /// Universal event data pointer getter to return event_base* pointer for specified event-data type.
     event_base* get_data(const data::DataType_t type, const std::string& name);
+
+    /// Universal event data pointer getter using data type name instead of enum (gets around python issues)
+    event_base* get_data(const std::string& data_name, const std::string& tree_name );
 
     /// Universal run data pointer getter to return run_base* pointer for specified run-data type w/ run number
     run_base* get_rundata(const data::RunDataType_t type, const std::string& name);
@@ -506,6 +513,9 @@ namespace larlite {
     /// Boolean to record what subrun-data to be written out from a file
     std::vector<std::map<std::string,bool> > _write_subrundata_array;
 
+    // map from data type name to enum
+    std::map< std::string, int > _datatype_name_to_enum;
+    
   };
 
 }

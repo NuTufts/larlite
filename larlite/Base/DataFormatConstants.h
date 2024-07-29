@@ -119,8 +119,8 @@ namespace larlite{
       kSUBRUNDATA_TYPE_MAX ///< SubRun-data type enum boundary
     };
 
-    #ifndef __CINT__
-    #ifndef __CLING__
+    // #ifndef __CINT__
+    // #ifndef __CLING__
     const std::string kDATA_TREE_NAME[kDATA_TYPE_MAX] = {
       //const std::vector<std::string> kDATA_TREE_NAME = {
       "unknown",
@@ -187,8 +187,8 @@ namespace larlite{
       "undefined",
       "potsummary"
     };
-    #endif
-    #endif
+    // #endif
+    // #endif
     static const std::string kEVENT_ID_TREE("larlite_id_tree");
   }
   
