@@ -138,6 +138,9 @@ namespace larlite{
 
   class pixelmask;
   class event_pixelmask;
+
+  class larmatchsp;
+  class event_larmatchsp;
 }
 
 class treenode;

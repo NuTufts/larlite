@@ -22,6 +22,7 @@ gtruth.h
 hit.h
 larflow3dhit.h
 larflowcluster.h
+larmatchsp.h
 larlite_dataformat_utils.h
 mceventweight.h
 mcflux.h
@@ -80,6 +81,7 @@ gtruth.cxx
 hit.cxx
 larflow3dhit.cxx
 larflowcluster.cxx
+larmatchsp.cxx
 mceventweight.cxx
 mcflux.cxx
 mcnu.cxx

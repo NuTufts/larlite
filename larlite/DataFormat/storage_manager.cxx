@@ -52,6 +52,7 @@
 #include "crthit.h"
 #include "crttrack.h"
 #include "daqheadertimeuboone.h"
+#include "larmatchsp.h"
 
 namespace larlite {
 
@@ -1238,6 +1239,9 @@ namespace larlite {
       break;
     case data::kPixelMask:
       _ptr_data_array[type][name]=new event_pixelmask(name);
+      break;
+    case data::kLArMatchSP:
+      _ptr_data_array[type][name]=new event_larmatchsp(name);
       break;
     default:
       print(msg::kERROR,__FUNCTION__,Form("Event-data identifier not supported: %d",(int)type));

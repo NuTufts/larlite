@@ -261,6 +261,10 @@
 #pragma link C++ class std::vector<larlite::pixelmask>+;
 #pragma link C++ class larlite::event_pixelmask+;
 
+#pragma link C++ class larlite::larmatchsp+;
+#pragma link C++ class std::vector< larlite::larmatchsp >+;
+#pragma link C++ class larlite::event_larmatchsp+;
+
 /*
 #pragma link C++ function larlite::storage_manager::data_type<larlite::event_gtruth>();
 #pragma link C++ function larlite::storage_manager::data_type<larlite::event_mctruth>();

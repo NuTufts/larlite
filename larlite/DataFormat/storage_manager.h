@@ -67,6 +67,7 @@ namespace larlite {
   class event_roi;
   class event_mceventweight;
   class event_auxsimch;
+  class event_larmatchsp;
   //class event_chstatus;
 }
 #include "chstatus.h"

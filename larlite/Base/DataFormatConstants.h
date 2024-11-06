@@ -103,6 +103,7 @@ namespace larlite{
       kLArFlow3DHit,       ///< larflow::LArFlow3DHit   (larflow addition)
       kLArFlowCluster,     ///< larflow::LArFlowCluster (larflow addition)
       kPixelMask,          ///< larlite::pixelmask (larflow addition)
+      kLArMatchSP,         ///< larlite::larmatchsp (larmatch addition)
       kDATA_TYPE_MAX       ///< Event-wise enum boundary
     };
 
@@ -174,7 +175,8 @@ namespace larlite{
       "swtrigger",
       "larflow3dhit",
       "larflowcluster",
-      "pixelmask"
+      "pixelmask",
+      "larmatchsp"
     };
 
     const std::string kRUNDATA_TREE_NAME[kRUNDATA_TYPE_MAX] = {
