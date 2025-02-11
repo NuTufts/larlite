@@ -15,8 +15,9 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 find_package(ROOT CONFIG REQUIRED)
 # we set the compiler version based on the one used for ROOT
 execute_process(
-    COMMAND bash "-c" "root-config --features | awk '{print $1}'"
+    COMMAND bash "-c" "root-config --features"
     OUTPUT_VARIABLE TEST_ROOT_CXX_STANDARD )
+message( STATUS "Root features: ${TEST_ROOT_CXX_STANDARD}")
 if (${TEST_ROOT_CXX_STANDARD} MATCHES "cxx17")
   message( STATUS "Using cxx17")
   set(CMAKE_CXX_STANDARD 17)
@@ -27,6 +28,7 @@ else ()
   message( STATUS "Using cxx11")  
   set(CMAKE_CXX_STANDARD "11")
 endif()
+link_libraries( ${ROOT_LIBRARIES} )
 
 #---PYTHON
 if (USE_PYTHON3)
