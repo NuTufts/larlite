@@ -1533,6 +1533,19 @@ namespace larlite {
     set_data_to_read( (larlite::data::DataType_t)(it_datatype->second), name );
   }
 
+  void storage_manager::set_data_to_write( const std::string type_name,
+					   const std::string name )
+  {
+    auto it_datatype = _datatype_name_to_enum.find( type_name );
+    if ( it_datatype==_datatype_name_to_enum.end() ) {
+      print(msg::kERROR,__FUNCTION__,
+	    Form("Could not find data type name \"%s\". See larlite::data::kDATA_TREE_NAME in larlite/Base/DataFormatConstants.h for options.",
+		 type_name.c_str()));
+      throw DataFormatException("Unrecognized data type");
+    }
+    set_data_to_write( (larlite::data::DataType_t)(it_datatype->second), name );
+  }
+
   
   bool storage_manager::go_to(uint32_t index,bool store) {
     

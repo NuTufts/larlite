@@ -128,6 +128,10 @@ namespace larlite {
       _use_write_bool = true;
       _write_data_array[(size_t)type].insert(std::make_pair(name,true));
     }
+
+    /// Setter to specify a certain data class to be written into output
+    void set_data_to_write(const std::string type_name,
+			   const std::string name);
     
     /// Setter for I/O mode.
     void set_io_mode(IOMode_t mode) {_mode=mode;}
