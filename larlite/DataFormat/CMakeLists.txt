@@ -140,7 +140,7 @@ target_include_directories(${LIBNAME}
 target_link_libraries(${LIBNAME} larlite_LArUtil )
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} )
-ROOT_GENERATE_DICTIONARY(G__${LIBNAME} ${ALL_HEADERS} ${HEADERS} LINKDEF LinkDef.h)
+ROOT_GENERATE_DICTIONARY(G__${LIBNAME} ${ALL_HEADERS} LINKDEF LinkDef.h)
 target_sources( ${LIBNAME} PRIVATE G__${LIBNAME}.cxx )
 
 # install libraries and headers

@@ -21,12 +21,16 @@ namespace larlite{
   
   /// Defines constants for PMT related electronics
   namespace fem{
-    
+
+#ifndef __CINT__
+#ifndef __CLING__    
     const UShort_t kINVALID_CH=data::kINVALID_USHORT; ///< Invalid (or initialized) channel number
     
     const UInt_t   kBEAMGATE_NSAMPLE=1500;  ///< # samples in the beamgate
     const UShort_t kNUM_PMT_CHANNEL=48;     ///< # of PMT readout channels
     const UShort_t kMAX_ADC=4095;           ///< Maximum ADC value
+#endif
+#endif
     
     /// PMT discriminator type
     enum Discriminator_t{

@@ -31,7 +31,9 @@ namespace larlite{
       kERROR,        ///< notify a user when something is clearly wrong
       kMSG_TYPE_MAX
     };
-    
+
+#ifndef __CINT__
+#ifndef __CLING__    
     const std::string ColorPrefix[kMSG_TYPE_MAX] =
       {
 	"\033[94m", ///< blue ... DEBUG   
@@ -51,8 +53,11 @@ namespace larlite{
 	"     [ERROR]  "  ///< ERROR message prefix
       };
     ///< Prefix of message
-  }
+#endif
+#endif
+
+  };
   
-}
+};
 #endif
 /** @} */ // end of doxygen group

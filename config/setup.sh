@@ -63,7 +63,7 @@ else
 fi
 
 if [ `command -v $LARLITE_CXX` ]; then
-    export LARLITE_CXX="$LARLITE_CXX -std=c++11";
+    export LARLITE_CXX="$LARLITE_CXX";
 else
     LARLITE_CXX=g++
     if [[ -z `command -v $LARLITE_CXX` ]]; then
@@ -129,7 +129,7 @@ export PYTHONPATH=$LARLITE_BASEDIR/python:$PYTHONPATH
 if [ $LARLITE_OS = 'Darwin' ]; then
     export DYLD_LIBRARY_PATH=$LARLITE_LIBDIR:$DYLD_LIBRARY_PATH
 fi
-export PATH=$LARLITE_BASEDIR/bin:$PATH
+export PATH=${LARLITE_BASEDIR}/bin:$PATH
 if [ $ENABLE_LARLITE_ALIAS ]; then
     alias maketop="make --directory=$LARLITE_BASEDIR"
     alias cdtop="cd $LARLITE_BASEDIR"

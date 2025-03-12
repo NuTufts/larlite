@@ -14,13 +14,12 @@ set( HEADERS Base-TypeDef.h
   MCConstants.h
   RawConstants.h
   RecoTypes.h
-  UtilFunc.h
   larlite_base.h
   messenger.h
   )
 
-add_library( ${LIBNAME} SHARED DataFormatConstants.cxx
-  UtilFunc.cxx
+add_library( ${LIBNAME} SHARED
+  DataFormatConstants.cxx
   larlite_base.cxx
   messenger.cxx )
 

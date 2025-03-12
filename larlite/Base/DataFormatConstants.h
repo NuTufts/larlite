@@ -26,6 +26,9 @@ namespace larlite{
   /// Defines constants for data structure definition (system utility)
   namespace data{
 
+/* #ifndef __CINT__ */
+/* #ifndef __CLING__ */
+
     const unsigned char  kINVALID_UCHAR  = std::numeric_limits<unsigned char>::max();
     const char           kINVALID_CHAR   = std::numeric_limits<char>::max();
     const unsigned short kINVALID_USHORT = std::numeric_limits<unsigned short>::max();
@@ -36,6 +39,8 @@ namespace larlite{
 
     const double kINVALID_DOUBLE = std::numeric_limits<double>::max();
     const float  kINVALID_FLOAT  = std::numeric_limits<float>::max();
+/* #endif */
+/* #endif */
 
     /// Category of data types
     enum DataTypeCategory_t {
@@ -120,8 +125,9 @@ namespace larlite{
       kSUBRUNDATA_TYPE_MAX ///< SubRun-data type enum boundary
     };
 
-    // #ifndef __CINT__
-    // #ifndef __CLING__
+#ifndef __CINT__
+#ifndef __CLING__
+    // no complicated stuff
     const std::string kDATA_TREE_NAME[kDATA_TYPE_MAX] = {
       //const std::vector<std::string> kDATA_TREE_NAME = {
       "unknown",
@@ -189,10 +195,13 @@ namespace larlite{
       "undefined",
       "potsummary"
     };
-    // #endif
-    // #endif
     static const std::string kEVENT_ID_TREE("larlite_id_tree");
-  }
+#endif
+#endif
+
+    const std::string& GetProductName(const larlite::data::DataType_t t);    
+
+  }//end of larlite::data namespace
   
 }
 #endif
