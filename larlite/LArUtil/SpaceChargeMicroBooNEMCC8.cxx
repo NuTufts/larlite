@@ -192,7 +192,7 @@ namespace larutil{
       g3_Ez[i] = nullptr;
       g4_Ez[i] = nullptr;
     }
-    std::string sce_file_path = Form("%s/LArUtil/dat/SCEoffsets_MicroBooNE_E273.root",getenv("LARLITE_COREDIR"));
+    std::string sce_file_path = Form("%s/larlite/LArUtil/dat/SCEoffsets_MicroBooNE_E273.root",getenv("LARLITE_BASEDIR"));
     Configure(sce_file_path);
   }
 

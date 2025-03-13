@@ -28,7 +28,7 @@ namespace larutil{
   //-----------------------------------------------
   SpaceChargeMicroBooNEMCC9::SpaceChargeMicroBooNEMCC9()
   {
-    std::string sce_file_path = Form("%s/LArUtil/dat/SCEoffsets_dataDriven_combined_fwd_Jan18.root",getenv("LARLITE_COREDIR"));
+    std::string sce_file_path = Form("%s/larlite/LArUtil/dat/SCEoffsets_dataDriven_combined_fwd_Jan18.root",getenv("LARLITE_BASEDIR"));
     Configure(sce_file_path);
   }
 

@@ -11,8 +11,8 @@ namespace larutil {
   {
     _name = "DetectorProperties";
     if(default_load) {
-      _file_name = Form("%s/LArUtil/dat/%s",
-			getenv("LARLITE_COREDIR"),
+      _file_name = Form("%s/larlite/LArUtil/dat/%s",
+			getenv("LARLITE_BASEDIR"),
 			kUTIL_DATA_FILENAME[LArUtilConfig::Detector()].c_str());
       _tree_name = kTREENAME_DETECTORPROPERTIES;
       LoadData();

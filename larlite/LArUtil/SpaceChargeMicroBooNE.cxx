@@ -56,20 +56,20 @@ namespace larutil{
     else {
       switch( _version ) {
       case kMCC8_E273:
-        sce_file_path = Form("%s/LArUtil/dat/SCEoffsets_MicroBooNE_E273.root",getenv("LARLITE_COREDIR"));
+        sce_file_path = Form("%s/larlite/LArUtil/dat/SCEoffsets_MicroBooNE_E273.root",getenv("LARLITE_BASEDIR"));
         break;
       case kMCC8_E227:
-        sce_file_path = Form("%s/LArUtil/dat/SCEoffsets_MicroBooNE_E227.root",getenv("LARLITE_COREDIR"));
+        sce_file_path = Form("%s/larlite/LArUtil/dat/SCEoffsets_MicroBooNE_E227.root",getenv("LARLITE_BASEDIR"));
         break;
       case kMCC8_E500:
-        sce_file_path = Form("%s/LArUtil/dat/SCEoffsets_MicroBooNE_E500.root",getenv("LARLITE_COREDIR"));
+        sce_file_path = Form("%s/larlite/LArUtil/dat/SCEoffsets_MicroBooNE_E500.root",getenv("LARLITE_BASEDIR"));
         break;
       case kMCC9_Backward:
-        sce_file_path = Form("%s/LArUtil/dat/SCEoffsets_dataDriven_combined_bkwd_Jan18.root",getenv("LARLITE_COREDIR"));
+        sce_file_path = Form("%s/larlite/LArUtil/dat/SCEoffsets_dataDriven_combined_bkwd_Jan18.root",getenv("LARLITE_BASEDIR"));
         break;
       case kMCC9_Forward:
       default:
-        sce_file_path = Form("%s/LArUtil/dat/SCEoffsets_dataDriven_combined_fwd_Jan18.root",getenv("LARLITE_COREDIR"));
+        sce_file_path = Form("%s/larlite/LArUtil/dat/SCEoffsets_dataDriven_combined_fwd_Jan18.root",getenv("LARLITE_BASEDIR"));
         break;
       }
     }

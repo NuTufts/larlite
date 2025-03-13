@@ -25,8 +25,8 @@ namespace larutil {
     // Geometry
     larlite::Message::send(larlite::msg::kNORMAL,__FUNCTION__,"Reconfiguring Geometry");
     Geometry* geom = (Geometry*)(Geometry::GetME(false));
-    geom->SetFileName(Form("%s/LArUtil/dat/%s",
-			   getenv("LARLITE_COREDIR"),
+    geom->SetFileName(Form("%s/larlite/LArUtil/dat/%s",
+			   getenv("LARLITE_BASEDIR"),
 			   kUTIL_DATA_FILENAME[LArUtilConfig::Detector()].c_str()));
     geom->SetTreeName(kTREENAME_GEOMETRY);
     status = status && geom->LoadData(true);
@@ -34,8 +34,8 @@ namespace larutil {
     // LArProperties
     larlite::Message::send(larlite::msg::kNORMAL,__FUNCTION__,"Reconfiguring LArProperties");
     LArProperties* larp = (LArProperties*)(LArProperties::GetME(false));
-    larp->SetFileName(Form("%s/LArUtil/dat/%s",
-			   getenv("LARLITE_COREDIR"),
+    larp->SetFileName(Form("%s/larlite/LArUtil/dat/%s",
+			   getenv("LARLITE_BASEDIR"),
 			   kUTIL_DATA_FILENAME[LArUtilConfig::Detector()].c_str()));
     larp->SetTreeName(kTREENAME_LARPROPERTIES);
     status = status && larp->LoadData(true);
@@ -43,8 +43,8 @@ namespace larutil {
     // DetectorProperties
     larlite::Message::send(larlite::msg::kNORMAL,__FUNCTION__,"Reconfiguring DetectorProperties");
     DetectorProperties* detp = (DetectorProperties*)(DetectorProperties::GetME(false));
-    detp->SetFileName(Form("%s/LArUtil/dat/%s",
-			   getenv("LARLITE_COREDIR"),
+    detp->SetFileName(Form("%s/larlite/LArUtil/dat/%s",
+			   getenv("LARLITE_BASEDIR"),
 			   kUTIL_DATA_FILENAME[LArUtilConfig::Detector()].c_str()));
     detp->SetTreeName(kTREENAME_DETECTORPROPERTIES);
     status = status && detp->LoadData(true);
