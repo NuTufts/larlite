@@ -63,8 +63,8 @@ set( HEADERS
   larmatchsp.h
 #  chstatus.h
 # DataFormat-TypeDef.h
-# #storage_manager.h
 # #storage_store.h
+  storage_manager.h
 )
 
 add_library( ${LIBNAME} SHARED
@@ -124,8 +124,8 @@ add_library( ${LIBNAME} SHARED
   pixelmask.cxx
   larmatchsp.cxx
 #  chstatus.cxx
-# #storage_manager.cxx
 # #storage_store.cxx
+  storage_manager.cxx
 )
 
 # create a property to hold our headers

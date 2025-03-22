@@ -18,8 +18,8 @@
 #include <TChain.h>
 #include <TError.h>
 #include "larlite/Base/larlite_base.h"
-#include "data_base.h"
-#include "event_ass.h"
+#include "larlite/DataFormat/data_base.h"
+#include "larlite/DataFormat/event_ass.h"
 namespace larlite {
   class trigger;
   class swtrigger;
