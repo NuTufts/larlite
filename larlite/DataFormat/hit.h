@@ -15,7 +15,7 @@
 #ifndef LARLITE_HIT_H
 #define LARLITE_HIT_H
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 #include "larlite/Base/GeoConstants.h"
 #include "larlite/Base/GeoTypes.h"
 #include "larlite/Base/RawConstants.h"

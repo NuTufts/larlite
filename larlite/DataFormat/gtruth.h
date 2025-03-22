@@ -15,7 +15,7 @@
 #ifndef LARLITE_GTRUTH_H
 #define LARLITE_GTRUTH_H
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 #include <vector>
 #include <TLorentzVector.h>
 

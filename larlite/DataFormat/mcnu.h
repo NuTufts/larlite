@@ -15,7 +15,7 @@
 #ifndef LARLITE_MCNU_H
 #define LARLITE_MCNU_H
 
-#include "mcpart.h"
+#include "larlite/DataFormat/mcpart.h"
 
 namespace larlite {
   /**

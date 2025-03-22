@@ -15,7 +15,7 @@
 #ifndef LARLITE_MCTRACK_H
 #define LARLITE_MCTRACK_H
 
-#include "mctrajectory.h"
+#include "larlite/DataFormat/mctrajectory.h"
 #include "larlite/Base/MCConstants.h"
 #include <vector>
 namespace larlite{

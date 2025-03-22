@@ -10,7 +10,7 @@
 #ifndef LARLITE_OPFLASH_H
 #define LARLITE_OPFLASH_H
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 #include <vector>
 
 namespace larlite {

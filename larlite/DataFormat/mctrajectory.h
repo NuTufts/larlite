@@ -15,7 +15,7 @@
 #ifndef LARLITE_MCTRAJECTORY_H
 #define LARLITE_MCTRAJECTORY_H
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 #include <set>
 #include <TVector3.h>
 #include <TLorentzVector.h>

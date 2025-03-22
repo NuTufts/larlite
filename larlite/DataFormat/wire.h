@@ -17,7 +17,7 @@
 #ifndef LARLITE_WIRE_H
 #define LARLITE_WIRE_H
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 #include <vector>
 //#include "SimpleTypesAndConstants/RawTypes.h" // raw::ChannelID_t
 //#include "SimpleTypesAndConstants/geo_types.h"
@@ -26,7 +26,7 @@
 #include "larlite/Base/RawConstants.h"
 #include "larlite/Base/GeoTypes.h"
 #include "larlite/Base/GeoConstants.h"
-#include "sparse_vector.h"
+#include "larlite/DataFormat/sparse_vector.h"
 
 // prototype declaration
 namespace larlite { class RawDigit; }

@@ -15,7 +15,7 @@
 #ifndef LARLITE_MCPART_H
 #define LARLITE_MCPART_H
 
-#include "mctrajectory.h"
+#include "larlite/DataFormat/mctrajectory.h"
 
 namespace larlite {
   /**

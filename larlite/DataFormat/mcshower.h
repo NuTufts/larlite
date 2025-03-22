@@ -15,7 +15,7 @@
 #ifndef LARLITE_MCSHOWER_H
 #define LARLITE_MCSHOWER_H
 
-#include "mctrajectory.h"
+#include "larlite/DataFormat/mctrajectory.h"
 #include <TVector3.h>
 #include "larlite/Base/MCConstants.h"
 namespace larlite {

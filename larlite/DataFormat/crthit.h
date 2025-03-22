@@ -13,7 +13,7 @@
 #ifndef LARLITE_CRTHIT_H
 #define LARLITE_CRTHIT_H
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 #include <cstdint>
 #include <vector>
 #include <map>

@@ -15,8 +15,8 @@
 #ifndef LARLITE_EVENT_ASS_H
 #define LARLITE_EVENT_ASS_H
 
-#include "data_base.h"
-#include "larlite_dataformat_utils.h"
+#include "larlite/DataFormat/data_base.h"
+#include "larlite/DataFormat/larlite_dataformat_utils.h"
 #include <TString.h>
 namespace larlite{
 

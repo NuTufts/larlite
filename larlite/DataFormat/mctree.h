@@ -15,8 +15,8 @@
 #ifndef LARLITE_MCTREE_H
 #define LARLITE_MCTREE_H
 
-#include "data_base.h"
-#include "treenode.h"
+#include "larlite/DataFormat/data_base.h"
+#include "larlite/DataFormat/treenode.h"
 #include <set>
 #include <map>
 #include <exception>

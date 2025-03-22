@@ -15,10 +15,12 @@
 #ifndef LARLITE_DATA_BASE_H
 #define LARLITE_DATA_BASE_H
 
-#include "larlite/Base/DataFormatConstants.h"
-#include "larlite_dataformat_utils.h"
 #include <TString.h>
-#include "DataFormatException.h"
+
+#include "larlite/Base/DataFormatConstants.h"
+#include "larlite/DataFormat/larlite_dataformat_utils.h"
+#include "larlite/DataFormat/DataFormatException.h"
+
 namespace larlite{
 
   class storage_manager;

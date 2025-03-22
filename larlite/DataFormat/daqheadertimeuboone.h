@@ -12,8 +12,8 @@
 #define LARLITE_DAQHEADERTIMEUBOONE_H
 
 #include <vector>
-#include "data_base.h"
 #include <time.h>
+#include "larlite/DataFormat/data_base.h"
 
 namespace larlite {
 

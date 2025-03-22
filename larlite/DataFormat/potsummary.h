@@ -15,7 +15,7 @@
 #ifndef LARLITE_POTSUMMARY_H
 #define LARLITE_POTSUMMARY_H
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 #include <vector>
 namespace larlite{
   /**

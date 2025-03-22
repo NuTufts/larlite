@@ -15,7 +15,7 @@
 #ifndef LARLITE_MCFLUX_H
 #define LARLITE_MCFLUX_H
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 #include <vector>
 #include <cmath>
 #include "larlite/Base/MCConstants.h"

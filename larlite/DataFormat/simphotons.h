@@ -33,7 +33,7 @@
 #include <TLorentzVector.h>
 #include <vector>
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 
 namespace larlite
 {

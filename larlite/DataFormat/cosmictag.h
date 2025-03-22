@@ -20,7 +20,7 @@
 #include <iostream>
 #include <iomanip>
 #include "larlite/Base/AnalysisConstants.h"
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 
 namespace larlite {
 

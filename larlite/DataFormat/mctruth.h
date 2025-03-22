@@ -15,8 +15,9 @@
 #ifndef LARLITE_MCTRUTH_H
 #define LARLITE_MCTRUTH_H
 
-#include "mcnu.h"
+#include "larlite/DataFormat/mcnu.h"
 #include "larlite/Base/MCConstants.h"
+
 namespace larlite {
   /**
      \class mctruth

@@ -10,7 +10,7 @@
 #ifndef LARLITE_OPHIT_H
 #define LARLITE_OPHIT_H
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 
 namespace larlite {
 

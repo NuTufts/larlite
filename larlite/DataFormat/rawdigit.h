@@ -15,7 +15,7 @@
 #ifndef LARLITE_RAWDIGIT_H
 #define LARLITE_RAWDIGIT_H
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 #include "larlite/Base/RawConstants.h"
 #include "larlite/Base/GeoTypes.h"
 #include <vector>
