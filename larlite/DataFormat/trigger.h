@@ -7,7 +7,7 @@
 #include <limits>
 #include <stdexcept>
 #include <iostream>
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 namespace larlite {
   
   class trigger : public event_base {

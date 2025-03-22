@@ -15,7 +15,7 @@
 #ifndef LARLITE_VERTEX_H
 #define LARLITE_VERTEX_H
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 
 namespace larlite {
   /**

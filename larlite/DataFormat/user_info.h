@@ -14,7 +14,7 @@
 #ifndef LARLITE_USER_INFO_H
 #define LARLITE_USER_INFO_H
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 #include <map>
 #include <TString.h>
 

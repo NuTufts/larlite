@@ -9,7 +9,7 @@
 //  mitchell.soderberg@yale.edu
 //
 ////////////////////////////////////////////////////////////////////
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 #include "larlite/Base/GeoConstants.h"
 #include <vector>
 

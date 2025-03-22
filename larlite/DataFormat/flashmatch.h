@@ -10,7 +10,7 @@
 #define LARLITE_ANAB_FLASHMATCH_H
 
 #include <vector>
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 namespace larlite {
 
   class flashmatch : public data_base {

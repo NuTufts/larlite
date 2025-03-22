@@ -18,7 +18,7 @@
 //#include "larcore/SimpleTypesAndConstants/geo_types.h"
 #include "larlite/Base/GeoTypes.h"
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 
 namespace larlite {
   

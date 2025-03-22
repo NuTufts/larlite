@@ -14,9 +14,8 @@
 #include "larlite/Base/MCConstants.h" 
 #include <vector>
 #include <utility>
-#include "data_base.h"
-
-#include "vertex.h"
+#include "larlite/DataFormat/data_base.h"
+#include "larlite/DataFormat/vertex.h"
 
 namespace larlite{
   

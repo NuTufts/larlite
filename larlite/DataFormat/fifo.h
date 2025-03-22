@@ -15,7 +15,7 @@
 #ifndef LARLITE_FIFO_H
 #define LARLITE_FIFO_H
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 #include "larlite/Base/MCConstants.h"
 #include "larlite/Base/FEMConstants.h"
 #include <vector>

@@ -15,7 +15,7 @@
 #ifndef LARLITE_TRACK_H
 #define LARLITE_TRACK_H
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 #include "larlite/Base/GeoTypes.h"
 #include "larlite/Base/GeoConstants.h"
 #include "TVector3.h"

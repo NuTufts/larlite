@@ -15,7 +15,7 @@
 #ifndef LARLITE_SPACEPOINT_H
 #define LARLITE_SPACEPOINT_H
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 #include "TVector3.h"
 #include "TMatrixD.h"
 

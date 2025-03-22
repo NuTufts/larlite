@@ -15,7 +15,7 @@
 #ifndef LARLITE_T0_H
 #define LARLITE_T0_H
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 
 namespace larlite {
   /**

@@ -20,6 +20,7 @@ set( HEADERS
   mctree.h
   mceventweight.h
   simch.h
+  auxsimch.h
   simphotons.h
   potsummary.h
   rawdigit.h
@@ -33,37 +34,37 @@ set( HEADERS
   ophit.h
   opflash.h
   cluster.h
-#  auxsimch.h
-#  calorimetry.h
+  seed.h
+  spacepoint.h
+  track.h
+  shower.h
+  vertex.h
+  endpoint2d.h
+  calorimetry.h
+  partid.h
+  pfpart.h
+  user_info.h
+  trigger.h
+  minos.h
+  fifo.h
+  pcaxis.h
+  flashmatch.h
+  trackmom.h
+  opdetwaveform.h
+  mucsdata.h
+  mucsreco.h
+  vertex.h
+  roi.h
+  t0.h
+  swtrigger.h
+  larflow3dhit.h
+  larflowcluster.h
+  pixelmask.h
+  larmatchsp.h
 #  chstatus.h
 # DataFormat-TypeDef.h
-# endpoint2d.h
-# fifo.h
-# flashmatch.h
-# larflow3dhit.h
-# larflowcluster.h
-# larmatchsp.h
-# minos.h
-# mucsdata.h
-# mucsreco.h
-# opdetwaveform.h
-# partid.h
-# pcaxis.h
-# pfpart.h
-# pixelmask.h
-# roi.h
-# seed.h
-# shower.h
-# spacepoint.h
 # #storage_manager.h
 # #storage_store.h
-# swtrigger.h
-# t0.h
-# track.h
-# trackmom.h
-# trigger.h
-# user_info.h
-# vertex.h
 )
 
 add_library( ${LIBNAME} SHARED
@@ -81,6 +82,7 @@ add_library( ${LIBNAME} SHARED
   mctree.cxx
   mceventweight.cxx
   simch.cxx
+  auxsimch.cxx
   simphotons.cxx
   potsummary.cxx
   rawdigit.cxx
@@ -94,36 +96,36 @@ add_library( ${LIBNAME} SHARED
   ophit.cxx
   opflash.cxx
   cluster.cxx
-#  auxsimch.cxx
-#  calorimetry.cxx
+  seed.cxx
+  spacepoint.cxx
+  track.cxx
+  shower.cxx
+  vertex.cxx
+  endpoint2d.cxx
+  calorimetry.cxx
+  partid.cxx
+  pfpart.cxx
+  user_info.cxx
+  trigger.cxx
+  minos.cxx
+  fifo.cxx
+  pcaxis.cxx
+  flashmatch.cxx
+  trackmom.cxx
+  opdetwaveform.cxx
+  mucsdata.cxx
+  mucsreco.cxx
+  vertex.cxx
+  roi.cxx
+  t0.cxx
+  swtrigger.cxx
+  larflow3dhit.cxx
+  larflowcluster.cxx
+  pixelmask.cxx
+  larmatchsp.cxx
 #  chstatus.cxx
-# endpoint2d.cxx
-# fifo.cxx
-# flashmatch.cxx
-# larflow3dhit.cxx
-# larflowcluster.cxx
-# larmatchsp.cxx
-# minos.cxx
-# mucsdata.cxx
-# mucsreco.cxx
-# opdetwaveform.cxx
-# partid.cxx
-# pcaxis.cxx
-# pfpart.cxx
-# pixelmask.cxx
-# roi.cxx
-# seed.cxx
-# shower.cxx
-# spacepoint.cxx
 # #storage_manager.cxx
 # #storage_store.cxx
-# swtrigger.cxx
-# t0.cxx
-# track.cxx
-# trackmom.cxx
-# trigger.cxx
-# user_info.cxx
-# vertex.cxx )
 )
 
 # create a property to hold our headers

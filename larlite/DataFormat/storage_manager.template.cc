@@ -122,8 +122,8 @@ namespace larlite {
   template<> data::DataType_t storage_manager::data_type<event_roi> () const
     { return data::kROI; }
 
-  template<> data::DataType_t storage_manager::data_type<event_chstatus> () const
-  { return data::kChStatus; }
+  // template<> data::DataType_t storage_manager::data_type<event_chstatus> () const
+  // { return data::kChStatus; }
 
   template<> data::DataType_t storage_manager::data_type<event_mceventweight> () const
     { return data::kMCEventWeight; }

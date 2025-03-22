@@ -74,6 +74,13 @@
 #pragma link C++ class std::vector<larlite::simch>+;
 #pragma link C++ class larlite::event_simch+;
 
+#pragma link C++ class larlite::auxide+;
+#pragma link C++ class larlite::auxsimch+;
+#pragma link C++ class std::vector<larlite::auxide>+;
+#pragma link C++ class std::map<UShort_t,larlite::auxsimch>+;
+#pragma link C++ class std::vector<larlite::auxsimch>+;
+#pragma link C++ class larlite::event_auxsimch+;
+
 #pragma link C++ class larlite::onephoton+;
 #pragma link C++ class std::vector<larlite::onephoton>+;
 #pragma link C++ class larlite::simphotons+;
@@ -126,6 +133,106 @@
 #pragma link C++ class std::vector<larlite::cluster>+;
 #pragma link C++ class larlite::event_cluster+; 
 
+#pragma link C++ class larlite::spacepoint+;
+#pragma link C++ class std::vector<larlite::spacepoint>+;
+#pragma link C++ class larlite::event_spacepoint+;
+
+#pragma link C++ class larlite::seed+;
+#pragma link C++ class std::vector<larlite::seed>+;
+#pragma link C++ class larlite::event_seed+;
+
+#pragma link C++ class larlite::track+;
+#pragma link C++ class std::vector<larlite::track>+;
+#pragma link C++ class larlite::event_track+;
+
+#pragma link C++ class larlite::shower+;
+#pragma link C++ class std::vector<larlite::shower>+;
+#pragma link C++ class larlite::event_shower+;
+
+#pragma link C++ class larlite::vertex+;
+#pragma link C++ class std::vector<larlite::vertex>+;
+#pragma link C++ class larlite::event_vertex+;
+
+#pragma link C++ class larlite::endpoint2d+;
+#pragma link C++ class std::vector<larlite::endpoint2d>+;
+#pragma link C++ class larlite::event_endpoint2d+;
+
+#pragma link C++ class larlite::calorimetry+;
+#pragma link C++ class std::vector<larlite::calorimetry>+;
+#pragma link C++ class larlite::event_calorimetry+;
+
+#pragma link C++ class larlite::pfpart+;
+#pragma link C++ class std::vector<larlite::pfpart>+;
+#pragma link C++ class larlite::event_pfpart+;
+
+#pragma link C++ class larlite::partid+;
+#pragma link C++ class std::vector<larlite::partid>+;
+#pragma link C++ class larlite::event_partid+;
+
+#pragma link C++ class larlite::user_info+;
+#pragma link C++ class std::vector<larlite::user_info>+;
+#pragma link C++ class larlite::event_user+;
+
+#pragma link C++ class larlite::trigger+;
+
+#pragma link C++ class larlite::minos+;
+#pragma link C++ class std::vector<larlite::minos>+;
+#pragma link C++ class larlite::event_minos+;
+
+#pragma link C++ class larlite::fifo+;
+#pragma link C++ class std::vector<larlite::fifo>+;
+#pragma link C++ class larlite::event_fifo+;
+
+#pragma link C++ class larlite::pcaxis+;
+#pragma link C++ class std::vector<larlite::pcaxis>+;
+#pragma link C++ class larlite::event_pcaxis+;
+
+#pragma link C++ class larlite::flashmatch+;
+#pragma link C++ class std::vector<larlite::flashmatch>+;
+#pragma link C++ class larlite::event_flashmatch+;
+
+#pragma link C++ class larlite::trackmom+;
+#pragma link C++ class std::vector<larlite::trackmom>+;
+#pragma link C++ class larlite::event_trackmom+;
+
+#pragma link C++ class larlite::opdetwaveform+;
+#pragma link C++ class std::vector<larlite::opdetwaveform>+;
+#pragma link C++ class larlite::event_opdetwaveform+;
+
+#pragma link C++ class larlite::mucsdata+;
+#pragma link C++ class std::vector<larlite::mucsdata>+;
+#pragma link C++ class larlite::event_mucsdata+;
+
+#pragma link C++ class larlite::mucsreco+;
+#pragma link C++ class std::vector<larlite::mucsreco>+;
+#pragma link C++ class larlite::event_mucsreco+;
+
+#pragma link C++ class larlite::roi+;
+#pragma link C++ class std::vector<larlite::roi>+;
+#pragma link C++ class larlite::event_roi+;
+
+#pragma link C++ class larlite::t0+;
+#pragma link C++ class std::vector<larlite::t0>+;
+#pragma link C++ class larlite::event_t0+;
+
+#pragma link C++ class larlite::swtrigger+;
+
+#pragma link C++ class larlite::larflow3dhit+;
+#pragma link C++ class std::vector<larlite::larflow3dhit>+;
+#pragma link C++ class larlite::event_larflow3dhit+;
+
+#pragma link C++ class larlite::larflowcluster+;
+#pragma link C++ class std::vector<larlite::larflowcluster>+;
+#pragma link C++ class larlite::event_larflowcluster+;
+
+#pragma link C++ class larlite::pixelmask+;
+#pragma link C++ class std::vector<larlite::pixelmask>+;
+#pragma link C++ class larlite::event_pixelmask+;
+
+#pragma link C++ class larlite::larmatchsp+;
+#pragma link C++ class std::vector< larlite::larmatchsp >+;
+#pragma link C++ class larlite::event_larmatchsp+;
+
 /* #pragma link C++ class std::vector<std::vector<float> >+; */
 /* #pragma link C++ class std::vector<std::vector<double> >+; */
 
@@ -151,118 +258,16 @@
 /* #pragma link C++ class std::pair<larlite::product_id,larlite::product_id>+; */
 /* #pragma link C++ class std::vector<std::pair<larlite::product_id,larlite::product_id> >+; */
 
-/* #pragma link C++ class larlite::t0+; */
-/* #pragma link C++ class std::vector<larlite::t0>+; */
-/* #pragma link C++ class larlite::event_t0+; */
-
-/* #pragma link C++ class larlite::endpoint2d+; */
-/* #pragma link C++ class std::vector<larlite::endpoint2d>+; */
-/* #pragma link C++ class larlite::event_endpoint2d+; */
-
-/* #pragma link C++ class larlite::seed+; */
-/* #pragma link C++ class std::vector<larlite::seed>+; */
-/* #pragma link C++ class larlite::event_seed+; */
-
-/* #pragma link C++ class larlite::spacepoint+; */
-/* #pragma link C++ class std::vector<larlite::spacepoint>+; */
-/* #pragma link C++ class larlite::event_spacepoint+; */
-
-/* #pragma link C++ class larlite::track+; */
-/* #pragma link C++ class std::vector<larlite::track>+; */
-/* #pragma link C++ class larlite::event_track+; */
-
-/* #pragma link C++ class larlite::trackmom+; */
-/* #pragma link C++ class std::vector<larlite::trackmom>+; */
-/* #pragma link C++ class larlite::event_trackmom+; */
-
-/* #pragma link C++ class larlite::shower+; */
-/* #pragma link C++ class std::vector<larlite::shower>+; */
-/* #pragma link C++ class larlite::event_shower+; */
-
-/* #pragma link C++ class larlite::vertex+; */
-/* #pragma link C++ class std::vector<larlite::vertex>+; */
-/* #pragma link C++ class larlite::event_vertex+; */
-
-/* #pragma link C++ class larlite::calorimetry+; */
-/* #pragma link C++ class std::vector<larlite::calorimetry>+; */
-/* #pragma link C++ class larlite::event_calorimetry+; */
-
-/* #pragma link C++ class larlite::pfpart+; */
-/* #pragma link C++ class std::vector<larlite::pfpart>+; */
-/* #pragma link C++ class larlite::event_pfpart+; */
-
-/* #pragma link C++ class larlite::partid+; */
-/* #pragma link C++ class std::vector<larlite::partid>+; */
-/* #pragma link C++ class larlite::event_partid+; */
-
-/* #pragma link C++ class larlite::user_info+; */
-/* #pragma link C++ class std::vector<larlite::user_info>+; */
-/* #pragma link C++ class larlite::event_user+; */
-
-/* #pragma link C++ class larlite::roi+; */
-/* #pragma link C++ class std::vector<larlite::roi>+; */
-/* #pragma link C++ class larlite::event_roi+; */
-
-/* #pragma link C++ class larlite::auxide+; */
-/* #pragma link C++ class larlite::auxsimch+; */
-/* #pragma link C++ class std::vector<larlite::auxide>+; */
-/* #pragma link C++ class std::map<UShort_t,larlite::auxsimch>+; */
-/* #pragma link C++ class std::vector<larlite::auxsimch>+; */
-/* #pragma link C++ class larlite::event_auxsimch+; */
-
 /* #pragma link C++ class larlite::chstatus+; */
 /* #pragma link C++ class std::vector<larlite::chstatus>+; */
 /* #pragma link C++ class larlite::event_chstatus+; */
 
-/* #pragma link C++ class larlite::trigger+; */
-/* #pragma link C++ class larlite::swtrigger+; */
 
-/* #pragma link C++ class larlite::minos+; */
-/* #pragma link C++ class std::vector<larlite::minos>+; */
-/* #pragma link C++ class larlite::event_minos+; */
-
-/* #pragma link C++ class larlite::pcaxis+; */
-/* #pragma link C++ class std::vector<larlite::pcaxis>+; */
-/* #pragma link C++ class larlite::event_pcaxis+; */
-
-/* #pragma link C++ class larlite::flashmatch+; */
-/* #pragma link C++ class std::vector<larlite::flashmatch>+; */
-/* #pragma link C++ class larlite::event_flashmatch+; */
-
-/* #pragma link C++ class larlite::fifo+; */
-/* #pragma link C++ class std::vector<larlite::fifo>+; */
-/* #pragma link C++ class larlite::event_fifo+; */
-
-/* #pragma link C++ class larlite::opdetwaveform+; */
 /*
-#pragma link C++ class std::vector<larlite::opdetwaveform>+;
-#pragma link C++ class larlite::event_opdetwaveform+;
-
-#pragma link C++ class larlite::mucsdata+;
-#pragma link C++ class std::vector<larlite::mucsdata>+;
-#pragma link C++ class larlite::event_mucsdata+;
-#pragma link C++ class larlite::mucsreco+;
-#pragma link C++ class std::vector<larlite::mucsreco>+;
-#pragma link C++ class larlite::event_mucsreco+;
 
 #pragma link C++ class larlite::storage_manager+;
 #pragma link C++ class larlite::storage_store+;
 
-#pragma link C++ class larlite::larflow3dhit+;
-#pragma link C++ class std::vector<larlite::larflow3dhit>+;
-#pragma link C++ class larlite::event_larflow3dhit+;
-
-#pragma link C++ class larlite::larflowcluster+;
-#pragma link C++ class std::vector<larlite::larflowcluster>+;
-#pragma link C++ class larlite::event_larflowcluster+;
-
-#pragma link C++ class larlite::pixelmask+;
-#pragma link C++ class std::vector<larlite::pixelmask>+;
-#pragma link C++ class larlite::event_pixelmask+;
-
-#pragma link C++ class larlite::larmatchsp+;
-#pragma link C++ class std::vector< larlite::larmatchsp >+;
-#pragma link C++ class larlite::event_larmatchsp+;
 */
 
 /*

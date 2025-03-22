@@ -10,7 +10,7 @@
 #ifndef LARLITE_OPDETWAVEFORM_H
 #define LARLITE_OPDETWAVEFORM_H
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 #include <vector>
 #include <functional> // so we can redefine less<> below
 #include <limits>

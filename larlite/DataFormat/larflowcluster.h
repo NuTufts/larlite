@@ -15,8 +15,8 @@
 #ifndef LARLITE_LARFLOWCLUSTER_H
 #define LARLITE_LARFLOWCLUSTER_H
 
-#include "data_base.h"
-#include "larflow3dhit.h"
+#include "larlite/DataFormat/data_base.h"
+#include "larlite/DataFormat/larflow3dhit.h"
 
 namespace larlite{
 

@@ -1,7 +1,7 @@
 #ifndef __LARLITE_DATAFORMAT_LARMATCHSP_H__
 #define __LARLITE_DATAFORMAT_LARMATCHSP_H__
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 #include "larlite/Base/DataFormatConstants.h"
 #include <vector>
 

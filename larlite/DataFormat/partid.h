@@ -15,7 +15,7 @@
 #ifndef LARLITE_PARTID_H
 #define LARLITE_PARTID_H
 #include "larlite/Base/GeoTypes.h"
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 #include <vector>
 namespace larlite{
   /**

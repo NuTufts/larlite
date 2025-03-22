@@ -11,7 +11,7 @@
 #define LARLITE_PCAxis_H
 
 #include <vector>
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 
 namespace larlite
 {

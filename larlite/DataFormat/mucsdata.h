@@ -12,7 +12,7 @@
 #define LARLITE_MUCSDATA_H
 
 #include <vector>
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 namespace larlite {
  
   class mucsdata : public data_base {

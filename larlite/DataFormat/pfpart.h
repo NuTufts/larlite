@@ -15,7 +15,7 @@
 #ifndef LARLITE_PFPART_H
 #define LARLITE_PFPART_H
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 #include <vector>
 #include <utility>
 #include <iomanip>

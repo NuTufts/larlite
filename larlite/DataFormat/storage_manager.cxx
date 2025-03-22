@@ -43,7 +43,7 @@
 #include "mucsreco.h"
 #include "roi.h"
 #include "auxsimch.h"
-#include "chstatus.h"
+//#include "chstatus.h"
 #include "mceventweight.h"
 #include "swtrigger.h"
 #include "larflow3dhit.h"
@@ -1222,9 +1222,9 @@ namespace larlite {
     case data::kMuCSReco:
       _ptr_data_array[type][name]=new event_mucsreco(name);
       break;
-    case data::kChStatus:
-      _ptr_data_array[type][name]=new event_chstatus(name);
-      break;
+    // case data::kChStatus:
+    //   _ptr_data_array[type][name]=new event_chstatus(name);
+    //   break;
     case data::kMCEventWeight:
       _ptr_data_array[type][name]=new event_mceventweight(name);
       break;

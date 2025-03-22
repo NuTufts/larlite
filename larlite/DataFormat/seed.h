@@ -15,7 +15,7 @@
 #ifndef LARLITE_SEED_H
 #define LARLITE_SEED_H
 
-#include "spacepoint.h"
+#include "larlite/DataFormat/spacepoint.h"
 #include <vector>
 #include "TMath.h"
 #include "TVector3.h"

@@ -19,7 +19,7 @@
 #include <vector>
 #include <algorithm>
 
-#include "data_base.h"
+#include "larlite/DataFormat/data_base.h"
 
 namespace larlite {
 
