@@ -54,12 +54,12 @@ fi
 # Check compiler availability for clang++ and g++
 
 # are we running under a UPS system that has set up gcc explicitly?
-if [ -x "$GCC_FQ_DIR" ] ; then
+if [ -x "$CLANG_DIR" ] ; then
   # We're running a UPS distribution, likely build root with it. So let's use GCC
-  LARLITE_CXX=g++
+  LARLITE_CXX=clang++
 else
   # Try the OSX default install
-  LARLITE_CXX=clang++
+  LARLITE_CXX=g++
 fi
 
 if [ `command -v $LARLITE_CXX` ]; then

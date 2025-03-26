@@ -15,6 +15,7 @@ main_build: pre_build .depend $(DICT).cxx $(LARLITE_LIBDIR)/$(SHLIB) $(LARLITE_L
 # default rule for making .o files from .cxx files
 %.o: %.cxx
 	@echo '<< compiling' $< '>>'
+	@echo "$(CXX) $(CXXFLAGS) $(LARLITE_BASIC_ROOTINC) $(INCFLAGS) -c $<"
 	@$(CXX) $(CXXFLAGS) $(LARLITE_BASIC_ROOTINC) $(INCFLAGS) -c $<
 
 ifdef LARLITE_ROOT6
@@ -27,6 +28,7 @@ $(DICT).cxx: $(HEADERS) LinkDef.h
 # rule for making shareable library
 $(LARLITE_LIBDIR)/$(SHLIB): $(OBJECTS) $(DICT).cxx $(DICT).o
 	@echo '<< generating $(SHLIB) >>'
+	@echo "$(SOMAKER) -o $(LARLITE_LIBDIR)/$(SHLIB) $(filter-out $(DICT).o, $(OBJECTS)) $(DICT).o $(SOFLAGS) $(LDFLAGS) $(LARLITE_BASIC_ROOTLIBS)"
 	@$(SOMAKER) -o $(LARLITE_LIBDIR)/$(SHLIB) $(filter-out $(DICT).o, $(OBJECTS)) $(DICT).o $(SOFLAGS) $(LDFLAGS) $(LARLITE_BASIC_ROOTLIBS) 
 
 # if ROOTMAP defined, define rule for making it
