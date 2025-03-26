@@ -61,8 +61,8 @@ set( HEADERS
   larflowcluster.h
   pixelmask.h
   larmatchsp.h
-#  chstatus.h
-# DataFormat-TypeDef.h
+  chstatus.h
+  DataFormat-TypeDef.h
 # #storage_store.h
   storage_manager.h
 )
@@ -123,7 +123,7 @@ add_library( ${LIBNAME} SHARED
   larflowcluster.cxx
   pixelmask.cxx
   larmatchsp.cxx
-#  chstatus.cxx
+  chstatus.cxx
 # #storage_store.cxx
   storage_manager.cxx
 )
