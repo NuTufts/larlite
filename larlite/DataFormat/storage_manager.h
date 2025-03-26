@@ -67,7 +67,7 @@ namespace larlite {
   class event_mceventweight;
   class event_auxsimch;
   class event_larmatchsp;
-  //class event_chstatus;
+  class event_chstatus;
 }
 //#include "chstatus.h"
 
@@ -569,7 +569,7 @@ namespace larlite {
   template<> data::DataType_t storage_manager::data_type<event_roi> () const;
   template<> data::DataType_t storage_manager::data_type<event_mceventweight> () const;
   template<> data::DataType_t storage_manager::data_type<event_auxsimch> () const;
-  //template<> data::DataType_t storage_manager::data_type<event_chstatus> () const;
+  template<> data::DataType_t storage_manager::data_type<event_chstatus> () const;
   template<> data::DataType_t storage_manager::data_type<swtrigger> () const;
   template<> data::SubRunDataType_t storage_manager::subrundata_type<potsummary>() const;
 

@@ -233,6 +233,10 @@
 #pragma link C++ class std::vector< larlite::larmatchsp >+;
 #pragma link C++ class larlite::event_larmatchsp+;
 
+#pragma link C++ class larlite::chstatus+;
+#pragma link C++ class std::vector<larlite::chstatus>+;
+#pragma link C++ class larlite::event_chstatus+;
+
 #pragma link C++ class larlite::storage_manager+;
 
 /* #pragma link C++ class std::vector<std::vector<float> >+; */
@@ -260,9 +264,6 @@
 /* #pragma link C++ class std::pair<larlite::product_id,larlite::product_id>+; */
 /* #pragma link C++ class std::vector<std::pair<larlite::product_id,larlite::product_id> >+; */
 
-/* #pragma link C++ class larlite::chstatus+; */
-/* #pragma link C++ class std::vector<larlite::chstatus>+; */
-/* #pragma link C++ class larlite::event_chstatus+; */
 
 
 /*
