@@ -1,7 +1,7 @@
 #ifndef __FHICLLITE_UTILFUNC_H__
 #define __FHICLLITE_UTILFUNC_H__
 
-#include "PSet.h"
+#include "larlite/BasicTool/FhiclLite/PSet.h"
 
 namespace fcllite {
 

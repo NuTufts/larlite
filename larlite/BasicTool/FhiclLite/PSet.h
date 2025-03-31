@@ -17,8 +17,8 @@
 #include <iostream>
 #include <string>
 #include <map>
-#include "FhiclLiteException.h"
-#include "Parser.h"
+#include "larlite/BasicTool/FhiclLite/FhiclLiteException.h"
+#include "larlite/BasicTool/FhiclLite/Parser.h"
 namespace fcllite {
   /**
      \class PSet

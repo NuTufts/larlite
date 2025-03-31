@@ -14,7 +14,7 @@
 #ifndef BASICTOOL_FHICLLITE_CONFIGMANAGER_H
 #define BASICTOOL_FHICLLITE_CONFIGMANAGER_H
 
-#include "PSet.h"
+#include "larlite/BasicTool/FhiclLite/PSet.h"
 
 namespace fcllite {
 

@@ -6,8 +6,8 @@
 #define LARLITE_FHICLLITE_TYPEDEF_H
 
 // Header files included here
-#include "PSet.h"
-#include "FhiclLiteException.h"
+#include "larlite/BasicTool/FhiclLite/PSet.h"
+#include "larlite/BasicTool/FhiclLite/FhiclLiteException.h"
 
 // Class forward declaration here
 namespace fcl {
