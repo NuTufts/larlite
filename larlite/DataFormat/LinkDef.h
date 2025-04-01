@@ -25,6 +25,8 @@
 
 #pragma link C++ class std::pair<unsigned short,std::string>+;
 #pragma link C++ class larlite::product_id+;
+#pragma link C++ class std::map<larlite::product_id,unsigned long>+;
+#pragma link C++ class std::pair<larlite::product_id,std::map<larlite::product_id,unsigned long> >+;
 
 #pragma link C++ class larlite::gtruth+;
 #pragma link C++ class std::vector<larlite::gtruth>+;
