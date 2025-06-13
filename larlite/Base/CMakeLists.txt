@@ -38,7 +38,10 @@ target_include_directories(${LIBNAME}
   PRIVATE
   ${PROJECT_SOURCE_DIR}
   )
-target_link_libraries(${LIBNAME})
+target_link_libraries(${LIBNAME}
+  PUBLIC
+  ${ROOT_LIBRARIES}
+)
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_SOURCE_DIR} )
 ROOT_GENERATE_DICTIONARY(G__${LIBNAME} ${ALL_HEADERS} ${HEADERS} LINKDEF LinkDef.h)
