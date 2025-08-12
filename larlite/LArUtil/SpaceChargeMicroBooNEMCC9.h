@@ -35,6 +35,8 @@ namespace larutil{
     std::vector<double> GetPosOffsets(double xVal, double yVal, double zVal) const;
     std::vector<double> GetEfieldOffsets(double xVal, double yVal, double zVal) const;
  
+    bool IsInsideBoundaries(double xVal, double yVal, double zVal) const;
+
   private:
 
     TH3F* _hD[3];
@@ -44,7 +46,6 @@ namespace larutil{
     double TransformX(double xVal) const;
     double TransformY(double yVal) const;
     double TransformZ(double zVal) const;
-    bool IsInsideBoundaries(double xVal, double yVal, double zVal) const;
 
     double _Xmin;
     double _Xmax;

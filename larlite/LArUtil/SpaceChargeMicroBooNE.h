@@ -28,6 +28,8 @@ namespace larutil{
     bool Configure( Version_t version, std::string filename="");
     bool Configure( std::string filename ) { return Configure(kMCC9_Forward,filename); };  ///< [DEPRECATED] kept to be backwards compatible. will default to kMCC9_Forward.
     
+    std::vector<double> ApplySpaceChargeEffect( double x, double y, double z, bool& applied );
+
     std::vector<double> GetPosOffsets(double xVal, double yVal, double zVal) const;
     std::vector<double> GetEfieldOffsets(double xVal, double yVal, double zVal) const;
     Version_t GetVersion() const { return _version; };

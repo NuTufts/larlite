@@ -90,6 +90,55 @@ namespace larutil{
     return true;
   }
 
+  /**
+   * @brief Apply space charge effect
+   * 
+   */
+  std::vector<double> SpaceChargeMicroBooNE::ApplySpaceChargeEffect( double x, double y, double z, bool& applied )
+  {
+
+    std::vector<double> out = { x, y, z };
+
+    if ( _version==kMCC9_Forward ) {
+      // we assume we have the true energy deposit location and
+      // APPLY the space charge effect to get the
+      // "observable" position
+
+      if ( !static_cast<SpaceChargeMicroBooNEMCC9*>(_sce)->IsInsideBoundaries(x,y,z) ) {
+        // do not modify position
+        applied = false;
+        return out; 
+      }
+
+      std::vector<double> s_offset = _sce->GetPosOffsets(x,y,z);
+      out[0] = out[0] - s_offset[0] + 0.7;
+      out[1] = out[1] + s_offset[1];
+      out[2] = out[2] + s_offset[2];
+      applied = true;
+    }
+    else if ( _version==kMCC9_Backward ) {
+      // we now assume a reconstruced position inside the detector
+      // and now calculate the shift back to the true position
+
+       if ( !static_cast<SpaceChargeMicroBooNEMCC9*>(_sce)->IsInsideBoundaries(x,y,z) ) {
+        // do not modify position
+        applied = false;
+        return out; 
+      }
+
+      std::vector<double> s_offset = _sce->GetPosOffsets(x,y,z);
+      out[0] = out[0] + s_offset[0];
+      out[1] = out[1] + s_offset[1];
+      out[2] = out[2] + s_offset[2];
+      applied = true;
+    }
+    else {
+      throw std::runtime_error("Version not yet implemented for SpaceChargeMicroBooNE::ApplySpaceChargeEffect");
+    }
+
+    return out;
+  }
+
   //----------------------------------------------------------------------------
   /// Primary working method of service that provides position offsets to be
   /// used in ionization electron drift
